@@ -1,15 +1,16 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins":["prettier"],
-  "extends": ["next/core-web-vitals","prettier"],
-  "rules":{
-    "prettier/prettier":"error",
-    "@next/next/no-html-link-for-page":"off",
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "root": true,
+  "plugins": ["prettier"],
+  "extends": ["next/core-web-vitals", "prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "@next/next/no-html-link-for-pages": "off"
   },
-  "overrides" : [
+  "overrides": [
     {
-      "files" : ["*.ts","*.tsx"],
-      "parser":"@typescript-eslint/parser"
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser"
     }
   ]
 }
