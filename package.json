@@ -12,6 +12,7 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.13",
     "@mui/material": "^5.14.11",
     "@next/eslint-plugin-next": "^13.5.3",
     "@react-google-maps/api": "^2.19.2",
@@ -52,5 +53,4 @@
     "husky": "^8.0.3",
     "prettier": "^3.0.1"
   }
-
 }
