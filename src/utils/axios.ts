@@ -9,7 +9,11 @@ export const apiInstances = axios.create({
 apiInstances.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     config.headers.set('Authorization', `Bearer ${localStorage.getItem('act') || ''}`);
-    config.headers.set('Content-Type', 'application/json;charset=UTF-8');
+    if (config.data instanceof FormData) {
+      config.headers.set('Content-Type', 'multipart/form-data');
+    } else {
+      config.headers.set('Content-Type', 'application/json;charset=UTF-8');
+    }
     config.headers.set('platform', 'WEB');
     return config;
   },
