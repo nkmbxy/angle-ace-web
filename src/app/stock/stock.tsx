@@ -2,19 +2,24 @@
 
 import { Button, Checkbox, Grid, List, ListItem, Typography } from '@mui/material';
 import { Products, getProducts } from '@services/apis/product';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 
 export default function Stock() {
   const [products, setProducts] = useState<Products[]>([]);
+  const isMounted = useRef(false);
+  // const handleGetProducts = useCallback(async () => {
+  //   const res = await getProducts({});
+  //   setProducts(res?.data);
+  // }, []); // ใส่ทุกฟังกชัน
 
-  const handleGetProducts = useCallback(async () => {
-    const res = await getProducts({});
-    setProducts(res?.data);
-  }, []); // ใส่ทุกฟังกชัน
-
-  useEffect(() => {
-    const res = handleGetProducts();
-  }, [handleGetProducts]);
+  // useEffect(() => {
+  //   if (!isMounted.current) {
+  //     handleGetProducts();
+  //   }
+  //   return () => {
+  //     isMounted.current = true;
+  //   };
+  // }, [handleGetProducts]);
 
   return (
     <Grid container sx={{ display: 'flex', flexDirection: 'row', padding: 10 }}>

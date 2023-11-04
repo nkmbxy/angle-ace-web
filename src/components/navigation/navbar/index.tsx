@@ -23,6 +23,9 @@ const menuNav = [
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [activeLink, setActiveLink] = React.useState<string>('');
+
+  console.log(activeLink);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -85,7 +88,7 @@ function Navbar() {
               }}
             >
               {menuNav.map(item => (
-                <Link href={item.path} key={item.name}>
+                <Link onClick={() => setActiveLink(item.name)} href={item.path} key={item.name}>
                   <MenuItem key={item.name} onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{item.name}</Typography>
                   </MenuItem>
@@ -116,9 +119,15 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {menuNav.map(item => (
-              <Link href={item.path} key={item.name}>
+              <Link
+                onClick={() => {
+                  handleCloseNavMenu();
+                  setActiveLink(item.name);
+                }}
+                href={item.path}
+                key={item.name}
+              >
                 <Button
-                  onClick={handleCloseNavMenu}
                   sx={{
                     mr: 1,
                     color: 'white',
@@ -127,6 +136,10 @@ function Navbar() {
                       borderBottomWidth: 1,
                       borderBottomStyle: 'solid',
                     },
+                    ...(activeLink === item.name && {
+                      borderBottomWidth: 1,
+                      borderBottomStyle: 'solid',
+                    }),
                   }}
                 >
                   {item.name}
@@ -138,7 +151,7 @@ function Navbar() {
           <Box
             sx={{
               flexGrow: 0,
-              borderRadius: 10,
+              borderRadius: 1.5,
               padding: 1,
               border: 1,
             }}

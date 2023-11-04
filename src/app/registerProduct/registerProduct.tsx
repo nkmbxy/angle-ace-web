@@ -101,6 +101,7 @@ export default function RegisterProduct() {
 
   const handleSave = useCallback(
     async (search: ProductCreateParams) => {
+      console.log(search);
       try {
         var body = new FormData();
         body.append('code', search.code);
@@ -242,7 +243,7 @@ export default function RegisterProduct() {
                     defaultValue="0"
                     control={form?.control}
                     render={({ field }) => (
-                      <FormControl sx={{ minWidth: 100, maxWidth: '30%' }}>
+                      <FormControl {...field} sx={{ minWidth: 100, maxWidth: '30%' }}>
                         <FormLabel>ราคาต่อหน่วย</FormLabel>
                         <Input placeholder="0" />
                       </FormControl>
@@ -250,11 +251,11 @@ export default function RegisterProduct() {
                   />
 
                   <Controller
-                    name="cost"
+                    name="sellPrice"
                     defaultValue="0"
                     control={form?.control}
                     render={({ field }) => (
-                      <FormControl sx={{ minWidth: 100, maxWidth: '30%' }}>
+                      <FormControl {...field} sx={{ minWidth: 100, maxWidth: '30%' }}>
                         <FormLabel>ราคาขาย</FormLabel>
                         <Input placeholder="0" />
                       </FormControl>

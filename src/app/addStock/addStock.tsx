@@ -1,38 +1,52 @@
 'use client';
-'use client';
 
-import {
-  Button,
-  Checkbox,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-  Card,
-  Stack,
-  Box,
-  TextField,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  SvgIcon,
-  FormLabel,
-  FormHelperText,
-} from '@mui/material';
-import { ProductCreateParams, Products, createProduct, getProducts } from '@services/apis/product';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Controller, useForm } from 'react-hook-form';
-import * as React from 'react';
-import Input from '@mui/material/Input';
-import Image from 'next/image';
-
-const useStyles = makeStyles({});
+import React, { useState } from 'react';
+import { Grid, Card, TextField, MenuItem, Select, InputLabel, FormControl, Button, makeStyles } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function AddStock() {
-  const classes = useStyles();
+  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [quantity, setQuantity] = useState('');
 
-  return <></>;
+  const handleProductChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedValue(event.target.value);
+  };
+
+  const handleAddClick = () => {
+    // ทำงานเมื่อปุ่มเพิ่มถูกคลิก
+    console.log(selectedValue, quantity);
+    // ที่นี่คุณสามารถเพิ่ม logic สำหรับการเพิ่มสต็อกหรือตรวจสอบข้อมูลได้
+  };
+
+  return (
+    <Grid container justifyContent="center" padding={2} spacing={2} alignItems="center">
+      <Card sx={{ padding: 3, width: '100%' }}>
+        <Grid item container spacing={2} alignItems="center">
+          <Grid item xs={4}>
+            <FormControl fullWidth>
+              <InputLabel id="select-label">Pet</InputLabel>
+              <Select
+                labelId="select-label"
+                value={selectedValue}
+                // onChange={handleProductChange}
+                IconComponent={KeyboardArrowDownIcon}
+                label="Pet"
+              >
+                <MenuItem value="dog">Dog</MenuItem>
+                <MenuItem value="cat">Cat</MenuItem>
+                <MenuItem value="fish">Fish</MenuItem>
+                <MenuItem value="bird">Bird</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={4}>
+            <Button variant="contained" onClick={handleAddClick}>
+              เพิ่ม
+            </Button>
+          </Grid>
+        </Grid>
+      </Card>
+    </Grid>
+  );
 }
