@@ -32,6 +32,18 @@ export default function Stock() {
           </List>
         ))}
         <Typography></Typography>
+
+        {/* <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Age"
+          onChange={handleChange}
+        >
+          {products.map(item => {
+            <MenuItem value={item}>{item.name}</MenuItem>;
+          })}
+        </Select> */}
       </Grid>
     </Grid>
   );

@@ -101,7 +101,6 @@ export default function RegisterProduct() {
 
   const handleSave = useCallback(
     async (search: ProductCreateParams) => {
-      console.log(search);
       try {
         var body = new FormData();
         body.append('code', search.code);
@@ -205,62 +204,6 @@ export default function RegisterProduct() {
                       </Button>
                     </Box>
                   </Stack>
-                </Stack>
-
-                <Stack direction="row" sx={{ width: '100%', justifyContent: 'space-around' }}>
-                  <Controller
-                    name="size"
-                    defaultValue=""
-                    control={form?.control}
-                    render={({ field }) => (
-                      <FormControl fullWidth sx={{ minWidth: 100, maxWidth: '15%' }}>
-                        <InputLabel id="demo-simple-select-label">ไซต์</InputLabel>
-                        <Select
-                          {...field}
-                          label="ไซต์"
-                          IconComponent={KeyboardArrowDown}
-                          sx={{
-                            color: 'gray',
-                            '& .MuiSelect-icon': {
-                              transition: '0.2s',
-                              '&.MuiSelect-iconOpen': {
-                                transform: 'rotate(-180deg)',
-                              },
-                            },
-                          }}
-                        >
-                          <MenuItem value="S">S</MenuItem>
-                          <MenuItem value="M">M</MenuItem>
-                          <MenuItem value="L">L</MenuItem>
-                          <MenuItem value="XL">XL</MenuItem>
-                        </Select>
-                      </FormControl>
-                    )}
-                  />
-
-                  <Controller
-                    name="cost"
-                    defaultValue="0"
-                    control={form?.control}
-                    render={({ field }) => (
-                      <FormControl {...field} sx={{ minWidth: 100, maxWidth: '30%' }}>
-                        <FormLabel>ราคาต่อหน่วย</FormLabel>
-                        <Input placeholder="0" />
-                      </FormControl>
-                    )}
-                  />
-
-                  <Controller
-                    name="sellPrice"
-                    defaultValue="0"
-                    control={form?.control}
-                    render={({ field }) => (
-                      <FormControl {...field} sx={{ minWidth: 100, maxWidth: '30%' }}>
-                        <FormLabel>ราคาขาย</FormLabel>
-                        <Input placeholder="0" />
-                      </FormControl>
-                    )}
-                  />
                 </Stack>
 
                 <Box

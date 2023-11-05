@@ -40,10 +40,24 @@ export interface Products {
   updatedAt: string;
 }
 
+export interface addStockParams {
+  product_id: number;
+  cost: number;
+  sellPrice: number;
+  amountS: number;
+  amountM: number;
+  amountL: number;
+  amountXL: number;
+}
+
 export function getProducts(params: ProductSearchParams): Promise<Response<Products[]>> {
-  return get<Products[]>('/products-admin', { params });
+  return get<Products[]>('/products', { params });
 }
 
 export function createProduct(params: FormData): Promise<Response<string>> {
   return post<string>('/product', params);
+}
+
+export function addStockProduct(params: addStockParams[]): Promise<Response<string>> {
+  return post<string>('/product-order', params);
 }
