@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import { DataGrid, GridColDef, GridRowSelectionModel, GridValueGetterParams } from '@mui/x-data-grid';
 import { ProductCreateParams, getProducts } from '@services/apis/product';
 import { Products, addStock, addStockRow } from '../../../typings/products';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const useStyles = makeStyles({
   formControl: {
@@ -151,17 +152,17 @@ export default function AddStock() {
               <Controller
                 name="product_id"
                 control={form?.control}
-                render={({ field }) => (
-                  <FormControl fullWidth>
-                    <InputLabel id="select-label">สินค้า</InputLabel>
-                    <Select {...field} labelId="select-label" label="สินค้า" IconComponent={KeyboardArrowDownIcon}>
-                      {products.map(item => (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item?.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                render={({ field: { onChange, value } }) => (
+                  <Autocomplete
+                    id="product-autocomplete"
+                    options={products}
+                    getOptionLabel={option => option.name}
+                    style={{ width: 300 }}
+                    onChange={(event, item) => {
+                      onChange(item?.id);
+                    }}
+                    renderInput={params => <TextField {...params} label="สินค้า" />}
+                  />
                 )}
               />
             </Grid>
@@ -238,9 +239,21 @@ export default function AddStock() {
               getRowId={row => row.product_id}
             />
           </Grid>
-          <Button variant="contained" onClick={handleDelete} fullWidth sx={{ mt: 2 }}>
-            ลบ
-          </Button>
+
+          <Grid container spacing={2} sx={{ mt: 0.5 }}>
+            <Grid item xs={6}>
+              <Button variant="text" onClick={handleDelete} sx={{ padding: '8px 30px', color: 'red' }}>
+                ลบสินค้า
+              </Button>
+            </Grid>
+            <Grid container spacing={2} sx={{ mt: 1, display: 'flex', justifyContent: 'center' }}>
+              <Grid item xs={12} sm={6} md={4} lg={3} xl={2} sx={{ mt: -2 }}>
+                <Button variant="contained" onClick={handleDelete} fullWidth sx={{ padding: '8px 30px' }}>
+                  ยืนยัน
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Card>
       </Grid>
     </form>

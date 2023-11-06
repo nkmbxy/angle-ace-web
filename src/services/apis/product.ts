@@ -50,6 +50,14 @@ export interface addStockParams {
   amountXL: number;
 }
 
+export interface StockParams {
+  product_id: number;
+  name: string;
+  amount: number;
+  cost: number;
+  profit: number;
+}
+
 export function getProducts(params: ProductSearchParams): Promise<Response<Products[]>> {
   return get<Products[]>('/products', { params });
 }
