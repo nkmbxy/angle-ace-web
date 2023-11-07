@@ -28,7 +28,7 @@ import { ProductCreateParams, getProducts } from '@services/apis/product';
 import { Products, addStock, addStockRow } from '../../../typings/products';
 import Autocomplete from '@mui/material/Autocomplete';
 
-export default function AddStock() {
+export default function Stock() {
   const handleGetProducts = useCallback(async () => {
     const res = await getProducts({});
     setProducts(res?.data);

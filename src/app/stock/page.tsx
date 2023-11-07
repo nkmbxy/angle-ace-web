@@ -1,5 +1,5 @@
 import Stock from './stock';
 
-export default function RegisterProductPage() {
+export default function StockPage() {
   return <Stock />;
 }
