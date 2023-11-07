@@ -1,36 +1,14 @@
 'use client';
 
-import {
-  Button,
-  Checkbox,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-  Card,
-  Stack,
-  Box,
-  TextField,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  SvgIcon,
-  FormLabel,
-  FormHelperText,
-} from '@mui/material';
-import { ProductCreateParams, Products, createProduct, getProducts } from '@services/apis/product';
-import { makeStyles } from '@mui/styles';
-import { useCallback, useEffect, useState } from 'react';
+import AlertDialog from '@components/alertDialog';
+import ToastSuccess from '@components/toast';
+import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Controller, useForm } from 'react-hook-form';
+import { makeStyles } from '@mui/styles';
+import { ProductCreateParams, createProduct } from '@services/apis/product';
 import * as React from 'react';
-import Input from '@mui/material/Input';
-import Image from 'next/image';
-
-import Select, { selectClasses } from '@mui/material/Select';
-
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import { useCallback, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -78,11 +56,20 @@ const useStyles = makeStyles({
 
 export default function RegisterProduct() {
   const classes = useStyles();
-  const { register, handleSubmit } = useForm();
   const [image, setImage] = useState<Blob | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
+  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openToast, setOpenToast] = useState<boolean>(false);
 
   const form = useForm<ProductCreateParams>({});
+
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialog(false);
+  };
+
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
 
   const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -114,8 +101,15 @@ export default function RegisterProduct() {
         body.append('file', image as Blob);
 
         const res = await createProduct(body);
+        if (res?.status !== '200') {
+          setOpenAlertDialog(true);
+          return;
+        }
+        setOpenToast(true);
       } catch (error) {
+        setOpenAlertDialog(true);
         console.log(error);
+        return;
       }
     },
     [image]
@@ -219,6 +213,13 @@ export default function RegisterProduct() {
                   </Button>
                 </Box>
               </Stack>
+              <ToastSuccess
+                openToast={openToast}
+                handleCloseToast={handleCloseToast}
+                text="ลงทะเบียนสินค้าใหม่สำเร็จ"
+                showClose={true}
+              />
+              <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
             </Grid>
           </Grid>
         </Card>

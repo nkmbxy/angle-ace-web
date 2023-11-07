@@ -24,10 +24,7 @@ apiInstances.interceptors.request.use(
 
 export interface Response<T = any> {
   message?: string;
-  status: {
-    code: number;
-    text: string;
-  };
+  status: string;
   total?: number;
   data: T;
 }

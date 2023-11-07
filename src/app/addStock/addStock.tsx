@@ -1,15 +1,14 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Grid, Card, MenuItem, Select, InputLabel, FormControl, Button, FormLabel, Input } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Controller, useForm } from 'react-hook-form';
-import { makeStyles } from '@mui/styles';
-import TextField from '@mui/material/TextField';
-import { DataGrid, GridColDef, GridRowSelectionModel, GridValueGetterParams } from '@mui/x-data-grid';
-import { ProductCreateParams, getProducts } from '@services/apis/product';
-import { Products, addStock, addStockRow } from '../../../typings/products';
+import { Button, Card, Grid } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from '@mui/styles';
+import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
+import { getProducts } from '@services/apis/product';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Products, addStock, addStockRow } from '../../../typings/products';
 
 const useStyles = makeStyles({
   formControl: {

@@ -1,32 +1,24 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
-  Grid,
-  Card,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
   Button,
-  FormLabel,
-  Input,
-  TableContainer,
+  Card,
+  Grid,
   Paper,
   Table,
-  TableRow,
-  TableHead,
-  TableCell,
   TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Controller, useForm } from 'react-hook-form';
-import { makeStyles } from '@mui/styles';
-import TextField from '@mui/material/TextField';
-import { DataGrid, GridColDef, GridRowSelectionModel, GridValueGetterParams } from '@mui/x-data-grid';
-import { ProductCreateParams, getProducts } from '@services/apis/product';
-import { Products, addStock, addStockRow } from '../../../typings/products';
 import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { GridRowSelectionModel } from '@mui/x-data-grid';
+import { getProducts } from '@services/apis/product';
+import { useCallback, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Products, addStock, addStockRow } from '../../../typings/products';
 
 export default function Stock() {
   const handleGetProducts = useCallback(async () => {

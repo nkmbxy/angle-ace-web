@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, Checkbox, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
-import { FC, useState } from 'react';
+import { Grid, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { FC } from 'react';
 
 type ButtomSideProps = {
   newname: any[];
