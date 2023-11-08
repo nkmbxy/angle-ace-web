@@ -34,3 +34,11 @@ export interface addStock {
   amountL: number;
   amountXL: number;
 }
+
+export interface Stock {
+  product_id: number;
+  name: string;
+  amount: number;
+  cost: number;
+  profit: number;
+}
