@@ -227,28 +227,28 @@ export default function AddStock() {
             spacing={2}
             sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: '20px' }}
           >
-            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
+            <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountS"
                 control={form?.control}
                 render={({ field }) => <TextField {...field} label="จำนวนไซต์ S" variant="outlined" fullWidth />}
               />
             </Grid>
-            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
+            <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountM"
                 control={form?.control}
                 render={({ field }) => <TextField {...field} label="จำนวนไซต์ M" variant="outlined" fullWidth />}
               />
             </Grid>
-            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
+            <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountL"
                 control={form?.control}
                 render={({ field }) => <TextField {...field} label="จำนวนไซต์ L" variant="outlined" fullWidth />}
               />
             </Grid>
-            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
+            <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountXL"
                 control={form?.control}

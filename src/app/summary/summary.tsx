@@ -11,16 +11,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
   styled,
 } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
-import dayjs, { Dayjs } from 'dayjs';
-import { useEffect, useState } from 'react';
+import { Dayjs } from 'dayjs';
+import { useState } from 'react';
 import { Summary } from '../../../typings/products';
 
 const useStyles = makeStyles({
@@ -59,25 +59,25 @@ export function getProfitSummary(params: { startDate?: string; endDate?: string 
 
 export default function SummaryComponent() {
   const classes = useStyles();
-  const [value, setValue] = useState<Dayjs | null>(dayjs('2022-04-17'));
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [summaryData, setSummaryData] = useState<Summary[]>([]);
 
-  useEffect(() => {
-    async function fetchSummaryData() {
-      const selectedDate = value || dayjs();
-      const startDate = selectedDate.startOf('day').toISOString();
-      const endDate = selectedDate.endOf('day').toISOString();
+  const fetchSummaryData = async () => {
+    const formattedStartDate = startDate ? startDate.format('YYYY-MM-DD') : null;
+    const formattedEndDate = endDate ? endDate.format('YYYY-MM-DD') : null;
 
-      try {
-        const response = await getProfitSummary({ startDate, endDate });
-        setSummaryData(response);
-      } catch (error) {
-        console.error('Error fetching summary data:', error);
-      }
+    try {
+      const response = await getProfitSummary({
+        startDate: formattedStartDate?.toString(),
+        endDate: formattedEndDate?.toString(),
+      });
+
+      setSummaryData(response);
+    } catch (error) {
+      console.error('Error fetching summary data:', error);
     }
-
-    fetchSummaryData();
-  }, [value]);
+  };
 
   const invoiceSubtotal = summaryData.reduce((sum, item) => sum + item.profit, 0);
 
@@ -103,25 +103,24 @@ export default function SummaryComponent() {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="วันเริ่ม"
-                  defaultValue={dayjs(' ')}
+                  value={startDate}
+                  onChange={setStartDate}
                   renderInput={params => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
-
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="วันสุดท้าย"
-                  value={value}
-                  onChange={newValue => setValue(newValue)}
+                  value={endDate}
+                  onChange={setEndDate}
                   renderInput={params => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
-
             <Grid item xs={2} sm={1}>
-              <Button variant="contained" type="submit" fullWidth>
+              <Button variant="contained" onClick={fetchSummaryData} fullWidth>
                 ค้นหา
               </Button>
             </Grid>
