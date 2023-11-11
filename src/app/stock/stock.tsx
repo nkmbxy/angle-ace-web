@@ -13,7 +13,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { getProducts } from '@services/apis/product';
@@ -21,7 +20,7 @@ import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Products, Stock } from '../../../typings/products';
 
-export default function Stock() {
+export default function StockComponent() {
   const handleGetProducts = useCallback(async () => {
     const res = await getProducts({});
     setProducts(res?.data);
@@ -32,8 +31,8 @@ export default function Stock() {
   const form = useForm<Stock>({});
   const isMounted = useRef(false);
 
-  function createData(product_id: string, name: string, amount: number, cost: string, profit: string) {
-    return { product_id, name, amount, cost, profit };
+  function createData(product_id: string, name: string, amount: number, cost: string) {
+    return { product_id, name, amount, cost };
   }
 
   return (
@@ -59,78 +58,53 @@ export default function Stock() {
           >
             <Grid item xs={12} sm={6} md={3}>
               <Controller
-                name="product_id"
+                name="category"
+                defaultValue=""
                 control={form?.control}
-                render={({ field: { onChange, value } }) => (
-                  <Autocomplete
-                    id="product-autocomplete"
-                    options={products}
-                    getOptionLabel={option => option.name}
-                    style={{ width: 250 }}
-                    onChange={(event, item) => {
-                      onChange(item?.id);
-                    }}
-                    renderInput={params => <TextField {...params} label="หมวดหมู่" />}
-                  />
+                render={({ field }) => (
+                  <TextField {...field} placeholder="หมวดหมู่" variant="standard" fullWidth sx={{ mb: 3 }} />
                 )}
               />
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
               <Controller
-                name="product_id"
+                name="manufacturer"
+                defaultValue=""
                 control={form?.control}
-                render={({ field: { onChange, value } }) => (
-                  <Autocomplete
-                    id="product-autocomplete"
-                    options={products}
-                    getOptionLabel={option => option.name}
-                    style={{ width: 250 }}
-                    onChange={(event, item) => {
-                      onChange(item?.id);
-                    }}
-                    renderInput={params => <TextField {...params} label="ผู้ผลิต" />}
-                  />
+                render={({ field }) => (
+                  <TextField {...field} placeholder="ผู้ผลิต" variant="standard" fullWidth sx={{ mb: 3 }} />
                 )}
               />
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
               <Controller
-                name="product_id"
+                name="name"
+                defaultValue=""
                 control={form?.control}
-                render={({ field: { onChange, value } }) => (
-                  <Autocomplete
-                    id="product-autocomplete"
-                    options={products}
-                    getOptionLabel={option => option.name}
-                    style={{ width: 250 }}
-                    onChange={(event, item) => {
-                      onChange(item?.id);
-                    }}
-                    renderInput={params => <TextField {...params} label="สินค้า" />}
-                  />
+                render={({ field }) => (
+                  <TextField {...field} placeholder="สินค้า" variant="standard" fullWidth sx={{ mb: 3 }} />
                 )}
               />
             </Grid>
 
             <Grid item xs={2} sm={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Button variant="contained" type="submit">
-                เพิ่ม
+                ค้นหา
               </Button>
             </Grid>
           </Grid>
 
           <Grid style={{ height: 500, width: '100%' }} sx={{ mt: '20px' }}>
-            <TableContainer component={Paper} sx={{ mt: '30px', height: 440 }}>
+            <TableContainer component={Paper} sx={{ mt: '10px', height: 450 }}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">product_id</TableCell>
-                    <TableCell align="center">name</TableCell>
-                    <TableCell align="center">amount</TableCell>
-                    <TableCell align="center">cost</TableCell>
-                    <TableCell align="center">profit</TableCell>
+                    <TableCell align="center">Product_id</TableCell>
+                    <TableCell align="center">Name</TableCell>
+                    <TableCell align="center">Amount</TableCell>
+                    <TableCell align="center">Cost</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -141,7 +115,6 @@ export default function Stock() {
                         <TableCell align="center">{row.name}</TableCell>
                         <TableCell align="center">{row.amount}</TableCell>
                         <TableCell align="center">{row.cost}</TableCell>
-                        <TableCell align="center">{row.profit}</TableCell>
                       </TableRow>
                     ))
                   ) : (

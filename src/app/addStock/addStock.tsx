@@ -127,6 +127,43 @@ export default function AddStock() {
     };
   }, [handleGetProducts]);
 
+  const handleConfirmClick = async () => {
+    try {
+      const response = await fetch('/api/product-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          rows.map(row => ({
+            product_id: row.product_id,
+            cost: row.cost,
+            sellPrice: row.sellPrice,
+            amountS: row.amountS,
+            amountM: row.amountM,
+            amountL: row.amountL,
+            amountXL: row.amountXL,
+          }))
+        ),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Success:', result.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<addStock>({});
+
   return (
     <form onSubmit={form.handleSubmit(handleAddRow)}>
       <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -190,28 +227,28 @@ export default function AddStock() {
             spacing={2}
             sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: '20px' }}
           >
-            <Grid item xs={6} sm={2.2}>
+            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
               <Controller
                 name="amountS"
                 control={form?.control}
                 render={({ field }) => <TextField {...field} label="จำนวนไซต์ S" variant="outlined" fullWidth />}
               />
             </Grid>
-            <Grid item xs={6} sm={2.2}>
+            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
               <Controller
                 name="amountM"
                 control={form?.control}
                 render={({ field }) => <TextField {...field} label="จำนวนไซต์ M" variant="outlined" fullWidth />}
               />
             </Grid>
-            <Grid item xs={6} sm={2.2}>
+            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
               <Controller
                 name="amountL"
                 control={form?.control}
                 render={({ field }) => <TextField {...field} label="จำนวนไซต์ L" variant="outlined" fullWidth />}
               />
             </Grid>
-            <Grid item xs={6} sm={2.2}>
+            <Grid item xs={6} sm={false} sx={{ width: '2.2rem' }}>
               <Controller
                 name="amountXL"
                 control={form?.control}
@@ -247,7 +284,7 @@ export default function AddStock() {
             </Grid>
             <Grid container spacing={2} sx={{ mt: 1, display: 'flex', justifyContent: 'center' }}>
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2} sx={{ mt: -2 }}>
-                <Button variant="contained" onClick={handleDelete} fullWidth sx={{ padding: '8px 30px' }}>
+                <Button variant="contained" onClick={handleConfirmClick} fullWidth sx={{ padding: '8px 30px' }}>
                   ยืนยัน
                 </Button>
               </Grid>
