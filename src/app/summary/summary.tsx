@@ -105,20 +105,22 @@ export default function SummaryComponent() {
                   label="วันเริ่ม"
                   value={startDate}
                   onChange={setStartDate}
-                  renderInput={params => <TextField {...params} />}
+                  render={params => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
+
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="วันสุดท้าย"
                   value={endDate}
                   onChange={setEndDate}
-                  renderInput={params => <TextField {...params} />}
+                  render={params => <TextField {...params} />}
                 />
               </LocalizationProvider>
             </Grid>
+
             <Grid item xs={2} sm={1}>
               <Button variant="contained" onClick={fetchSummaryData} fullWidth>
                 ค้นหา

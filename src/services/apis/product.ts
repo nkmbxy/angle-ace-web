@@ -13,8 +13,9 @@ export interface ProductCreateParams {
   manufacturer: string;
   detail: string;
   size: string;
-  sellPrice: string;
-  cost: string;
+  sellPrice: number;
+  cost: number;
+  amount: number;
 }
 
 export interface Manufacturer {
@@ -65,6 +66,10 @@ export interface summaryParams {
 
 export function getProducts(params: ProductSearchParams): Promise<Response<Products[]>> {
   return get<Products[]>('/products', { params });
+}
+
+export function editProduct(product_id: number, params: ProductCreateParams): Promise<Response<string>> {
+  return post<string>(`/product/${product_id}`, params);
 }
 
 export function getProfitSummary(params: summaryParams): Promise<Response<Products[]>> {
