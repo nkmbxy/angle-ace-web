@@ -13,8 +13,9 @@ export interface ProductCreateParams {
   manufacturer: string;
   detail: string;
   size: string;
-  sellPrice: string;
-  cost: string;
+  sellPrice: number;
+  cost: number;
+  amount: number;
 }
 
 export interface Manufacturer {
@@ -50,7 +51,7 @@ export interface addStockParams {
   amountXL: number;
 }
 
-export interface StockParams {
+export interface stockParams {
   product_id: number;
   name: string;
   amount: number;
@@ -58,8 +59,21 @@ export interface StockParams {
   profit: number;
 }
 
+export interface summaryParams {
+  startDate?: string;
+  endDate?: string;
+}
+
 export function getProducts(params: ProductSearchParams): Promise<Response<Products[]>> {
   return get<Products[]>('/products', { params });
+}
+
+export function editProduct(product_id: number, params: ProductCreateParams): Promise<Response<string>> {
+  return post<string>(`/product/${product_id}`, params);
+}
+
+export function getProfitSummary(params: summaryParams): Promise<Response<Products[]>> {
+  return get<Products[]>('/summary', { params });
 }
 
 export function createProduct(params: FormData): Promise<Response<string>> {

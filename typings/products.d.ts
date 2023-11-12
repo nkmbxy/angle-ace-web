@@ -41,4 +41,11 @@ export interface Stock {
   amount: number;
   cost: number;
   profit: number;
+  category?: string;
+  manufacturer?: string;
+}
+
+export interface Summary {
+  date: string;
+  profit: number;
 }
