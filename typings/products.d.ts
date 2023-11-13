@@ -70,11 +70,6 @@ export interface Stock {
   manufacturer?: string;
 }
 
-export interface Summary {
-  date: string;
-  profit: number;
-}
-
 export interface ProductCreateParams {
   code: string;
   name: string;
@@ -102,9 +97,14 @@ export interface addStockParams {
   amountXL: number;
 }
 
-export interface summaryParams {
+export interface SummaryParams {
   startDate?: string;
   endDate?: string;
+}
+
+export interface SummaryProfit {
+  date: string;
+  profit: number;
 }
 
 export interface ProductUpdateParams {
