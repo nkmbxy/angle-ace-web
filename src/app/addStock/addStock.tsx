@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
-import { getProducts } from '@services/apis/product';
+import { addStockProduct, getProducts } from '@services/apis/product';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Products, addStock, addStockRow } from '../../../typings/products';
@@ -18,7 +18,6 @@ const useStyles = makeStyles({
 });
 
 export default function AddStock() {
-  const classes = useStyles();
   const [rows, setRows] = useState<addStockRow[]>([]);
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
   const [products, setProducts] = useState<Products[]>([]);
@@ -129,40 +128,14 @@ export default function AddStock() {
 
   const handleConfirmClick = async () => {
     try {
-      const response = await fetch('/api/product-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-          rows.map(row => ({
-            product_id: row.product_id,
-            cost: row.cost,
-            sellPrice: row.sellPrice,
-            amountS: row.amountS,
-            amountM: row.amountM,
-            amountL: row.amountL,
-            amountXL: row.amountXL,
-          }))
-        ),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const res = await addStockProduct(rows);
+      if (res?.status !== '200') {
+        return;
       }
-
-      const result = await response.json();
-      console.log('Success:', result.message);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<addStock>({});
 
   return (
     <form onSubmit={form.handleSubmit(handleAddRow)}>
