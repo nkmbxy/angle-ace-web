@@ -2,10 +2,11 @@
 
 import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { ProductCreateParams, Products, editProduct, getProducts } from '@services/apis/product';
-import { useEffect, useState } from 'react';
+import { editProduct, getDetailProducts } from '@services/apis/product';
+import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { ProductEditParams, ProductInput } from '../../../../../typings/products';
 
 const useStyles = makeStyles({
   bigContainer: {
@@ -45,59 +46,50 @@ export default function ProductForm() {
   const classes = useStyles();
   const [image, setImage] = useState<Blob | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const { control, handleSubmit, setValue } = useForm<ProductCreateParams>();
-  const initialProductData: Products | null = null;
-  const [initialData, setInitialData] = useState<Products | null>(initialProductData);
-  const location = useLocation();
-  const productDataFromLocation = location.state?.product;
+  const [productData, setProductData] = useState(null);
+  const { control, handleSubmit, setValue } = useForm<ProductInput>();
+  const params = useParams();
+  const isMounted = useRef(false);
+
+  const handleGetDetailProducts = useCallback(async () => {
+    const res = await getDetailProducts(parseInt(params?.id as string));
+
+    setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
+    setValue('code', res?.data?.code || '');
+    setValue('name', res?.data?.name || '');
+    setValue('manufacturer', res?.data?.manufacturer?.name || '');
+    setValue('detail', res?.data?.detail || '');
+    setValue('type', res?.data?.type || '');
+    setValue('sellPrice', res?.data?.sellPrice || 0);
+    setValue('cost', res?.data?.cost || 0);
+    setValue('amountS', res?.data?.amountS || 0);
+  }, [params?.id, setValue]);
 
   useEffect(() => {
-    if (productDataFromLocation) {
-      setInitialData(productDataFromLocation);
-      setImageSrc(productDataFromLocation.pathImage || '/assets/images/default-image.png');
-      setValue('code', productDataFromLocation.code || '');
-      setValue('name', productDataFromLocation.name || '');
-      setValue('manufacturer', productDataFromLocation.manufacturer?.name || '');
-      setValue('detail', productDataFromLocation.detail || '');
-      setValue('type', productDataFromLocation.type || '');
-      setValue('sellPrice', productDataFromLocation.sellPrice || 0);
-      setValue('cost', productDataFromLocation.cost || 0);
-      setValue('amount', productDataFromLocation.amount || 0);
-    } else {
-      getProducts({})
-        .then(response => {
-          if (response.data && response.data.length > 0) {
-            const product = response.data[0];
-            setInitialData(product);
-            setImageSrc(product.pathImage || '/assets/images/default-image.png');
-            setValue('code', product.code || '');
-            setValue('name', product.name || '');
-            setValue('manufacturer', product.manufacturer?.name || '');
-            setValue('detail', product.detail || '');
-            setValue('type', product.type || '');
-            setValue('sellPrice', product.sellPrice || 0);
-            setValue('cost', product.cost || 0);
-            setValue('amount', product.amount || 0);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching product data:', error);
-        });
+    if (!isMounted.current) {
+      handleGetDetailProducts();
     }
-  }, [setValue, productDataFromLocation]);
+    return () => {
+      isMounted.current = true;
+    };
+  }, [handleGetDetailProducts]);
 
-  const onSubmit = async (data: ProductCreateParams) => {
-    const productToEdit = productDataFromLocation || initialData;
-
-    if (productToEdit && productToEdit.id) {
-      try {
-        const response = await editProduct(productToEdit.id, data);
-        console.log('Response:', response);
-      } catch (error) {
-        console.error('Error updating product:', error);
+  const onSubmit = async (search: ProductEditParams) => {
+    try {
+      var body = new FormData();
+      body.append('detail', search?.detail);
+      body.append('sellPrice', search?.sellPrice.toString());
+      body.append('cost', search.cost.toString());
+      if (image) {
+        body.append('file', image as Blob);
       }
-    } else {
-      console.error('Product data is not available.');
+      const res = await editProduct(parseInt(params?.id as string), body);
+      if (res?.status !== '200') {
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      return;
     }
   };
 
@@ -107,7 +99,6 @@ export default function ProductForm() {
         <Card sx={{ padding: 3, width: '70%' }}>
           <Grid container>
             <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
-
             <Grid container className={classes.containerGray}>
               <Stack direction="row" sx={{ width: '100%' }}>
                 <Stack
@@ -234,7 +225,7 @@ export default function ProductForm() {
                   </Box>
 
                   <Controller
-                    name="amount"
+                    name="amountS"
                     control={control}
                     render={({ field }) => (
                       <TextField
@@ -248,12 +239,19 @@ export default function ProductForm() {
                   />
                 </Stack>
               </Stack>
+              <Box
+                sx={{
+                  display: 'flex',
+                  mt: 2,
+                  width: '100%',
+                  justifyContent: 'center',
+                }}
+              >
+                <Button variant="contained" type="submit" sx={{ mt: 2, width: 150 }}>
+                  ยืนยัน
+                </Button>
+              </Box>
             </Grid>
-          </Grid>
-          <Grid container justifyContent="center" sx={{ mt: 2 }}>
-            <Button type="submit" variant="contained" color="primary">
-              บันทึก
-            </Button>
           </Grid>
         </Card>
       </Grid>

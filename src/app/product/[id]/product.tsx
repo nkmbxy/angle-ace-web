@@ -2,10 +2,12 @@
 
 import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Products, getProducts } from '@services/apis/product';
-import { useEffect, useState } from 'react';
+import { getDetailProducts } from '@services/apis/product';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { ProductInput } from '../../../../typings/products';
 
 const useStyles = makeStyles({
   bigContainer: {
@@ -43,51 +45,45 @@ const useStyles = makeStyles({
 
 export default function ProductDetail() {
   const classes = useStyles();
-  const [image, setImage] = useState<Blob | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const [productData, setProductData] = useState<Products | null>(null);
-  const { control, setValue } = useForm();
-  const navigate = useNavigate();
+  const { control, setValue } = useForm<ProductInput>();
+  const params = useParams();
+  const isMounted = useRef(false);
 
-  const handleEdit = () => {
-    if (productData) {
-      navigate('/editProduct', { state: { product: productData } });
-    } else {
-      console.error('No product data available for editing.');
-    }
-  };
+  const handleGetDetailProducts = useCallback(async () => {
+    const res = await getDetailProducts(parseInt(params?.id as string));
+
+    setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
+    setValue('code', res?.data?.code || '');
+    setValue('name', res?.data?.name || '');
+    setValue('manufacturer', res?.data?.manufacturer?.name || '');
+    setValue('detail', res?.data?.detail || '');
+    setValue('type', res?.data?.type || '');
+    setValue('sellPrice', res?.data?.sellPrice || 0);
+    setValue('cost', res?.data?.cost || 0);
+    setValue('amountS', res?.data?.amountS || 0);
+  }, [params?.id, setValue]);
 
   useEffect(() => {
-    getProducts({})
-      .then(response => {
-        if (response.data && response.data.length > 0) {
-          const product = response.data[0];
-          setProductData(product);
-          setImageSrc(product.pathImage || '/assets/images/default-image.png');
-          setValue('code', product.code || '');
-          setValue('name', product.name || '');
-          setValue('manufacturer', product.manufacturer.name || '');
-          setValue('detail', product.detail || '');
-          setValue('type', product.type || '');
-          setValue('sellPrice', product.sellPrice || '');
-          setValue('cost', product.cost || '');
-          setValue('amount', product.amount || '');
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching product data:', error);
-      });
-  }, [setValue]);
+    if (!isMounted.current) {
+      handleGetDetailProducts();
+    }
+    return () => {
+      isMounted.current = true;
+    };
+  }, [handleGetDetailProducts]);
 
   return (
     <Grid container className={classes.bigContainer}>
-      <Card sx={{ padding: 4, width: '70%' }}>
+      <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
           <Grid item xs={12} container justifyContent="flex-end">
-            <Button sx={{ mb: 2, fontSize: '20px', color: 'red' }} color="primary" onClick={handleEdit}>
-              แก้ไข
-            </Button>
+            <Link href={`/product/${params?.id}/edit`}>
+              <Button sx={{ mb: 2, mt: 1, color: 'red' }} color="primary" onClick={() => {}}>
+                แก้ไข
+              </Button>{' '}
+            </Link>
           </Grid>
         </Grid>
 
@@ -238,7 +234,7 @@ export default function ProductDetail() {
               </Box>
 
               <Controller
-                name="amount"
+                name="amountS"
                 control={control}
                 render={({ field }) => (
                   <TextField

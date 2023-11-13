@@ -5,10 +5,11 @@ import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { ProductCreateParams, createProduct } from '@services/apis/product';
+import { createProduct } from '@services/apis/product';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { ProductCreateParams } from '../../../typings/products';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
