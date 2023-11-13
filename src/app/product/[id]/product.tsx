@@ -62,6 +62,9 @@ export default function ProductDetail() {
     setValue('sellPrice', res?.data?.sellPrice || 0);
     setValue('cost', res?.data?.cost || 0);
     setValue('amountS', res?.data?.amountS || 0);
+    setValue('amountM', res?.data?.amountM || 0);
+    setValue('amountL', res?.data?.amountL || 0);
+    setValue('amountXL', res?.data?.amountXL || 0);
   }, [params?.id, setValue]);
 
   useEffect(() => {
@@ -105,12 +108,17 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="รหัสสินค้า"
+                    label="รหัสสินค้า"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -122,12 +130,17 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="ชื่อสินค้า"
+                    label="ชื่อสินค้า"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -139,12 +152,17 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="ผู้ผลิต"
+                    label="ผู้ผลิต"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -156,12 +174,17 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="รายละเอียด"
+                    label="รายละเอียด"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -173,12 +196,17 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="หมวดหมู่"
+                    label="หมวดหมู่"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -190,12 +218,17 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="ราคาขาย"
+                    label="ราคาขาย"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -207,12 +240,61 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="ราคาต้นทุน"
+                    label="ราคาต้นทุน"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
+                    }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="amountS"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="จำนวนสินค้า S"
+                    variant="standard"
+                    focused
+                    fullWidth
+                    sx={{ mb: 3, mt: 3, width: '70%' }}
+                    InputProps={{
+                      readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
+                    }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="amountM"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="จำนวนสินค้า M"
+                    variant="standard"
+                    focused
+                    fullWidth
+                    sx={{ mb: 3, mt: 3, width: '70%' }}
+                    InputProps={{
+                      readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}
@@ -234,17 +316,44 @@ export default function ProductDetail() {
               </Box>
 
               <Controller
-                name="amountS"
+                name="amountL"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder="จำนวนสินค้า"
+                    label="จำนวนสินค้า L"
                     variant="standard"
+                    focused
                     fullWidth
                     sx={{ mb: 3, mt: 3, width: '70%' }}
                     InputProps={{
                       readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
+                    }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="amountXL"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="จำนวนสินค้า XL"
+                    variant="standard"
+                    focused
+                    fullWidth
+                    sx={{ mb: 3, mt: 3, width: '70%' }}
+                    InputProps={{
+                      readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
                     }}
                   />
                 )}

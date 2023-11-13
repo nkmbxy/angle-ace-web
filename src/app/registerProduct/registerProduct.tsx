@@ -95,9 +95,17 @@ export default function RegisterProduct() {
         body.append('name', search.name);
         body.append('detail', search.detail);
         body.append('manufacturer', search.manufacturer);
-        body.append('sellPrice', search.sellPrice.toString());
+
+        if (search.sellPrice !== undefined) {
+          body.append('sellPrice', search.sellPrice.toString());
+        }
+
         body.append('size', search.size);
-        body.append('cost', search.cost.toString());
+
+        if (search.cost !== undefined) {
+          body.append('cost', search.cost.toString());
+        }
+
         body.append('type', search.type);
         body.append('file', image as Blob);
 

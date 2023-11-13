@@ -1,12 +1,26 @@
 'use client';
 
-import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
+import AlertDialog from '@components/alertDialog';
+import ToastSuccess from '@components/toast';
+import { Box, Button, Card, Grid, Stack, TextField, Typography, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { editProduct, getDetailProducts } from '@services/apis/product';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductEditParams, ProductInput } from '../../../../../typings/products';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 const useStyles = makeStyles({
   bigContainer: {
@@ -50,6 +64,33 @@ export default function ProductForm() {
   const { control, handleSubmit, setValue } = useForm<ProductInput>();
   const params = useParams();
   const isMounted = useRef(false);
+  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openToast, setOpenToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const router = useRouter();
+
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialog(false);
+  };
+
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
+
+  const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImageSrc(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }, []);
 
   const handleGetDetailProducts = useCallback(async () => {
     const res = await getDetailProducts(parseInt(params?.id as string));
@@ -63,6 +104,9 @@ export default function ProductForm() {
     setValue('sellPrice', res?.data?.sellPrice || 0);
     setValue('cost', res?.data?.cost || 0);
     setValue('amountS', res?.data?.amountS || 0);
+    setValue('amountM', res?.data?.amountM || 0);
+    setValue('amountL', res?.data?.amountL || 0);
+    setValue('amountXL', res?.data?.amountXL || 0);
   }, [params?.id, setValue]);
 
   useEffect(() => {
@@ -76,20 +120,27 @@ export default function ProductForm() {
 
   const onSubmit = async (search: ProductEditParams) => {
     try {
-      var body = new FormData();
-      body.append('detail', search?.detail);
-      body.append('sellPrice', search?.sellPrice.toString());
-      body.append('cost', search.cost.toString());
+      var formData = new FormData();
+      formData.append('detail', search?.detail);
+      formData.append('sellPrice', search?.sellPrice.toString());
+      formData.append('cost', search.cost.toString());
       if (image) {
-        body.append('file', image as Blob);
+        formData.append('file', image as Blob);
       }
-      const res = await editProduct(parseInt(params?.id as string), body);
-      if (res?.status !== '200') {
-        return;
+      const res = await editProduct(parseInt(params?.id as string), formData);
+      if (res?.status === '200') {
+        setToastMessage('แก้ไขสินค้าสำเร็จ');
+        setOpenToast(true);
+
+        setTimeout(() => {
+          router.push(`/product/${params?.id}`);
+        }, 2000);
+      } else {
+        setOpenAlertDialog(true);
       }
     } catch (error) {
-      console.log(error);
-      return;
+      console.error(error);
+      setOpenAlertDialog(true);
     }
   };
 
@@ -117,10 +168,21 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="รหัสสินค้า"
+                        label="รหัสสินค้า"
                         variant="standard"
+                        focused
                         fullWidth
-                        sx={{ mb: 3, width: '70%' }}
+                        sx={{
+                          mb: 3,
+                          width: '70%',
+                        }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
                       />
                     )}
                   />
@@ -131,10 +193,21 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="ชื่อสินค้า"
+                        label="ชื่อสินค้า"
                         variant="standard"
+                        focused
                         fullWidth
-                        sx={{ mb: 3, width: '70%' }}
+                        sx={{
+                          mb: 3,
+                          width: '70%',
+                        }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
                       />
                     )}
                   />
@@ -145,10 +218,18 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="ผู้ผลิต"
+                        label="ผู้ผลิต"
                         variant="standard"
+                        focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
                       />
                     )}
                   />
@@ -159,8 +240,10 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="รายละเอียด"
+                        label="รายละเอียด"
                         variant="standard"
+                        color="warning"
+                        focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}
                       />
@@ -173,10 +256,18 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="หมวดหมู่"
+                        label="หมวดหมู่"
                         variant="standard"
+                        focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
                       />
                     )}
                   />
@@ -187,8 +278,10 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="ราคาขาย"
+                        label="ราคาขาย"
                         variant="standard"
+                        color="warning"
+                        focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}
                       />
@@ -201,10 +294,56 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="ราคาต้นทุน"
+                        label="ราคาต้นทุน"
                         variant="standard"
+                        color="warning"
+                        focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="amountS"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="จำนวนสินค้า S"
+                        variant="standard"
+                        focused
+                        fullWidth
+                        sx={{ mb: 3, width: '70%' }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="amountM"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="จำนวนสินค้า M"
+                        variant="standard"
+                        focused
+                        fullWidth
+                        sx={{ mb: 3, width: '70%' }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
                       />
                     )}
                   />
@@ -224,16 +363,60 @@ export default function ProductForm() {
                     {imageSrc && <img className={classes.centerImage} src={imageSrc} alt="Uploaded preview" />}
                   </Box>
 
+                  <Box
+                    sx={{
+                      justifyContent: 'center',
+                      display: 'flex',
+                      mt: 5,
+                      mb: 5,
+                    }}
+                  >
+                    <Button component="label" variant="outlined">
+                      Upload a file
+                      <VisuallyHiddenInput type="file" onChange={handleImageUpload} />
+                    </Button>
+                  </Box>
+
                   <Controller
-                    name="amountS"
+                    name="amountL"
                     control={control}
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        placeholder="จำนวนสินค้า"
+                        label="จำนวนสินค้า L"
                         variant="standard"
+                        focused
                         fullWidth
-                        sx={{ mb: 3, mt: 3, width: '70%' }}
+                        sx={{ mb: 3, width: '70%' }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="amountXL"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="จำนวนสินค้า XL"
+                        variant="standard"
+                        focused
+                        fullWidth
+                        sx={{ mb: 3, width: '70%' }}
+                        InputProps={{
+                          readOnly: true,
+                          disableUnderline: true,
+                        }}
+                        InputLabelProps={{
+                          style: { color: 'grey' },
+                        }}
                       />
                     )}
                   />
@@ -242,7 +425,6 @@ export default function ProductForm() {
               <Box
                 sx={{
                   display: 'flex',
-                  mt: 2,
                   width: '100%',
                   justifyContent: 'center',
                 }}
@@ -253,6 +435,13 @@ export default function ProductForm() {
               </Box>
             </Grid>
           </Grid>
+          <ToastSuccess
+            openToast={openToast}
+            handleCloseToast={handleCloseToast}
+            text={toastMessage}
+            showClose={true}
+          />
+          <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
         </Card>
       </Grid>
     </form>
