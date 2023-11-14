@@ -5,6 +5,7 @@ import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, Stack, TextField, Typography, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { editProduct, getDetailProducts } from '@services/apis/product';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -134,7 +135,7 @@ export default function ProductForm() {
 
         setTimeout(() => {
           router.push(`/product/${params?.id}`);
-        }, 2000);
+        }, 1000);
       } else {
         setOpenAlertDialog(true);
       }
@@ -148,8 +149,13 @@ export default function ProductForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
+          <Link href={`/product/${params?.id}`}>
+            <Button sx={{ mb: 2, mt: -1, color: 'red' }} color="primary" onClick={() => {}}>
+              ย้อนกลับ
+            </Button>
+          </Link>
           <Grid container>
-            <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+            <Typography sx={{ mb: 2, mt: -2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
             <Grid container className={classes.containerGray}>
               <Stack direction="row" sx={{ width: '100%' }}>
                 <Stack
@@ -429,7 +435,7 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
-                <Button variant="contained" type="submit" sx={{ mt: 2, width: 150 }}>
+                <Button variant="contained" type="submit" sx={{ width: 150, mt: -5 }}>
                   ยืนยัน
                 </Button>
               </Box>

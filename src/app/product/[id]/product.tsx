@@ -80,12 +80,19 @@ export default function ProductDetail() {
     <Grid container className={classes.bigContainer}>
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container justifyContent="space-between" alignItems="center">
-          <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+          <Grid item>
+            <Link href="/stock">
+              <Button sx={{ color: 'red' }} color="primary">
+                ย้อนกลับ
+              </Button>
+            </Link>
+            <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+          </Grid>
           <Grid item xs={12} container justifyContent="flex-end">
             <Link href={`/product/${params?.id}/edit`}>
-              <Button sx={{ mb: 2, mt: 1, color: 'red' }} color="primary" onClick={() => {}}>
+              <Button sx={{ mt: -4, color: 'red' }} color="primary" onClick={() => {}}>
                 แก้ไข
-              </Button>{' '}
+              </Button>
             </Link>
           </Grid>
         </Grid>
