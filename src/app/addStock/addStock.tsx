@@ -1,11 +1,13 @@
 'use client';
 
+import AlertDialog from '@components/alertDialog/alerConfirm';
+import ToastSuccess from '@components/toast';
 import { Button, Card, Grid } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
-import { getProducts } from '@services/apis/product';
+import { addStockProduct, getProducts } from '@services/apis/product';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Products, addStock, addStockRow } from '../../../typings/products';
@@ -18,12 +20,15 @@ const useStyles = makeStyles({
 });
 
 export default function AddStock() {
-  const classes = useStyles();
   const [rows, setRows] = useState<addStockRow[]>([]);
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
   const [products, setProducts] = useState<Products[]>([]);
   const form = useForm<addStock>({});
   const isMounted = useRef(false);
+  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openToast, setOpenToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [openDeleteConfirmDialog, setOpenDeleteConfirmDialog] = useState<boolean>(false);
   const columns: GridColDef[] = [
     {
       field: 'product_id',
@@ -98,6 +103,26 @@ export default function AddStock() {
     },
   ];
 
+  const handleOnCloseDialog = () => {
+    setOpenDeleteConfirmDialog(false);
+  };
+
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
+
+  const handleOpenDeleteConfirmDialog = () => {
+    setOpenDeleteConfirmDialog(true);
+  };
+
+  const handleDeleteConfirmed = () => {
+    const newRow = rows.filter(row => !rowSelectionModel.includes(row.product_id));
+    setRows(newRow);
+    setOpenDeleteConfirmDialog(false);
+    setOpenToast(true);
+    setToastMessage('ลบสินค้าสำเร็จ');
+  };
+
   const handleAddRow = useCallback(
     (search: addStock) => {
       const product = products.find(item => item.id === search.product_id);
@@ -129,40 +154,22 @@ export default function AddStock() {
 
   const handleConfirmClick = async () => {
     try {
-      const response = await fetch('/api/product-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-          rows.map(row => ({
-            product_id: row.product_id,
-            cost: row.cost,
-            sellPrice: row.sellPrice,
-            amountS: row.amountS,
-            amountM: row.amountM,
-            amountL: row.amountL,
-            amountXL: row.amountXL,
-          }))
-        ),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const res = await addStockProduct(rows);
+      if (res?.status !== '200') {
+        setOpenAlertDialog(true);
+        return;
       }
-
-      const result = await response.json();
-      console.log('Success:', result.message);
+      setOpenToast(true);
+      setToastMessage('เพิ่มสินค้าสำเร็จ');
     } catch (error) {
       console.error('Error:', error);
+      setOpenAlertDialog(true);
+      return;
+    } finally {
+      setRows([]);
+      setRowSelectionModel([]);
     }
   };
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<addStock>({});
 
   return (
     <form onSubmit={form.handleSubmit(handleAddRow)}>
@@ -278,7 +285,7 @@ export default function AddStock() {
 
           <Grid container spacing={2} sx={{ mt: 0.5 }}>
             <Grid item xs={6}>
-              <Button variant="text" onClick={handleDelete} sx={{ padding: '8px 30px', color: 'red' }}>
+              <Button variant="text" onClick={handleOpenDeleteConfirmDialog} sx={{ padding: '8px 30px', color: 'red' }}>
                 ลบสินค้า
               </Button>
             </Grid>
@@ -290,6 +297,19 @@ export default function AddStock() {
               </Grid>
             </Grid>
           </Grid>
+          <ToastSuccess
+            openToast={openToast}
+            handleCloseToast={handleCloseToast}
+            text={toastMessage}
+            showClose={true}
+          />
+          <AlertDialog
+            openAlertDialog={openDeleteConfirmDialog}
+            handleOnCloseDialog={() => setOpenDeleteConfirmDialog(false)}
+            onConfirm={handleDeleteConfirmed}
+            title="ยืนยันการลบ"
+            message="คุณต้องการลบสินค้าที่เลือกใช่หรือไม่?"
+          />
         </Card>
       </Grid>
     </form>

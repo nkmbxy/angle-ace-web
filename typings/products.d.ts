@@ -1,10 +1,20 @@
+export interface Manufacturer {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Products {
   id: number;
   code: string;
   name: string;
   type: string;
   pathImage: string;
-  amount: number;
+  amountS: number;
+  amountM: number;
+  amountL: number;
+  amountXL: number;
   detail: string;
   size: string;
   sellPrice: number;
@@ -12,6 +22,21 @@ export interface Products {
   manufacturer: Manufacturer;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ProductInput {
+  code: string;
+  name: string;
+  type: string;
+  amountS: number;
+  amountM: number;
+  amountL: number;
+  amountXL: number;
+  detail: string;
+  size: string;
+  sellPrice: number;
+  cost: number;
+  manufacturer: string;
 }
 
 export interface addStockRow {
@@ -45,7 +70,59 @@ export interface Stock {
   manufacturer?: string;
 }
 
-export interface Summary {
+export interface ProductCreateParams {
+  code: string;
+  name: string;
+  type: string;
+  manufacturer: string;
+  detail: string;
+  size: string;
+  sellPrice: number;
+  cost: number;
+}
+
+export interface ProductEditParams {
+  detail: string;
+  sellPrice: number;
+  cost: number;
+}
+
+export interface addStockParams {
+  product_id: number;
+  cost: number;
+  sellPrice: number;
+  amountS: number;
+  amountM: number;
+  amountL: number;
+  amountXL: number;
+}
+
+export interface SummaryParams {
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface SummaryProfit {
   date: string;
   profit: number;
+}
+
+export interface ProductUpdateParams {
+  detail?: string;
+  type?: string;
+  sellPrice?: number;
+  cost?: number;
+}
+
+export interface ProductFormData {
+  detail: string;
+  type: string;
+  sellPrice: number;
+  cost: number;
+}
+
+export interface ProductSearchParams {
+  name?: string;
+  type?: string;
+  manufacturer?: string;
 }

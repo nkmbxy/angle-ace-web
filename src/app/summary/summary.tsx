@@ -14,14 +14,13 @@ import {
   Typography,
   styled,
 } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import axios from 'axios';
+import { getProfitSummary } from '@services/apis/product';
 import { Dayjs } from 'dayjs';
-import { useState } from 'react';
-import { Summary } from '../../../typings/products';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { SummaryProfit } from '../../../typings/products';
 
 const useStyles = makeStyles({
   bigContainer: {
@@ -53,31 +52,51 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export function getProfitSummary(params: { startDate?: string; endDate?: string }): Promise<Summary[]> {
-  return axios.get<Summary[]>('/profit-summary', { params }).then(response => response.data);
-}
-
 export default function SummaryComponent() {
   const classes = useStyles();
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [summaryData, setSummaryData] = useState<Summary[]>([]);
+  const [summaryData, setSummaryData] = useState<SummaryProfit[]>([]);
+  const isMounted = useRef(false);
 
-  const fetchSummaryData = async () => {
+  const fetchSummaryData = useCallback(async () => {
     const formattedStartDate = startDate ? startDate.format('YYYY-MM-DD') : null;
     const formattedEndDate = endDate ? endDate.format('YYYY-MM-DD') : null;
 
     try {
-      const response = await getProfitSummary({
+      const res = await getProfitSummary({
         startDate: formattedStartDate?.toString(),
         endDate: formattedEndDate?.toString(),
       });
-
-      setSummaryData(response);
+      if (res?.status !== '200') {
+        return;
+      }
+      setSummaryData(res?.data);
     } catch (error) {
       console.error('Error fetching summary data:', error);
     }
-  };
+  }, [endDate, startDate]);
+
+  const handleGetSummaryData = useCallback(async () => {
+    try {
+      const res = await getProfitSummary({});
+      if (res?.status !== '200') {
+        return;
+      }
+      setSummaryData(res?.data);
+    } catch (error) {
+      console.error('Error fetching summary data:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted.current) {
+      handleGetSummaryData();
+    }
+    return () => {
+      isMounted.current = true;
+    };
+  }, [handleGetSummaryData]);
 
   const invoiceSubtotal = summaryData.reduce((sum, item) => sum + item.profit, 0);
 
@@ -89,7 +108,7 @@ export default function SummaryComponent() {
     <Grid container className={classes.bigContainer}>
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container>
-          <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>สรุปยอดขาย / กำไล</Typography>
+          <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>สรุปยอดขาย / กำไร</Typography>
         </Grid>
         <Grid container className={classes.containerGray}>
           <Grid
@@ -101,23 +120,13 @@ export default function SummaryComponent() {
           >
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="วันเริ่ม"
-                  value={startDate}
-                  onChange={setStartDate}
-                  render={params => <TextField {...params} />}
-                />
+                <DatePicker label="วันเริ่ม" value={startDate} onChange={setStartDate} />
               </LocalizationProvider>
             </Grid>
 
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="วันสุดท้าย"
-                  value={endDate}
-                  onChange={setEndDate}
-                  render={params => <TextField {...params} />}
-                />
+                <DatePicker label="วันสุดท้าย" value={endDate} onChange={setEndDate} />
               </LocalizationProvider>
             </Grid>
 
