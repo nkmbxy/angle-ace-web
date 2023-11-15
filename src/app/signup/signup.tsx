@@ -1,6 +1,6 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useState } from 'react';
@@ -19,6 +19,13 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh', // Adjust the height as needed
+  },
   paper: {
     padding: 2,
     maxWidth: 400,
@@ -27,10 +34,26 @@ const useStyles = makeStyles({
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 2,
+    gap: 20,
+    alignItems: 'center',
+    borderRadius: '15px',
+  },
+  input: {
+    maxWidth: '100%',
+    marginBottom: '5px',
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '30px',
+    border: 'none',
+    outline: 'none',
+    backgroundColor: '#EAE6E6',
+    width: '300px',
   },
   button: {
-    marginTop: 2,
+    marginTop: 1,
+  },
+  TextField: {
+    border: 'none',
   },
 });
 
@@ -82,13 +105,54 @@ export default function RegisterPage() {
 
   return (
     <form
+      className={classes.form}
       onSubmit={e => {
         e.preventDefault();
-        handleRegister();
+        /*handleLogin();*/
       }}
     >
-      <Typography sx={{ mb: 2, mt: 2, fontSize: '40px', fontWeight: 'bold', textAlign: 'center' }}>Sign up</Typography>
-      {/* ... existing JSX code */}
+      <Typography sx={{ mb: 1, mt: 4, fontSize: '40px', fontWeight: 'bold', textAlign: 'center' }}>Sign up</Typography>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        className={classes.input}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        className={classes.input}
+      />
+
+      <input
+        type="address"
+        placeholder="Address"
+        value={address}
+        onChange={e => setAddress(e.target.value)}
+        className={classes.input}
+      />
+
+      <input
+        type="tel"
+        placeholder="Phone number"
+        value={phoneNumber}
+        onChange={e => setPhoneNumber(e.target.value)}
+        className={classes.input}
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        sx={{ borderRadius: '20px', backgroundColor: '#64CCC5' }}
+      >
+        Confirm
+      </Button>
     </form>
   );
 }
