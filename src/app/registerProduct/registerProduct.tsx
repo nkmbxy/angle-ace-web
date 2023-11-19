@@ -28,14 +28,14 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    padding: '1rem',
   },
   containerGray: {
     borderStyle: 'solid',
-    borderWidth: 5,
+    borderWidth: '0.3rem',
     borderColor: '#9C9C9C',
-    padding: 20,
-    borderRadius: 10,
+    padding: '1rem',
+    borderRadius: '0.5rem',
   },
   centerEverything: {
     display: 'flex',
@@ -44,13 +44,13 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
   centerImageContainer: {
-    width: 300,
+    width: '100%',
     overflow: 'hidden',
-    height: 300,
+    height: 'auto',
   },
   centerImage: {
     width: '100%',
-    height: '100%',
+    height: 'auto',
     objectFit: 'cover',
   },
 });
@@ -217,7 +217,18 @@ export default function RegisterProduct() {
                     justifyContent: 'center',
                   }}
                 >
-                  <Button variant="contained" type="submit" sx={{ mt: 2, width: 150 }}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      mt: 2,
+                      width: 150,
+                      backgroundColor: '#ff8da3',
+                      '&:hover': {
+                        backgroundColor: '#ff496c',
+                      },
+                    }}
+                  >
                     ยืนยัน
                   </Button>
                 </Box>

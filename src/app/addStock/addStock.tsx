@@ -173,7 +173,7 @@ export default function AddStock() {
 
   return (
     <form onSubmit={form.handleSubmit(handleAddRow)}>
-      <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
         <Card
           sx={{
             padding: 4,
@@ -263,7 +263,17 @@ export default function AddStock() {
               />
             </Grid>
             <Grid item xs={2} sm={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Button variant="contained" type="submit" fullWidth>
+              <Button
+                variant="contained"
+                type="submit"
+                fullWidth
+                sx={{
+                  backgroundColor: '#F5DC5A',
+                  '&:hover': {
+                    backgroundColor: '#ffea80',
+                  },
+                }}
+              >
                 เพิ่ม
               </Button>
             </Grid>
@@ -291,7 +301,18 @@ export default function AddStock() {
             </Grid>
             <Grid container spacing={2} sx={{ mt: 1, display: 'flex', justifyContent: 'center' }}>
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2} sx={{ mt: -2 }}>
-                <Button variant="contained" onClick={handleConfirmClick} fullWidth sx={{ padding: '8px 30px' }}>
+                <Button
+                  variant="contained"
+                  onClick={handleConfirmClick}
+                  fullWidth
+                  sx={{
+                    padding: '8px 30px',
+                    backgroundColor: '#ff8da3',
+                    '&:hover': {
+                      backgroundColor: '#ff496c',
+                    },
+                  }}
+                >
                   ยืนยัน
                 </Button>
               </Grid>

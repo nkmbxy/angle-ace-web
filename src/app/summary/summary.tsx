@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    padding: '1rem',
   },
   containerGray: {
     borderStyle: 'solid',
@@ -108,7 +108,7 @@ export default function SummaryComponent() {
     <Grid container className={classes.bigContainer}>
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container>
-          <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>สรุปยอดขาย / กำไร</Typography>
+          <Typography sx={{ mb: 2, mt: -0.5, fontSize: '30px', fontWeight: 'bold' }}>สรุปยอดขาย / กำไร</Typography>
         </Grid>
         <Grid container className={classes.containerGray}>
           <Grid
@@ -131,7 +131,17 @@ export default function SummaryComponent() {
             </Grid>
 
             <Grid item xs={2} sm={1}>
-              <Button variant="contained" onClick={fetchSummaryData} fullWidth>
+              <Button
+                variant="contained"
+                onClick={fetchSummaryData}
+                fullWidth
+                sx={{
+                  backgroundColor: '#F5DC5A',
+                  '&:hover': {
+                    backgroundColor: '#ffea80',
+                  },
+                }}
+              >
                 ค้นหา
               </Button>
             </Grid>

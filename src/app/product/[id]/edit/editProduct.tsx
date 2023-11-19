@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    padding: '1rem',
   },
   containerGray: {
     borderStyle: 'solid',
@@ -100,8 +100,8 @@ export default function ProductForm() {
     setValue('code', res?.data?.code || '');
     setValue('name', res?.data?.name || '');
     setValue('manufacturer', res?.data?.manufacturer?.name || '');
-    setValue('detail', res?.data?.detail || '');
     setValue('type', res?.data?.type || '');
+    setValue('detail', res?.data?.detail || '');
     setValue('sellPrice', res?.data?.sellPrice || 0);
     setValue('cost', res?.data?.cost || 0);
     setValue('amountS', res?.data?.amountS || 0);
@@ -241,22 +241,6 @@ export default function ProductForm() {
                   />
 
                   <Controller
-                    name="detail"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="รายละเอียด"
-                        variant="standard"
-                        color="warning"
-                        focused
-                        fullWidth
-                        sx={{ mb: 3, width: '70%' }}
-                      />
-                    )}
-                  />
-
-                  <Controller
                     name="type"
                     control={control}
                     render={({ field }) => (
@@ -273,6 +257,27 @@ export default function ProductForm() {
                         }}
                         InputLabelProps={{
                           style: { color: 'grey' },
+                        }}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="detail"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="รายละเอียด"
+                        variant="standard"
+                        color="warning"
+                        multiline
+                        rows={4}
+                        focused
+                        fullWidth
+                        sx={{ mb: 3, width: '70%' }}
+                        InputLabelProps={{
+                          shrink: true,
                         }}
                       />
                     )}
@@ -435,7 +440,7 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
-                <Button variant="contained" type="submit" sx={{ width: 150, mt: -5 }}>
+                <Button variant="contained" type="submit" sx={{ width: 150, mt: -5, backgroundColor: '#ff8da3' }}>
                   ยืนยัน
                 </Button>
               </Box>
