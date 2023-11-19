@@ -1,9 +1,9 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const VisuallyHiddenInput = styled('input')({
@@ -18,34 +18,94 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+const loginInfo = async credentials => {
+  // Your login API call logic here
+  console.log('Login API call:', credentials);
+  return { status: '200' }; // Replace with the actual response from the API
+};
+
+const signupInfo = async userInfo => {
+  // Your signup API call logic here
+  console.log('Signup API call:', userInfo);
+  return { status: '200' }; // Replace with the actual response from the API
+};
+
 const useStyles = makeStyles({
-  paper: {
-    padding: 2,
-    maxWidth: 400,
-    margin: 'auto',
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+    padding: '20px 0px 20px 0px',
+    margin: 0,
+  },
+  pinkBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '350px',
+    borderRadius: '15px',
+    background: 'pink',
+    padding: '30px 0px 30px 0px',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 2,
+    alignItems: 'center',
+    gap: '20px',
+    width: '300px',
   },
-  button: {
-    marginTop: 2,
+  input: {
+    marginBottom: '5px',
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '30px',
+    border: 'none',
+    outline: 'none',
+    width: '300px',
+  },
+  outlinedInput: {
+    marginBottom: '5px',
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '30px',
+    border: 'none',
+    outline: 'none',
+    width: '300px',
+  },
+  loginButton: {
+    borderRadius: '100px',
+    background: '#64CCC5',
+    padding: '20px',
+    width: '150px',
+    height: '30px',
+    marginTop: '5px',
+  },
+  linkholder: {
+    marginTop: '5px',
+  },
+  checkboxContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    justifyContent: 'flex-start', // Align items to the left
+    width: '100%', // Adjust the width to occupy the entire space
+  },
+  checkboxInput: {
+    margin: '0px 5px 0px 0px',
   },
 });
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const classes = useStyles();
-  const [image, setImage] = useState<Blob | null>(null);
-  const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
-
+  const [isShown, setIsShown] = useState(false);
   // Add state for user registration data
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [address, setAddress] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
 
   const form = useForm({});
 
@@ -57,17 +117,15 @@ export default function RegisterPage() {
     setOpenToast(false);
   };
 
-  const handleRegister = useCallback(async () => {
+  const togglePassword = () => {
+    setIsShown(prevState => !prevState);
+  };
+
+  const handleLogin = async () => {
     try {
-      // Create a FormData object and append user registration data
-      var body = new FormData();
-      body.append('email', email);
-      body.append('password', password);
-      body.append('address', address);
-      body.append('phoneNumber', phoneNumber);
-      // Perform the registration
-      // Replace createProduct with your actual registration API endpoint
-      const res = await createInfo(body);
+      // Perform the login
+      // Replace createInfo with your actual login API endpoint
+      const res = await loginInfo({ email, password });
       if (res?.status !== '200') {
         setOpenAlertDialog(true);
         return;
@@ -78,17 +136,63 @@ export default function RegisterPage() {
       console.log(error);
       return;
     }
-  }, [email, password, address, phoneNumber]);
+  };
+
+  const handleSignup = async () => {
+    try {
+      // Perform the signup
+      // Replace createInfo with your actual signup API endpoint
+      const res = await signupInfo({ email, password });
+      if (res?.status !== '200') {
+        setOpenAlertDialog(true);
+        return;
+      }
+      setOpenToast(true);
+    } catch (error) {
+      setOpenAlertDialog(true);
+      console.log(error);
+      return;
+    }
+  };
 
   return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        handleRegister();
-      }}
-    >
-      <Typography sx={{ mb: 2, mt: 2, fontSize: '40px', fontWeight: 'bold', textAlign: 'center' }}>Sign up</Typography>
-      {/* ... existing JSX code */}
-    </form>
+    <Grid container className={classes.container}>
+      <div className={classes.pinkBox}>
+        <form
+          className={classes.form}
+          onSubmit={e => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
+          <Typography sx={{ mt: 1, fontSize: '40px', fontWeight: 'bold', textAlign: 'center' }}>Angel ACS</Typography>
+          <input
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className={classes.input}
+          />
+          <input type={isShown ? 'text' : 'password'} placeholder="Password" className={classes.input} />
+          <div className={classes.checkboxContainer}>
+            <input
+              id="checkbox"
+              type="checkbox"
+              checked={isShown}
+              onChange={togglePassword}
+              className={classes.checkboxInput}
+            />
+            <label htmlFor="checkbox"> Show password?</label>
+          </div>
+          <Button type="submit" variant="contained" color="primary" className={classes.loginButton}>
+            Login
+          </Button>
+          <Link href="signup" color="black" underline="hover">
+            {'Sign up'}
+          </Link>
+          {/* ... existing JSX code */}
+        </form>
+      </div>
+    </Grid>
   );
 }
