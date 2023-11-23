@@ -5,6 +5,7 @@ import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, Stack, TextField, Typography, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { editProduct, getDetailProducts } from '@services/apis/product';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    padding: '1rem',
   },
   containerGray: {
     borderStyle: 'solid',
@@ -99,8 +100,8 @@ export default function ProductForm() {
     setValue('code', res?.data?.code || '');
     setValue('name', res?.data?.name || '');
     setValue('manufacturer', res?.data?.manufacturer?.name || '');
-    setValue('detail', res?.data?.detail || '');
     setValue('type', res?.data?.type || '');
+    setValue('detail', res?.data?.detail || '');
     setValue('sellPrice', res?.data?.sellPrice || 0);
     setValue('cost', res?.data?.cost || 0);
     setValue('amountS', res?.data?.amountS || 0);
@@ -134,7 +135,7 @@ export default function ProductForm() {
 
         setTimeout(() => {
           router.push(`/product/${params?.id}`);
-        }, 2000);
+        }, 1000);
       } else {
         setOpenAlertDialog(true);
       }
@@ -148,8 +149,13 @@ export default function ProductForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
+          <Link href={`/product/${params?.id}`}>
+            <Button sx={{ mb: 2, mt: -1, color: 'red' }} color="primary" onClick={() => {}}>
+              ย้อนกลับ
+            </Button>
+          </Link>
           <Grid container>
-            <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+            <Typography sx={{ mb: 2, mt: -2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
             <Grid container className={classes.containerGray}>
               <Stack direction="row" sx={{ width: '100%' }}>
                 <Stack
@@ -235,22 +241,6 @@ export default function ProductForm() {
                   />
 
                   <Controller
-                    name="detail"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="รายละเอียด"
-                        variant="standard"
-                        color="warning"
-                        focused
-                        fullWidth
-                        sx={{ mb: 3, width: '70%' }}
-                      />
-                    )}
-                  />
-
-                  <Controller
                     name="type"
                     control={control}
                     render={({ field }) => (
@@ -267,6 +257,27 @@ export default function ProductForm() {
                         }}
                         InputLabelProps={{
                           style: { color: 'grey' },
+                        }}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="detail"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="รายละเอียด"
+                        variant="standard"
+                        color="warning"
+                        multiline
+                        rows={4}
+                        focused
+                        fullWidth
+                        sx={{ mb: 3, width: '70%' }}
+                        InputLabelProps={{
+                          shrink: true,
                         }}
                       />
                     )}
@@ -429,7 +440,7 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
-                <Button variant="contained" type="submit" sx={{ mt: 2, width: 150 }}>
+                <Button variant="contained" type="submit" sx={{ width: 150, mt: -5, backgroundColor: '#ff8da3' }}>
                   ยืนยัน
                 </Button>
               </Box>

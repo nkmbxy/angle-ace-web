@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    padding: '1rem',
   },
   containerGray: {
     borderStyle: 'solid',
@@ -57,8 +57,8 @@ export default function ProductDetail() {
     setValue('code', res?.data?.code || '');
     setValue('name', res?.data?.name || '');
     setValue('manufacturer', res?.data?.manufacturer?.name || '');
-    setValue('detail', res?.data?.detail || '');
     setValue('type', res?.data?.type || '');
+    setValue('detail', res?.data?.detail || '');
     setValue('sellPrice', res?.data?.sellPrice || 0);
     setValue('cost', res?.data?.cost || 0);
     setValue('amountS', res?.data?.amountS || 0);
@@ -80,12 +80,19 @@ export default function ProductDetail() {
     <Grid container className={classes.bigContainer}>
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container justifyContent="space-between" alignItems="center">
-          <Typography sx={{ mb: 2, mt: 2, fontSize: '25px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+          <Grid item>
+            <Link href="/stock">
+              <Button sx={{ color: 'red' }} color="primary">
+                ย้อนกลับ
+              </Button>
+            </Link>
+            <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+          </Grid>
           <Grid item xs={12} container justifyContent="flex-end">
             <Link href={`/product/${params?.id}/edit`}>
-              <Button sx={{ mb: 2, mt: 1, color: 'red' }} color="primary" onClick={() => {}}>
+              <Button sx={{ mt: -4, color: 'red' }} color="primary" onClick={() => {}}>
                 แก้ไข
-              </Button>{' '}
+              </Button>
             </Link>
           </Grid>
         </Grid>
@@ -169,28 +176,6 @@ export default function ProductDetail() {
               />
 
               <Controller
-                name="detail"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="รายละเอียด"
-                    variant="standard"
-                    focused
-                    fullWidth
-                    sx={{ mb: 3, width: '70%' }}
-                    InputProps={{
-                      readOnly: true,
-                      disableUnderline: true,
-                    }}
-                    InputLabelProps={{
-                      style: { color: 'grey' },
-                    }}
-                  />
-                )}
-              />
-
-              <Controller
                 name="type"
                 control={control}
                 render={({ field }) => (
@@ -207,6 +192,30 @@ export default function ProductDetail() {
                     }}
                     InputLabelProps={{
                       style: { color: 'grey' },
+                    }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="detail"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="รายละเอียด"
+                    variant="standard"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    sx={{ mb: 3, width: '70%' }}
+                    InputProps={{
+                      readOnly: true,
+                      disableUnderline: true,
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'grey' },
+                      shrink: true,
                     }}
                   />
                 )}
