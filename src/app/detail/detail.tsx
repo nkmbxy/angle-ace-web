@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogTitle, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useState } from 'react';
 
@@ -50,6 +40,13 @@ const useStyles = makeStyles({
   quantityControls: {
     display: 'flex',
     alignItems: 'center',
+  },
+  buttonPopup: {
+    color: 'white',
+    transition: 'background-color 0.3s ease',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    },
   },
 });
 
@@ -197,30 +194,34 @@ export default function ProductDetailPage() {
         >
           Order Now
         </Button>
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Confirm Order</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Are you sure you want to place the order?</DialogContentText>
-          </DialogContent>
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          PaperProps={{ style: { borderRadius: '20px', backgroundColor: 'lightpink' } }}
+        >
+          <DialogTitle style={{ color: 'white', fontSize: '30px' }}>ยืนยันการซื้อสินค้าใช่หรือไม่ ?</DialogTitle>
           <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              Cancel
+            <Button onClick={handleCloseDialog} style={{ color: 'white' }} className={classes.buttonPopup}>
+              ยกเลิก
             </Button>
-            <Button onClick={handleConfirmOrder} color="primary">
-              Confirm
+            <Button onClick={handleConfirmOrder} style={{ color: 'white' }} className={classes.buttonPopup}>
+              ยืนยัน
             </Button>
           </DialogActions>
         </Dialog>
         {/* Order Success Dialog */}
-        <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
-          <DialogTitle>Order Successful</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Your order has been placed successfully!</DialogContentText>
-          </DialogContent>
+        <Dialog
+          open={orderSuccess}
+          onClose={handleResetOrderStatus}
+          PaperProps={{ style: { borderRadius: '20px', backgroundColor: 'lightpink' } }}
+        >
+          <DialogTitle style={{ color: 'white', fontSize: '30px' }}>สั่งซื้อสินค้าสำเร็จ!</DialogTitle>
           <DialogActions>
-            <Button onClick={handleResetOrderStatus} color="primary">
-              OK
-            </Button>
+            <Grid container justifyContent="center">
+              <Button onClick={handleResetOrderStatus} style={{ color: 'white' }} className={classes.buttonPopup}>
+                OK
+              </Button>
+            </Grid>
           </DialogActions>
         </Dialog>
       </Grid>
@@ -234,7 +235,7 @@ export default function ProductDetailPage() {
             marginTop: '60px',
           }}
         >
-          รายระเอียดสินค้า
+          รายละเอียดสินค้า
           <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
         </Typography>
       </Grid>
