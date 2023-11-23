@@ -157,7 +157,7 @@ export default function LoginPage() {
 
   return (
     <Grid container className={classes.container}>
-      <div className={classes.pinkBox}>
+      <Grid className={classes.pinkBox}>
         <form
           className={classes.form}
           onSubmit={e => {
@@ -174,7 +174,7 @@ export default function LoginPage() {
             className={classes.input}
           />
           <input type={isShown ? 'text' : 'password'} placeholder="Password" className={classes.input} />
-          <div className={classes.checkboxContainer}>
+          <Grid className={classes.checkboxContainer}>
             <input
               id="checkbox"
               type="checkbox"
@@ -183,7 +183,7 @@ export default function LoginPage() {
               className={classes.checkboxInput}
             />
             <label htmlFor="checkbox"> Show password?</label>
-          </div>
+          </Grid>
           <Button type="submit" variant="contained" color="primary" className={classes.loginButton}>
             Login
           </Button>
@@ -192,7 +192,7 @@ export default function LoginPage() {
           </Link>
           {/* ... existing JSX code */}
         </form>
-      </div>
+      </Grid>
     </Grid>
   );
 }

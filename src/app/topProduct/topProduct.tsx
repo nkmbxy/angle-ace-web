@@ -91,7 +91,14 @@ const useStyles = makeStyles({
       transform: 'scale(1.05)', // Enlarge on hover
     },
   },
+  productImage: {
+    background: 'pink',
+    height: '70%',
+  },
   shortDetail: {
+    marginTop: '5%',
+  },
+  textDetail: {
     marginTop: '5px',
   },
 });
@@ -128,8 +135,8 @@ const TwoColumnGrid: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} md={2.5} className={classes.column1}>
-        <div className={classes.breadcrumbsContainer}>
-          <div role="presentation" onClick={handleClick}>
+        <Grid className={classes.breadcrumbsContainer}>
+          <Grid role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
               <Link underline="hover" color="inherit" href="/">
                 HOME
@@ -139,74 +146,89 @@ const TwoColumnGrid: React.FC = () => {
               </Link>
               <Typography color="text.primary">TOP</Typography>
             </Breadcrumbs>
-          </div>
-        </div>
-        <div className={classes.filterBox}>
+          </Grid>
+        </Grid>
+        <Grid className={classes.filterBox}>
           <Typography className={classes.text}>CLOTHING</Typography>
-          <div className={classes.categoriesBox}>
-            <div className={classes.categoriesLink}>
+          <Grid className={classes.categoriesBox}>
+            <Grid className={classes.categoriesLink}>
               <Link href="/topProduct" underline="none">
                 {'Top'}
               </Link>
-            </div>
-            <div className={classes.categoriesLink}>
+            </Grid>
+            <Grid className={classes.categoriesLink}>
               <Link href="/skirtProduct" underline="none">
                 {'Skirt'}
               </Link>
-            </div>
-            <div className={classes.categoriesLink}>
+            </Grid>
+            <Grid className={classes.categoriesLink}>
               <Link href="/pantsProduct" underline="none">
                 {'Pants'}
               </Link>
-            </div>
-            <div className={classes.categoriesLink}>
+            </Grid>
+            <Grid className={classes.categoriesLink}>
               <Link href="/allProduct" underline="none">
                 {'All'}
               </Link>
-            </div>
-          </div>
-          <div className={classes.priceBox}>
+            </Grid>
+          </Grid>
+          <Grid className={classes.priceBox}>
             <Typography className={classes.text}>PRICE</Typography>
-            <div className={classes.inputPrice}>
-              <div>
+            <Grid className={classes.inputPrice}>
+              <Grid>
                 <input
                   value={minPrice === '' ? '' : minPrice}
                   onChange={handleMinPriceChange}
                   className={classes.inputField}
                 />
-              </div>
+              </Grid>
               <Typography style={{ marginRight: 10, marginTop: 6 }}>-</Typography>
-              <div>
+              <Grid>
                 <input
                   value={maxPrice === '' ? '' : maxPrice}
                   onChange={handleMaxPriceChange}
                   className={classes.inputField}
                 />
-              </div>
-            </div>
-          </div>
-        </div>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
 
       <Grid item xs={6} md={9.5} className={classes.column2}>
         <Typography className={classes.title}>Top</Typography>
-        <div className={classes.selectProductPart}>
-          <div className={classes.boxProduct}>
-            <h2 className={classes.shortDetail}>Product name</h2>
-            <h3 className={classes.shortDetail}>Brand</h3>
-            <h3 className={classes.shortDetail}>Price</h3>
-          </div>
-          <div className={classes.boxProduct}>
-            <h2 className={classes.shortDetail}>Product name</h2>
-            <h3 className={classes.shortDetail}>Brand</h3>
-            <h3 className={classes.shortDetail}>Price</h3>
-          </div>
-          <div className={classes.boxProduct}>
-            <h2 className={classes.shortDetail}>Product name</h2>
-            <h3 className={classes.shortDetail}>Brand</h3>
-            <h3 className={classes.shortDetail}>Price</h3>
-          </div>
-        </div>
+        <Grid className={classes.selectProductPart}>
+          <Grid className={classes.boxProduct}>
+            <Grid className={classes.productImage}>
+              <h2>Product Image</h2>
+            </Grid>
+            <Grid className={classes.shortDetail}>
+              <h2 className={classes.textDetail}>Product name</h2>
+              <h3 className={classes.textDetail}>Brand</h3>
+              <h3 className={classes.textDetail}>Price</h3>
+            </Grid>
+          </Grid>
+          <Grid className={classes.boxProduct}>
+            <Grid className={classes.productImage}>
+              <h2>Product Image</h2>
+            </Grid>
+            <Grid className={classes.shortDetail}>
+              <h2 className={classes.textDetail}>Product name</h2>
+              <h3 className={classes.textDetail}>Brand</h3>
+              <h3 className={classes.textDetail}>Price</h3>
+            </Grid>
+          </Grid>
+          <Grid className={classes.boxProduct}>
+            <Grid className={classes.productImage}>
+              <h2>Product Image</h2>
+            </Grid>
+            <Grid className={classes.shortDetail}>
+              <h2 className={classes.textDetail}>Product name</h2>
+              <h3 className={classes.textDetail}>Brand</h3>
+              <h3 className={classes.textDetail}>Price</h3>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
