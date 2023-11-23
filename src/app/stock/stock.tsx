@@ -46,11 +46,13 @@ export default function StockComponent() {
 
   return (
     <form onSubmit={form.handleSubmit(handleSearchProducts)}>
-      <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
         <Card
           sx={{
-            padding: 3.5,
-            width: '70%',
+            padding: 3,
+            width: '100%',
+            maxWidth: '80%',
+            flexGrow: 1,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -100,59 +102,70 @@ export default function StockComponent() {
               </Grid>
 
               <Grid item xs={2} sm={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    backgroundColor: '#F5DC5A',
+                    '&:hover': {
+                      backgroundColor: '#ffea80',
+                    },
+                  }}
+                >
                   ค้นหา
                 </Button>
               </Grid>
             </Grid>
 
-            <Grid style={{ height: 500, width: '100%' }} sx={{ mt: '20px' }}>
-              <TableContainer component={Paper} sx={{ mt: '10px', height: 450 }}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="center">รหัสสินค้า</TableCell>
-                      <TableCell align="center">รายการสินค้า</TableCell>
-                      <TableCell align="center">ผู้ผลิต</TableCell>
-                      <TableCell align="center">หมวดหมู่</TableCell>
-                      <TableCell align="center">ราคาต้นทุน</TableCell>
-                      <TableCell align="center">ราคาขาย</TableCell>
-                      <TableCell align="center">จำนวนไซส์ S</TableCell>
-                      <TableCell align="center">จำนวนไซส์ M</TableCell>
-                      <TableCell align="center">จำนวนไซส์ L</TableCell>
-                      <TableCell align="center">จำนวนไซส์ XL</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {products.length > 0 ? (
-                      products.map((row, index) => (
-                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                          <Link href={`/product/${row.id}`}>
-                            <TableCell align="center" sx={{ color: 'red' }}>
-                              {row.code}
-                            </TableCell>
-                          </Link>
-                          <TableCell align="center">{row.name}</TableCell>
-                          <TableCell align="center">{row.manufacturer.name}</TableCell>
-                          <TableCell align="center">{row.type}</TableCell>
-                          <TableCell align="center">{row.cost}</TableCell>
-                          <TableCell align="center">{row.sellPrice}</TableCell>
-                          <TableCell align="center">{row.amountS}</TableCell>
-                          <TableCell align="center">{row.amountM}</TableCell>
-                          <TableCell align="center">{row.amountL}</TableCell>
-                          <TableCell align="center">{row.amountXL}</TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
+            <Grid style={{ width: '100%' }} sx={{ mt: '20px' }}>
+              <Grid style={{ overflowX: 'auto' }}>
+                <TableContainer component={Paper} sx={{ mt: '10px', height: 450 }}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
                       <TableRow>
-                        <TableCell colSpan={5} align="center">
-                          No rows
-                        </TableCell>
+                        <TableCell align="center">รหัสสินค้า</TableCell>
+                        <TableCell align="center">รายการสินค้า</TableCell>
+                        <TableCell align="center">ผู้ผลิต</TableCell>
+                        <TableCell align="center">หมวดหมู่</TableCell>
+                        <TableCell align="center">ราคาต้นทุน</TableCell>
+                        <TableCell align="center">ราคาขาย</TableCell>
+                        <TableCell align="center">จำนวนไซส์ S</TableCell>
+                        <TableCell align="center">จำนวนไซส์ M</TableCell>
+                        <TableCell align="center">จำนวนไซส์ L</TableCell>
+                        <TableCell align="center">จำนวนไซส์ XL</TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                      {products.length > 0 ? (
+                        products.map((row, index) => (
+                          <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <Link href={`/product/${row.id}`}>
+                              <TableCell align="center" sx={{ color: 'red' }}>
+                                {row.code}
+                              </TableCell>
+                            </Link>
+                            <TableCell align="center">{row.name}</TableCell>
+                            <TableCell align="center">{row.manufacturer.name}</TableCell>
+                            <TableCell align="center">{row.type}</TableCell>
+                            <TableCell align="center">{row.cost}</TableCell>
+                            <TableCell align="center">{row.sellPrice}</TableCell>
+                            <TableCell align="center">{row.amountS}</TableCell>
+                            <TableCell align="center">{row.amountM}</TableCell>
+                            <TableCell align="center">{row.amountL}</TableCell>
+                            <TableCell align="center">{row.amountXL}</TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={5} align="center">
+                            No rows
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
             </Grid>
           </Grid>
         </Card>
