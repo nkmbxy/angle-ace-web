@@ -106,9 +106,9 @@ export default function StockComponent() {
                   variant="contained"
                   type="submit"
                   sx={{
-                    backgroundColor: '#F5DC5A',
+                    backgroundColor: '#f7d769',
                     '&:hover': {
-                      backgroundColor: '#ffea80',
+                      backgroundColor: '#ffe55a',
                     },
                   }}
                 >
