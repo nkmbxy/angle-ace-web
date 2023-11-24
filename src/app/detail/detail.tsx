@@ -1,8 +1,16 @@
 'use client';
 
-import { Button, Dialog, DialogActions, DialogTitle, Divider, Grid, Typography } from '@mui/material';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useState } from 'react';
 
@@ -14,13 +22,6 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     padding: '20px',
     marginTop: '60px',
-  },
-  breadcrumbsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: '5px',
-    marginLeft: '5px',
-    alignItems: 'left',
   },
   productInfo: {
     marginLeft: '20px',
@@ -50,13 +51,6 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
   },
-  buttonPopup: {
-    color: 'white',
-    transition: 'background-color 0.3s ease',
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    },
-  },
 });
 
 export default function ProductDetailPage() {
@@ -68,11 +62,6 @@ export default function ProductDetailPage() {
   const [productPrice, setProductPrice] = useState('');
   const [productSize, setProductSize] = useState('');
   const [productQuantity, setProductQuantity] = useState(1);
-
-  function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-  }
 
   const [openDialog, setOpenDialog] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
@@ -116,26 +105,11 @@ export default function ProductDetailPage() {
     setSelectedSize(size);
   };
 
-  // create button
+  // สร้างปุ่มสำหรับแสดงขนาดสินค้าแต่ละไซส์
   const sizes = ['S', 'M', 'L', 'XL'];
 
   return (
     <Grid container direction="column" className={classes.container}>
-      <Grid item xs={3}>
-        <Grid className={classes.breadcrumbsContainer}>
-          <Grid role="presentation" onClick={handleClick}>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" color="inherit" href="/">
-                HOME
-              </Link>
-              <Link underline="hover" color="inherit" href="/material-ui/getting-started/installation/">
-                CLOTHING
-              </Link>
-              <Typography color="text.primary">TOP</Typography>
-            </Breadcrumbs>
-          </Grid>
-        </Grid>
-      </Grid>
       <Grid item xs={10} sm={3}>
         {/* Product Image */}
         <img src="/path/to/product/image.jpg" alt="Product" style={{ width: '100%', height: 'auto' }} />
@@ -194,16 +168,7 @@ export default function ProductDetailPage() {
               <Button
                 onClick={handleDecreaseQuantity}
                 variant="outlined"
-                style={{
-                  border: '1px solid lightpink',
-                  borderRadius: '50%',
-                  minWidth: '30px',
-                  width: '30px',
-                  height: '30px',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  color: 'black',
-                }}
+                style={{ borderColor: '#dadada', color: 'black' }}
               >
                 -
               </Button>
@@ -215,16 +180,7 @@ export default function ProductDetailPage() {
               <Button
                 onClick={handleIncreaseQuantity}
                 variant="outlined"
-                style={{
-                  border: '1px solid lightpink',
-                  borderRadius: '50%',
-                  minWidth: '30px',
-                  width: '30px',
-                  height: '30px',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  color: 'black',
-                }}
+                style={{ borderColor: '#dadada', color: 'black' }}
               >
                 +
               </Button>
@@ -241,34 +197,30 @@ export default function ProductDetailPage() {
         >
           Order Now
         </Button>
-        <Dialog
-          open={openDialog}
-          onClose={handleCloseDialog}
-          PaperProps={{ style: { borderRadius: '20px', backgroundColor: 'lightpink' } }}
-        >
-          <DialogTitle style={{ color: 'white', fontSize: '30px' }}>ยืนยันการซื้อสินค้าใช่หรือไม่ ?</DialogTitle>
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle>Confirm Order</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Are you sure you want to place the order?</DialogContentText>
+          </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog} style={{ color: 'white' }} className={classes.buttonPopup}>
-              ยกเลิก
+            <Button onClick={handleCloseDialog} color="primary">
+              Cancel
             </Button>
-            <Button onClick={handleConfirmOrder} style={{ color: 'white' }} className={classes.buttonPopup}>
-              ยืนยัน
+            <Button onClick={handleConfirmOrder} color="primary">
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>
         {/* Order Success Dialog */}
-        <Dialog
-          open={orderSuccess}
-          onClose={handleResetOrderStatus}
-          PaperProps={{ style: { borderRadius: '20px', backgroundColor: 'lightpink' } }}
-        >
-          <DialogTitle style={{ color: 'white', fontSize: '30px' }}>สั่งซื้อสินค้าสำเร็จ!</DialogTitle>
+        <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
+          <DialogTitle>Order Successful</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Your order has been placed successfully!</DialogContentText>
+          </DialogContent>
           <DialogActions>
-            <Grid container justifyContent="center">
-              <Button onClick={handleResetOrderStatus} style={{ color: 'white' }} className={classes.buttonPopup}>
-                OK
-              </Button>
-            </Grid>
+            <Button onClick={handleResetOrderStatus} color="primary">
+              OK
+            </Button>
           </DialogActions>
         </Dialog>
       </Grid>
@@ -282,7 +234,7 @@ export default function ProductDetailPage() {
             marginTop: '60px',
           }}
         >
-          รายละเอียดสินค้า
+          รายระเอียดสินค้า
           <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
         </Typography>
       </Grid>

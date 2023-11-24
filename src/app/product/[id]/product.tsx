@@ -81,27 +81,15 @@ export default function ProductDetail() {
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
-<<<<<<< HEAD
-            <Link href="/stock">
-              <Button sx={{ color: 'red' }} color="primary">
-                ย้อนกลับ
-              </Button>
-            </Link>
-=======
             <Grid container sx={{ mb: 2, mt: 1, color: 'red', fontSize: '16px' }}>
               <Link href="/stock">{'ย้อนกลับ'}</Link>
             </Grid>
 
->>>>>>> c534b6e1881293c5e32cb88aee880ef82c11c788
             <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
           </Grid>
           <Grid item xs={12} container justifyContent="flex-end">
             <Link href={`/product/${params?.id}/edit`}>
-<<<<<<< HEAD
-              <Button sx={{ mt: -4, color: 'red' }} color="primary" onClick={() => {}}>
-=======
               <Button sx={{ mt: -4, color: 'red', fontSize: '16px' }} color="primary" onClick={() => {}}>
->>>>>>> c534b6e1881293c5e32cb88aee880ef82c11c788
                 แก้ไข
               </Button>
             </Link>

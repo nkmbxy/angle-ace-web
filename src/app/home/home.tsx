@@ -53,7 +53,6 @@ const useStyles = makeStyles({
   },
   allButton: {
     borderRadius: '100px',
-    background: '#64CCC5',
     padding: '20px',
     width: '150px',
     height: '30px',
@@ -114,7 +113,18 @@ export default function HomePage() {
           </Grid>
         </Grid>
       </Grid>
-      <Button type="submit" variant="contained" color="primary" className={classes.allButton}>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={classes.allButton}
+        sx={{
+          backgroundColor: '#ff8da3',
+          '&:hover': {
+            backgroundColor: '#fd5f7d',
+          },
+        }}
+      >
         VIEW ALL
       </Button>
     </Grid>

@@ -225,11 +225,7 @@ export default function RegisterProduct() {
                       width: 150,
                       backgroundColor: '#ff8da3',
                       '&:hover': {
-<<<<<<< HEAD
-                        backgroundColor: '#ff496c',
-=======
                         backgroundColor: '#fd5f7d',
->>>>>>> c534b6e1881293c5e32cb88aee880ef82c11c788
                       },
                     }}
                   >
