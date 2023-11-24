@@ -1,6 +1,8 @@
 'use client';
 
 import { Button, Dialog, DialogActions, DialogTitle, Divider, Grid, Typography } from '@mui/material';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 import { makeStyles } from '@mui/styles';
 import { useCallback, useState } from 'react';
 
@@ -12,6 +14,13 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     padding: '20px',
     marginTop: '60px',
+  },
+  breadcrumbsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: '5px',
+    marginLeft: '5px',
+    alignItems: 'left',
   },
   productInfo: {
     marginLeft: '20px',
@@ -60,6 +69,11 @@ export default function ProductDetailPage() {
   const [productSize, setProductSize] = useState('');
   const [productQuantity, setProductQuantity] = useState(1);
 
+  function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    event.preventDefault();
+    console.info('You clicked a breadcrumb.');
+  }
+
   const [openDialog, setOpenDialog] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
@@ -102,11 +116,26 @@ export default function ProductDetailPage() {
     setSelectedSize(size);
   };
 
-  // สร้างปุ่มสำหรับแสดงขนาดสินค้าแต่ละไซส์
+  // create button
   const sizes = ['S', 'M', 'L', 'XL'];
 
   return (
     <Grid container direction="column" className={classes.container}>
+      <Grid item xs={3}>
+        <Grid className={classes.breadcrumbsContainer}>
+          <Grid role="presentation" onClick={handleClick}>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link underline="hover" color="inherit" href="/">
+                HOME
+              </Link>
+              <Link underline="hover" color="inherit" href="/material-ui/getting-started/installation/">
+                CLOTHING
+              </Link>
+              <Typography color="text.primary">TOP</Typography>
+            </Breadcrumbs>
+          </Grid>
+        </Grid>
+      </Grid>
       <Grid item xs={10} sm={3}>
         {/* Product Image */}
         <img src="/path/to/product/image.jpg" alt="Product" style={{ width: '100%', height: 'auto' }} />
@@ -165,7 +194,16 @@ export default function ProductDetailPage() {
               <Button
                 onClick={handleDecreaseQuantity}
                 variant="outlined"
-                style={{ borderColor: '#dadada', color: 'black' }}
+                style={{
+                  border: '1px solid lightpink',
+                  borderRadius: '50%',
+                  minWidth: '30px',
+                  width: '30px',
+                  height: '30px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  color: 'black',
+                }}
               >
                 -
               </Button>
@@ -177,7 +215,16 @@ export default function ProductDetailPage() {
               <Button
                 onClick={handleIncreaseQuantity}
                 variant="outlined"
-                style={{ borderColor: '#dadada', color: 'black' }}
+                style={{
+                  border: '1px solid lightpink',
+                  borderRadius: '50%',
+                  minWidth: '30px',
+                  width: '30px',
+                  height: '30px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  color: 'black',
+                }}
               >
                 +
               </Button>
