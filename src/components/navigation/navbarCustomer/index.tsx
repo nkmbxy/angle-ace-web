@@ -1,10 +1,9 @@
 import AdbIcon from '@mui/icons-material/Adb';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Grid } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,14 +12,21 @@ import Link from 'next/link';
 import * as React from 'react';
 
 const menuNav = [
-  { name: 'สรุปยอดขาย', path: '/summary' },
-  { name: 'คลังสินค้า', path: '/stock' },
-  { name: 'สั่งของเพิ่ม', path: '/addStock' },
-  { name: 'ลงทะเบียนสินค้าใหม่', path: '/registerProduct' },
+  { name: 'HOME', path: '/home' },
+  { name: 'clothing', path: '/clothing', dropdown: true },
+  { name: 'about us', path: '/aboutUs' },
+];
+
+const clothingOptions = [
+  { name: 'Top', path: '/top' },
+  { name: 'Skirt', path: '/skirt' },
+  { name: 'Pants', path: '/pants' },
+  { name: 'All', path: '/allClothing' },
 ];
 
 function NavbarCustomer() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElClothing, setAnchorElClothing] = React.useState<null | HTMLElement>(null);
   const [activeLink, setActiveLink] = React.useState<string>('');
 
   console.log(activeLink);
@@ -31,6 +37,14 @@ function NavbarCustomer() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleOpenClothingMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElClothing(event.currentTarget);
+  };
+
+  const handleCloseClothingMenu = () => {
+    setAnchorElClothing(null);
   };
 
   return (
@@ -56,43 +70,72 @@ function NavbarCustomer() {
             Angle Ace
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {menuNav.map(item => (
-                <Link onClick={() => setActiveLink(item.name)} href={item.path} key={item.name}>
-                  <MenuItem key={item.name} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{item.name}</Typography>
-                  </MenuItem>
-                </Link>
-              ))}
-            </Menu>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {menuNav.map(item => {
+              if (item.dropdown) {
+                return (
+                  <Grid key={item.name}>
+                    <Button
+                      sx={{ mr: 1, color: 'white', borderRadius: 0 }}
+                      aria-controls="menu-clothing"
+                      aria-haspopup="true"
+                      onClick={handleOpenClothingMenu}
+                    >
+                      {item.name}
+                    </Button>
+                    <Menu
+                      id="menu-clothing"
+                      anchorEl={anchorElClothing}
+                      keepMounted
+                      open={Boolean(anchorElClothing)}
+                      onClose={handleCloseClothingMenu}
+                      sx={{
+                        '& .MuiPaper-root': {
+                          bgcolor: '#ffe99f',
+                        },
+                      }}
+                    >
+                      {clothingOptions.map(option => (
+                        <Link href={option.path} key={option.name}>
+                          <MenuItem onClick={handleCloseClothingMenu}>
+                            <Typography textAlign="center">{option.name}</Typography>
+                          </MenuItem>
+                        </Link>
+                      ))}
+                    </Menu>
+                  </Grid>
+                );
+              } else {
+                return (
+                  <Link
+                    onClick={() => {
+                      handleCloseNavMenu();
+                      setActiveLink(item.name);
+                    }}
+                    href={item.path}
+                    key={item.name}
+                  >
+                    <Button
+                      sx={{
+                        mr: 1,
+                        color: 'white',
+                        borderRadius: 0,
+                        '&:hover': {
+                          borderBottomWidth: 1,
+                          borderBottomStyle: 'solid',
+                        },
+                        ...(activeLink === item.name && {
+                          borderBottomWidth: 1,
+                          borderBottomStyle: 'solid',
+                        }),
+                      }}
+                    >
+                      {item.name}
+                    </Button>
+                  </Link>
+                );
+              }
+            })}
           </Box>
 
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -114,37 +157,6 @@ function NavbarCustomer() {
           >
             LOGO
           </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {menuNav.map(item => (
-              <Link
-                onClick={() => {
-                  handleCloseNavMenu();
-                  setActiveLink(item.name);
-                }}
-                href={item.path}
-                key={item.name}
-              >
-                <Button
-                  sx={{
-                    mr: 1,
-                    color: 'white',
-                    borderRadius: 0,
-                    '&:hover': {
-                      borderBottomWidth: 1,
-                      borderBottomStyle: 'solid',
-                    },
-                    ...(activeLink === item.name && {
-                      borderBottomWidth: 1,
-                      borderBottomStyle: 'solid',
-                    }),
-                  }}
-                >
-                  {item.name}
-                </Button>
-              </Link>
-            ))}
-          </Box>
 
           <Box
             sx={{
