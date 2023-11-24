@@ -149,10 +149,18 @@ export default function ProductForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
+<<<<<<< HEAD
+          <Link href={`/product/${params?.id}`}>
+            <Button sx={{ mb: 2, mt: -1, color: 'red' }} color="primary" onClick={() => {}}>
+              ย้อนกลับ
+            </Button>
+          </Link>
+=======
           <Grid container sx={{ mb: 3, mt: 1, color: 'red', fontSize: '16px' }}>
             <Link href={`/product/${params?.id}`}>{'ย้อนกลับ'}</Link>
           </Grid>
 
+>>>>>>> c534b6e1881293c5e32cb88aee880ef82c11c788
           <Grid container>
             <Typography sx={{ mb: 2, mt: -2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
             <Grid container className={classes.containerGray}>
@@ -439,6 +447,9 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
+<<<<<<< HEAD
+                <Button variant="contained" type="submit" sx={{ width: 150, mt: -5, backgroundColor: '#ff8da3' }}>
+=======
                 <Button
                   variant="contained"
                   type="submit"
@@ -451,6 +462,7 @@ export default function ProductForm() {
                     },
                   }}
                 >
+>>>>>>> c534b6e1881293c5e32cb88aee880ef82c11c788
                   ยืนยัน
                 </Button>
               </Box>
