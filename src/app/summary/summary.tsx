@@ -136,9 +136,15 @@ export default function SummaryComponent() {
                 onClick={fetchSummaryData}
                 fullWidth
                 sx={{
+<<<<<<< HEAD
                   backgroundColor: '#F5DC5A',
                   '&:hover': {
                     backgroundColor: '#ffea80',
+=======
+                  backgroundColor: '#f7d769',
+                  '&:hover': {
+                    backgroundColor: '#ffe55a',
+>>>>>>> c534b6e1881293c5e32cb88aee880ef82c11c788
                   },
                 }}
               >
