@@ -268,9 +268,9 @@ export default function AddStock() {
                 type="submit"
                 fullWidth
                 sx={{
-                  backgroundColor: '#f7d769',
+                  backgroundColor: '#F5DC5A',
                   '&:hover': {
-                    backgroundColor: '#ffe55a',
+                    backgroundColor: '#ffea80',
                   },
                 }}
               >
