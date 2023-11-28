@@ -1,6 +1,6 @@
 'use client';
 
-import NavbarCustomer from './navbarCustomer';
+import NavbarCustomer from './navbar';
 
 const Navigation = () => {
   return <NavbarCustomer />;

@@ -1,3 +1,4 @@
+'use client';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
@@ -42,7 +43,6 @@ function Navbar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -154,21 +154,7 @@ function Navbar() {
               border: 1,
             }}
           >
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              Logout
-            </Typography>
+            <Link href="/login">Login</Link>
           </Box>
         </Toolbar>
       </Container>
