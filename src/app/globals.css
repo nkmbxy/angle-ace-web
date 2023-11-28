@@ -5,6 +5,9 @@
   font-style: normal;
   font-weight: normal;
 }
+#__next {
+  height: 100%;
+}
 
 * {
   box-sizing: border-box;

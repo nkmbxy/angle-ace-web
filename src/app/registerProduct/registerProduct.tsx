@@ -23,7 +23,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(() => ({
   bigContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
     height: 'auto',
     objectFit: 'cover',
   },
-});
+}));
 
 export default function RegisterProduct() {
   const classes = useStyles();
@@ -129,7 +129,7 @@ export default function RegisterProduct() {
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
           <Grid container>
-            <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+            <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>About</Typography>
 
             <Grid container className={classes.containerGray}>
               <Stack direction="column" sx={{ width: '100%' }}>

@@ -14,7 +14,6 @@ apiInstances.interceptors.request.use(
     } else {
       config.headers.set('Content-Type', 'application/json;charset=UTF-8');
     }
-    config.headers.set('platform', 'WEB');
     return config;
   },
   (error: AxiosError) => {
@@ -59,22 +58,3 @@ export async function post<T = any>(
   const res = await apiInstances.post<Response<T>>(url, data, config);
   return res.data;
 }
-
-export async function remove<T = any>(url: string, config?: AxiosRequestConfig<any> | undefined): Promise<Response<T>> {
-  const res = await apiInstances.delete<Response<T>>(url, config);
-  return res.data;
-}
-
-export async function patch<T = any>(
-  url: string,
-  data?: any,
-  config?: AxiosRequestConfig<any> | undefined
-): Promise<Response<T>> {
-  const res = await apiInstances.patch<Response<T>>(url, data, config);
-  return res.data;
-}
-
-export const getStatusCode = (error: unknown): string => {
-  const err = error as AxiosError;
-  return err?.response?.status ? `${err.response.status}` : '';
-};
