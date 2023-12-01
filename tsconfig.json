@@ -18,13 +18,12 @@
     "incremental": true,
     "paths": {
       "@components/*": ["components/*"],
-      "@configs/*": ["configs/*"],
       "@contexts/*": ["contexts/*"],
       "@constant/*": ["constant/*"],
       "@constant": ["constant/index"],
       "@utils/*": ["utils/*"],
-      "@theme/*": ["theme/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@theme/*": ["theme/*"]
     },
     "plugins": [
       {

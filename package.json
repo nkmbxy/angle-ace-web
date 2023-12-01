@@ -14,8 +14,8 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.16",
-    "@mui/styles": "^5.14.16",
+    "@mui/material": "^5.14.18",
+    "@mui/styles": "^5.14.18",
     "@mui/x-data-grid": "^6.18.0",
     "@mui/x-date-pickers": "^6.18.1",
     "@next/eslint-plugin-next": "^13.5.3",
@@ -33,7 +33,7 @@
     "i18next-http-backend": "^2.2.2",
     "lucide-react": "^0.279.0",
     "million": "^2.6.1",
-    "next": "^13.5.3",
+    "next": "^14.0.3",
     "nextjs-toploader": "^1.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,6 +43,7 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.3.0",
     "react-router-dom": "^6.19.0",
+    "styled-components": "^6.1.1",
     "typescript": "^5.2.2"
   },
   "devDependencies": {

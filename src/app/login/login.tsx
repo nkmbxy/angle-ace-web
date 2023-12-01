@@ -1,34 +1,9 @@
 'use client';
 
 import { Button, Grid, Link, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
-
-const loginInfo = async credentials => {
-  // Your login API call logic here
-  console.log('Login API call:', credentials);
-  return { status: '200' }; // Replace with the actual response from the API
-};
-
-const signupInfo = async userInfo => {
-  // Your signup API call logic here
-  console.log('Signup API call:', userInfo);
-  return { status: '200' }; // Replace with the actual response from the API
-};
 
 const useStyles = makeStyles({
   container: {
