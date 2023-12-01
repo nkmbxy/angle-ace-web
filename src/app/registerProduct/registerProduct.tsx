@@ -34,12 +34,12 @@ const useStyles = makeStyles(() => ({
     borderStyle: 'solid',
     borderWidth: '0.3rem',
     borderColor: '#9C9C9C',
-    padding: '1rem',
+    padding: '20px',
     borderRadius: '0.5rem',
   },
   centerEverything: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -129,15 +129,15 @@ export default function RegisterProduct() {
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
           <Grid container>
-            <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>About</Typography>
+            <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
 
             <Grid container className={classes.containerGray}>
               <Stack direction="column" sx={{ width: '100%' }}>
-                <Stack direction="row" sx={{ width: '100%' }}>
+                <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
                   <Stack
                     direction="column"
                     sx={{
-                      width: '50%',
+                      width: '55%',
                       mb: 4,
                       mt: 2,
                       justifyContent: 'center',
@@ -188,7 +188,7 @@ export default function RegisterProduct() {
                     />
                   </Stack>
 
-                  <Stack direction="column" sx={{ width: '50%', mt: 2 }} className={classes.centerEverything}>
+                  <Stack direction="column" sx={{ width: '45%', mt: 20 }} className={classes.centerEverything}>
                     <Box className={classes.centerImageContainer}>
                       {imageSrc && <img className={classes.centerImage} src={imageSrc} alt="Uploaded preview" />}
                     </Box>
@@ -197,8 +197,8 @@ export default function RegisterProduct() {
                       sx={{
                         justifyContent: 'center',
                         display: 'flex',
-                        mt: 5,
-                        mb: 5,
+                        mt: 3,
+                        mb: 2,
                       }}
                     >
                       <Button component="label" variant="outlined">
@@ -221,7 +221,7 @@ export default function RegisterProduct() {
                     variant="contained"
                     type="submit"
                     sx={{
-                      mt: 2,
+                      mt: 1,
                       width: 150,
                       backgroundColor: '#ff8da3',
                       '&:hover': {
