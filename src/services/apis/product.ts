@@ -9,6 +9,10 @@ export function getDetailProducts(id: number): Promise<Response<Products>> {
   return get<Products>(`/product/${id}`);
 }
 
+export function getDetailCustomer(id: number): Promise<Response<Products>> {
+  return get<Products>(`/product/${id}`);
+}
+
 export function editProduct(id: number, params: FormData): Promise<Response<string>> {
   return post<string>(`/product/${id}`, params);
 }

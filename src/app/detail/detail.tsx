@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -12,7 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useCallback, useState } from 'react';
+import { getDetailCustomer } from '@services/apis/product';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { ProductInput, Products } from '../../../typings/products';
 
 const useStyles = makeStyles({
   container: {
@@ -55,16 +60,15 @@ const useStyles = makeStyles({
 
 export default function ProductDetailPage() {
   const classes = useStyles();
-
-  // Add state for product details
-  const [productName, setProductName] = useState('');
-  const [productId, setProductId] = useState('');
-  const [productPrice, setProductPrice] = useState('');
-  const [productSize, setProductSize] = useState('');
   const [productQuantity, setProductQuantity] = useState(1);
-
+  const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
+  const { control, setValue } = useForm<ProductInput>();
+  const params = useParams();
+  const isMounted = useRef(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const productId = params?.id;
+  const [productDetails, setProductDetails] = useState<Products | null>(null);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -94,42 +98,96 @@ export default function ProductDetailPage() {
   };
 
   const handleResetOrderStatus = () => {
+    setValue('name', '');
+    setValue('code', '');
+    setValue('sellPrice', 0);
+    setProductQuantity(1);
+    setSelectedSize('');
     setOrderSuccess(false);
   };
 
-  // เพิ่ม state สำหรับเก็บข้อมูลขนาดสินค้าที่ถูกเลือก
   const [selectedSize, setSelectedSize] = useState('');
 
-  // Function เมื่อมีการเลือกขนาดสินค้า
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size);
   };
 
-  // สร้างปุ่มสำหรับแสดงขนาดสินค้าแต่ละไซส์
   const sizes = ['S', 'M', 'L', 'XL'];
+
+  const handleGetDetailProducts = useCallback(async () => {
+    try {
+      console.log('Fetching product with ID:', params?.id);
+      const productId = parseInt(params?.id || '0');
+      console.log('Parsed product ID:', productId);
+
+      if (isNaN(productId) || productId === 0) {
+        console.error('Invalid or missing product ID');
+        return;
+      }
+
+      const res = await getDetailCustomer(productId);
+      console.log('API response:', res);
+
+      if (!res?.data) {
+        console.error('No data received from API');
+        return;
+      }
+
+      setProductDetails(res.data);
+      console.log('Product details set:', res.data);
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    }
+  }, [params?.id]);
+
+  useEffect(() => {
+    if (!isMounted.current) {
+      handleGetDetailProducts();
+    }
+    return () => {
+      isMounted.current = true;
+    };
+  }, [handleGetDetailProducts]);
 
   return (
     <Grid container direction="column" className={classes.container}>
-      <Grid item xs={10} sm={3}>
-        {/* Product Image */}
-        <img src="/path/to/product/image.jpg" alt="Product" style={{ width: '100%', height: 'auto' }} />
+      <Grid item xs={10} sm={3} sx={{ width: '100%', height: 'auto' }}>
+        <Box>{imageSrc && <img src={imageSrc} alt="Uploaded preview" />}</Box>
       </Grid>
-      {/* Product Details */}
+
       <Grid className={classes.form}>
-        <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-          Brand name / Product name {productName}
-        </Typography>
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+              Product name: {productDetails?.name}
+            </Typography>
+          )}
+        />
 
-        <Typography variant="subtitle1" align="left" gutterBottom>
-          cs000123 {productId}
-        </Typography>
+        <Controller
+          name="code"
+          control={control}
+          render={({ field }) => (
+            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+              Product ID: {productDetails?.code}
+            </Typography>
+          )}
+        />
 
-        <Typography variant="subtitle1" align="left" gutterBottom>
-          1234 thb{productPrice}
-        </Typography>
+        <Controller
+          name="sellPrice"
+          control={control}
+          render={({ field }) => (
+            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+              Price: {productDetails?.sellPrice}
+            </Typography>
+          )}
+        />
 
         <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
-          ไซส์
+          SIZE
         </Typography>
 
         <Grid container spacing={1}>
@@ -158,10 +216,9 @@ export default function ProductDetailPage() {
           ))}
         </Grid>
 
-        {/* Quantity Input */}
         <Grid container className={classes.quantityContainer}>
           <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
-            จำนวนสินค้า
+            QUANTITY
           </Typography>
           <Grid item container alignItems="center" spacing={1} className={classes.quantityControls}>
             <Grid item>
@@ -188,7 +245,6 @@ export default function ProductDetailPage() {
           </Grid>
         </Grid>
 
-        {/* Order Button */}
         <Button
           onClick={handleOrder}
           variant="contained"
@@ -211,7 +267,7 @@ export default function ProductDetailPage() {
             </Button>
           </DialogActions>
         </Dialog>
-        {/* Order Success Dialog */}
+
         <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
           <DialogTitle>Order Successful</DialogTitle>
           <DialogContent>
@@ -224,19 +280,21 @@ export default function ProductDetailPage() {
           </DialogActions>
         </Dialog>
       </Grid>
-      <Grid item style={{ width: '80%' }}>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          style={{
-            padding: '0 5px',
-            fontWeight: 'bold',
-            marginTop: '60px',
-          }}
-        >
-          รายระเอียดสินค้า
-          <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
-        </Typography>
+
+      <Grid
+        item
+        sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
+        <Controller
+          name="detail"
+          control={control}
+          render={({ field }) => (
+            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+              DESCRIPTION: {productDetails?.detail}
+            </Typography>
+          )}
+        />
       </Grid>
     </Grid>
   );
