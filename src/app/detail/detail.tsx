@@ -36,12 +36,7 @@ const useStyles = makeStyles({
     maxWidth: '300px',
     maxHeight: '300px',
     borderRadius: '10px',
-  },
-  orderButton: {
-    marginTop: '10px',
-  },
-  button: {
-    marginTop: '20px',
+    marginBottom: '10px',
   },
   quantityContainer: {
     display: 'flex',
@@ -116,29 +111,22 @@ export default function ProductDetailPage() {
 
   const handleGetDetailProducts = useCallback(async () => {
     try {
-      console.log('Fetching product with ID:', params?.id);
-      const productId = parseInt(params?.id || '0');
-      console.log('Parsed product ID:', productId);
+      const productId = parseInt(params?.id as string);
+      if (!isNaN(productId)) {
+        const res = await getDetailCustomer(productId);
 
-      if (isNaN(productId) || productId === 0) {
-        console.error('Invalid or missing product ID');
-        return;
+        setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
+        setValue('name', res?.data?.name || '');
+        setValue('code', res?.data?.code || '');
+        setValue('sellPrice', res?.data?.sellPrice || 0);
+        setValue('detail', res?.data?.detail || '');
+      } else {
+        console.error('Invalid product ID');
       }
-
-      const res = await getDetailCustomer(productId);
-      console.log('API response:', res);
-
-      if (!res?.data) {
-        console.error('No data received from API');
-        return;
-      }
-
-      setProductDetails(res.data);
-      console.log('Product details set:', res.data);
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
-  }, [params?.id]);
+  }, [params?.id, setValue]);
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -150,77 +138,94 @@ export default function ProductDetailPage() {
   }, [handleGetDetailProducts]);
 
   return (
-    <Grid container direction="column" className={classes.container}>
-      <Grid item sx={{ width: '20%' }}>
-        <Box>{imageSrc && <img src={imageSrc} alt="Uploaded preview" />}</Box>
-      </Grid>
-
-      <Grid className={classes.form}>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-              Product name: {productDetails?.name}
-            </Typography>
-          )}
-        />
-
-        <Controller
-          name="code"
-          control={control}
-          render={({ field }) => (
-            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-              Product ID: {productDetails?.code}
-            </Typography>
-          )}
-        />
-
-        <Controller
-          name="sellPrice"
-          control={control}
-          render={({ field }) => (
-            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-              Price: {productDetails?.sellPrice}
-            </Typography>
-          )}
-        />
-
-        <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
-          SIZE
-        </Typography>
-
-        <Grid container spacing={1}>
-          {sizes.map(size => (
-            <Grid item key={size}>
-              <Button
-                variant="contained"
-                color={selectedSize === size ? 'primary' : 'inherit'}
-                onClick={() => handleSizeSelect(size)}
-                style={{
-                  border: `1px solid ${selectedSize === size ? '#dadada' : 'lightpink'}`,
-                  borderRadius: '50%',
-                  minWidth: '30px',
-                  width: '30px',
-                  height: '30px',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  color: selectedSize === size ? 'white' : 'black',
-                  backgroundColor: selectedSize === size ? 'lightpink' : 'transparent',
-                  boxShadow: 'none',
-                }}
-              >
-                {size}
-              </Button>
-            </Grid>
-          ))}
+    <Grid container spacing={1} className={classes.container} alignItems="flex-start">
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        spacing={4}
+        container
+        direction="row"
+        justifyContent="center"
+        sx={{ marginTop: '15px' }}
+      >
+        <Grid item xs={10} sm={6}>
+          <Box>
+            {imageSrc && (
+              <img
+                src={imageSrc}
+                alt="Product Image"
+                style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+              />
+            )}
+          </Box>
         </Grid>
 
-        <Grid container className={classes.quantityContainer}>
-          <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
+        <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+                Product name: {productDetails?.name}
+              </Typography>
+            )}
+          />
+
+          <Controller
+            name="code"
+            control={control}
+            render={({ field }) => (
+              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+                Product ID: {productDetails?.code}
+              </Typography>
+            )}
+          />
+
+          <Controller
+            name="sellPrice"
+            control={control}
+            render={({ field }) => (
+              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+                Price: {productDetails?.sellPrice}
+              </Typography>
+            )}
+          />
+
+          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
+            SIZE
+          </Typography>
+
+          <Grid container spacing={1}>
+            {sizes.map(size => (
+              <Grid item key={size}>
+                <Button
+                  variant="contained"
+                  color={selectedSize === size ? 'primary' : 'inherit'}
+                  onClick={() => handleSizeSelect(size)}
+                  style={{
+                    border: `1px solid ${selectedSize === size ? '#dadada' : 'lightpink'}`,
+                    borderRadius: '50%',
+                    minWidth: '30px',
+                    width: '30px',
+                    height: '30px',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    color: selectedSize === size ? 'white' : 'black',
+                    backgroundColor: selectedSize === size ? 'lightpink' : 'transparent',
+                    boxShadow: 'none',
+                  }}
+                >
+                  {size}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+
+          <Typography variant="subtitle1" align="left" style={{ fontWeight: 'bold', marginTop: '20px' }}>
             QUANTITY
           </Typography>
-          <Grid item container alignItems="center" spacing={1} className={classes.quantityControls}>
+          <Grid container justifyContent="left" spacing={1} className={classes.quantityControls}>
             <Grid item>
               <Button
                 onClick={handleDecreaseQuantity}
@@ -233,6 +238,7 @@ export default function ProductDetailPage() {
             <Grid item>
               <Typography variant="body1">{productQuantity}</Typography>
             </Grid>
+
             <Grid item>
               <Button
                 onClick={handleIncreaseQuantity}
@@ -243,58 +249,68 @@ export default function ProductDetailPage() {
               </Button>
             </Grid>
           </Grid>
+
+          <Grid>
+            <Button
+              onClick={handleOrder}
+              variant="contained"
+              sx={{
+                backgroundColor: '#ff8da3',
+                '&:hover': {
+                  backgroundColor: '#fd5f7d',
+                },
+                color: 'white',
+                borderRadius: '20px',
+                marginTop: '20px',
+              }}
+            >
+              Order Now
+            </Button>
+          </Grid>
+
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>Confirm Order</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Are you sure you want to place the order?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleConfirmOrder} color="primary">
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
+            <DialogTitle>Order Successful</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Your order has been placed successfully!</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleResetOrderStatus} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
 
-        <Button
-          onClick={handleOrder}
-          variant="contained"
-          style={{ backgroundColor: 'lightpink', color: 'white', borderRadius: '20px' }}
-          className={classes.button}
+        <Grid
+          item
+          sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
         >
-          Order Now
-        </Button>
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Confirm Order</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Are you sure you want to place the order?</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirmOrder} color="primary">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
-          <DialogTitle>Order Successful</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Your order has been placed successfully!</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleResetOrderStatus} color="primary">
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
-
-      <Grid
-        item
-        sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
-        <Controller
-          name="detail"
-          control={control}
-          render={({ field }) => (
-            <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-              DESCRIPTION: {productDetails?.detail}
-            </Typography>
-          )}
-        />
+          <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
+          <Controller
+            name="detail"
+            control={control}
+            render={({ field }) => (
+              <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
+                DESCRIPTION {productDetails?.detail}
+              </Typography>
+            )}
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
