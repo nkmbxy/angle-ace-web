@@ -151,7 +151,7 @@ export default function ProductDetailPage() {
 
   return (
     <Grid container direction="column" className={classes.container}>
-      <Grid item xs={10} sm={3} sx={{ width: '100%', height: 'auto' }}>
+      <Grid item sx={{ width: '20%' }}>
         <Box>{imageSrc && <img src={imageSrc} alt="Uploaded preview" />}</Box>
       </Grid>
 
