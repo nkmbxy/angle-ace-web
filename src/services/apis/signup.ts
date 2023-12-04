@@ -1,10 +1,19 @@
-import { Response, get } from '@utils/axios';
+import { Response, post } from '@utils/axios';
 
-export interface TimeSheet {
-  wbs_id: number;
-  sr_epic: string;
+export interface SignupParams {
+  email: string;
+  password: string;
+  address: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
 }
 
-export function getTimeSheetMe(): Promise<Response<TimeSheet[]>> {
-  return get<TimeSheet[]>('/example');
+export interface Signup {
+  email: string;
+  token: string;
+}
+
+export function signup(params: SignupParams): Promise<Response<Signup>> {
+  return post<Signup>('/signup', params);
 }

@@ -23,7 +23,8 @@
       "@constant": ["constant/index"],
       "@utils/*": ["utils/*"],
       "@services/*": ["services/*"],
-      "@theme/*": ["theme/*"]
+      "@theme/*": ["theme/*"],
+      "@store/*": ["store/*"]
     },
     "plugins": [
       {

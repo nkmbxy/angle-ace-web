@@ -10,8 +10,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { AuthState, authState, useSetRecoilState } from '@store/index';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import { FC, useState } from 'react';
 
 const menuNav = [
   { name: 'สรุปยอดขาย', path: '/summary' },
@@ -20,9 +23,16 @@ const menuNav = [
   { name: 'ลงทะเบียนสินค้าใหม่', path: '/registerProduct' },
 ];
 
-function Navbar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [activeLink, setActiveLink] = React.useState<string>('');
+interface NavbarAdminProps {
+  token: string;
+}
+
+const NavbarAdmin: FC<NavbarAdminProps> = props => {
+  const { token } = props;
+  const router = useRouter();
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [activeLink, setActiveLink] = useState<string>('');
+  const setAuth = useSetRecoilState<AuthState>(authState);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -30,6 +40,12 @@ function Navbar() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    setAuth({ email: '', token: '' });
+    router.push('/login');
   };
 
   return (
@@ -143,20 +159,46 @@ function Navbar() {
               </Link>
             ))}
           </Box>
-
-          <Box
-            sx={{
-              flexGrow: 0,
-              borderRadius: 1.5,
-              padding: 1,
-              border: 1,
-            }}
-          >
-            <Link href="/login">Login</Link>
-          </Box>
+          {token !== '' ? (
+            <Button
+              sx={{
+                borderRadius: 1.5,
+                padding: 1,
+                border: 1,
+                borderColor: '#FFFFFF',
+                color: '#FFFFFF',
+              }}
+              onClick={handleLogout}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                Logout
+              </Typography>
+            </Button>
+          ) : (
+            <Button
+              sx={{
+                borderRadius: 1.5,
+                padding: 1,
+                border: 1,
+                borderColor: '#FFFFFF',
+                color: '#FFFFFF',
+              }}
+            >
+              <Link href="/login">Login</Link>
+            </Button>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
-export default Navbar;
+};
+export default NavbarAdmin;

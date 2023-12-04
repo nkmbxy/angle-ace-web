@@ -1,4 +1,5 @@
 import Navigation from '@components/navigation';
+import { RecoilRoot } from '@store/index';
 import ThemeProvider from '@theme/ThemeProvider';
 import type { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -13,10 +14,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="th">
       <body>
-        <ThemeProvider>
-          <Navigation />
-          {children}
-        </ThemeProvider>
+        <RecoilRoot>
+          <ThemeProvider>
+            <Navigation />
+            {children}
+          </ThemeProvider>
+        </RecoilRoot>
       </body>
     </html>
   );
