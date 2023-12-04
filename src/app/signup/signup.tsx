@@ -4,7 +4,7 @@ import AlertDialog from '@components/alertDialog';
 import ToastSuccess from '@components/toast';
 import { Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { SignupParams, signup } from '@services/apis/signup';
+import { SignupParams, signup } from '@services/apis/auth';
 import { AuthState, authState, useSetRecoilState } from '@store/index';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
