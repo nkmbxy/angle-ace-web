@@ -14,16 +14,16 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 const menuNav = [
-  { name: 'HOME', path: '/home' },
+  { name: 'HOME', path: '/' },
   { name: 'clothing', path: '/clothing', dropdown: true },
   { name: 'about us', path: '/aboutUs' },
 ];
 
 const clothingOptions = [
-  { name: 'Top', path: '/top' },
-  { name: 'Skirt', path: '/skirt' },
-  { name: 'Pants', path: '/pants' },
-  { name: 'All', path: '/allClothing' },
+  { name: 'Top', path: '/clothing?type=top' },
+  { name: 'Skirt', path: '/clothing?type=skirt' },
+  { name: 'Pants', path: '/clothing?type=pants' },
+  { name: 'All', path: '/clothing' },
 ];
 interface NavbarCustomerProps {
   token: string;
@@ -36,10 +36,6 @@ const NavbarCustomer: React.FC<NavbarCustomerProps> = props => {
   const [anchorElClothing, setAnchorElClothing] = React.useState<null | HTMLElement>(null);
   const [activeLink, setActiveLink] = React.useState<string>('');
   const setAuth = useSetRecoilState<AuthState>(authState);
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
