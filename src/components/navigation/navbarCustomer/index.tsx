@@ -63,23 +63,21 @@ const NavbarCustomer: React.FC<NavbarCustomerProps> = props => {
     <AppBar position="static" sx={{ bgcolor: '#7DD5F4' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.1rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Angle Ace
-          </Typography>
+          <Link href="/" style={{ textDecoration: 'none' }}>
+            <Typography
+              variant="h6"
+              sx={{
+                mr: 2,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Angle Ace
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {menuNav.map(item => {

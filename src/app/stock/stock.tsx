@@ -139,7 +139,7 @@ export default function StockComponent() {
                       {products.length > 0 ? (
                         products.map((row, index) => (
                           <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <Link href={`/product/${row.id}`}>
+                            <Link href={`/productAdminDetail/${row.id}`}>
                               <TableCell align="center" sx={{ color: 'red' }}>
                                 {row.code}
                               </TableCell>

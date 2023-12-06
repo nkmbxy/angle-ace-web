@@ -14,10 +14,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getDetailCustomer } from '@services/apis/product';
+import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { ProductInput, Products } from '../../../typings/products';
+import { ProductInput, Products } from '../../../../typings/products';
 
 const useStyles = makeStyles({
   container: {
@@ -62,7 +62,6 @@ export default function ProductDetailPage() {
   const isMounted = useRef(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const productId = params?.id;
   const [productDetails, setProductDetails] = useState<Products | null>(null);
 
   const handleOpenDialog = () => {
@@ -112,6 +111,7 @@ export default function ProductDetailPage() {
   const handleGetDetailProducts = useCallback(async () => {
     try {
       const productId = parseInt(params?.id as string);
+      console.log(productId);
       if (!isNaN(productId)) {
         const res = await getDetailCustomer(productId);
 
