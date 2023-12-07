@@ -125,4 +125,6 @@ export interface ProductSearchParams {
   name?: string;
   type?: string;
   manufacturer?: string;
+  startPrice?: string;
+  endPrice?: string;
 }

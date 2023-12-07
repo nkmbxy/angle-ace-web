@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { AuthState, authState, useSetRecoilState } from '@store/index';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import * as React from 'react';
+import { FC, useState } from 'react';
 
 const menuNav = [
   { name: 'HOME', path: '/' },
@@ -29,12 +29,12 @@ interface NavbarCustomerProps {
   token: string;
 }
 
-const NavbarCustomer: React.FC<NavbarCustomerProps> = props => {
+const NavbarCustomer: FC<NavbarCustomerProps> = props => {
   const { token } = props;
   const router = useRouter();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElClothing, setAnchorElClothing] = React.useState<null | HTMLElement>(null);
-  const [activeLink, setActiveLink] = React.useState<string>('');
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElClothing, setAnchorElClothing] = useState<null | HTMLElement>(null);
+  const [activeLink, setActiveLink] = useState<string>('');
   const setAuth = useSetRecoilState<AuthState>(authState);
 
   const handleCloseNavMenu = () => {
@@ -46,6 +46,11 @@ const NavbarCustomer: React.FC<NavbarCustomerProps> = props => {
   };
 
   const handleCloseClothingMenu = () => {
+    setAnchorElClothing(null);
+  };
+
+  const handleClickClothingMenu = () => {
+    setActiveLink('clothing');
     setAnchorElClothing(null);
   };
 
@@ -81,28 +86,34 @@ const NavbarCustomer: React.FC<NavbarCustomerProps> = props => {
                 return (
                   <Grid key={item.name}>
                     <Button
-                      sx={{ mr: 1, color: 'white', borderRadius: 0 }}
-                      aria-controls="menu-clothing"
-                      aria-haspopup="true"
+                      sx={{
+                        mr: 1,
+                        color: 'white',
+                        borderRadius: 0,
+                        ...(activeLink === item.name && {
+                          borderBottomWidth: 1,
+                          borderBottomStyle: 'solid',
+                        }),
+                      }}
                       onClick={handleOpenClothingMenu}
                     >
                       {item.name}
                     </Button>
                     <Menu
-                      id="menu-clothing"
                       anchorEl={anchorElClothing}
-                      keepMounted
-                      open={Boolean(anchorElClothing)}
+                      open={!!anchorElClothing}
                       onClose={handleCloseClothingMenu}
                       sx={{
                         '& .MuiPaper-root': {
                           bgcolor: '#ffe99f',
                         },
                       }}
+                      MenuListProps={{ disablePadding: true }}
+                      disableScrollLock={true}
                     >
                       {clothingOptions.map(option => (
                         <Link href={option.path} key={option.name}>
-                          <MenuItem onClick={handleCloseClothingMenu}>
+                          <MenuItem onClick={handleClickClothingMenu}>
                             <Typography textAlign="center">{option.name}</Typography>
                           </MenuItem>
                         </Link>
