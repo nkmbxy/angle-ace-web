@@ -230,7 +230,7 @@ export default function RegisterProduct() {
                       width: 150,
                       backgroundColor: '#ff8da3',
                       '&:hover': {
-                        backgroundColor: '#fd5f7d',
+                        backgroundColor: '#ff496c',
                       },
                     }}
                   >
