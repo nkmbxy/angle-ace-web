@@ -12,9 +12,9 @@
     "editor.tabSize": 2,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.formatDocument": true,
-      "source.fixAll": true,
-      "source.organizeImports": true
+      "source.formatDocument": "explicit",
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
     },
     "files.associations": {
       "*.js": "javascript",
