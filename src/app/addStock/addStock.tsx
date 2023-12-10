@@ -195,7 +195,7 @@ export default function AddStock() {
               <Controller
                 name="product_id"
                 control={form?.control}
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange } }) => (
                   <Autocomplete
                     id="product-autocomplete"
                     options={products}
