@@ -22,14 +22,10 @@ const useStyles = makeStyles({
     width: '100%',
     height: '50%',
     background: 'pink',
-  },
-  selectProductPart: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridGap: '80px',
+    marginBottom: '40px',
   },
   title: {
-    marginTop: '20px',
+    marginBottom: '30px',
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -38,6 +34,7 @@ const useStyles = makeStyles({
     backgroundColor: 'lightpink',
     width: '250px',
     height: '300px',
+    margin: '50px',
     borderRadius: '20px',
     transition: 'transform 0.3s ease-in-out', // Add transition for hover effect
     '&:hover': {
@@ -60,7 +57,7 @@ const useStyles = makeStyles({
     padding: '20px',
     width: '150px',
     height: '30px',
-    marginTop: '25px',
+    marginTop: '20px',
     display: 'flex',
     justifyContent: 'center',
   },
@@ -97,7 +94,7 @@ export default function HomePage() {
       <Grid item xs={12} className={classes.title}>
         <h2>NEW ARRIVAL</h2>
       </Grid>
-      <Grid item xs={12} className={classes.selectProductPart}>
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Grid className={classes.boxProduct}>
           <Grid className={classes.productImage}>
             <h2>Product Image</h2>
@@ -139,7 +136,7 @@ export default function HomePage() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button
           type="submit"
           variant="contained"
