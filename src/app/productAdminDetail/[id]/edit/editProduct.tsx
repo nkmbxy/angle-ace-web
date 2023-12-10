@@ -149,11 +149,9 @@ export default function ProductForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
-          <Link href={`/product/${params?.id}`}>
-            <Button sx={{ mb: 2, mt: -1, color: 'red' }} color="primary" onClick={() => {}}>
-              ย้อนกลับ
-            </Button>
-          </Link>
+          <Grid container sx={{ mb: 3, mt: 1, color: 'red', fontSize: '16px' }}>
+            <Link href={`/productAdminDetail/${params?.id}`}>{'Back'}</Link>
+          </Grid>
           <Grid container>
             <Typography sx={{ mb: 2, mt: -2, fontSize: '30px', fontWeight: 'bold' }}>Product Information</Typography>
             <Grid container className={classes.containerGray}>
@@ -440,8 +438,19 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
-                <Button variant="contained" type="submit" sx={{ width: 150, mt: -5, backgroundColor: '#ff8da3' }}>
-                  ยืนยัน
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    width: 150,
+                    mt: -5,
+                    backgroundColor: '#ff8da3',
+                    '&:hover': {
+                      backgroundColor: '#fd5f7d',
+                    },
+                  }}
+                >
+                  Confirm
                 </Button>
               </Box>
             </Grid>

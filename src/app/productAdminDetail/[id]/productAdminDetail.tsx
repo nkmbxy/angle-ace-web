@@ -81,30 +81,15 @@ export default function ProductDetail() {
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
-<<<<<<< HEAD:src/app/productAdminDetail/[id]/productAdminDetail.tsx
             <Grid container sx={{ mb: 2, mt: 1, color: 'red', fontSize: '16px' }}>
               <Link href="/stock">{'Back'}</Link>
             </Grid>
-
             <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>Product Information</Typography>
           </Grid>
           <Grid item xs={12} container justifyContent="flex-end">
-            <Link href={`/product/${params?.id}/edit`}>
+            <Link href={`/productAdminDetail/${params?.id}/edit`}>
               <Button sx={{ mt: -4, color: 'red', fontSize: '16px' }} color="primary" onClick={() => {}}>
                 Edit
-=======
-            <Link href="/stock">
-              <Button sx={{ color: 'red' }} color="primary">
-                ย้อนกลับ
-              </Button>
-            </Link>
-            <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
-          </Grid>
-          <Grid item xs={12} container justifyContent="flex-end">
-            <Link href={`/product/${params?.id}/edit`}>
-              <Button sx={{ mt: -4, color: 'red' }} color="primary" onClick={() => {}}>
-                แก้ไข
->>>>>>> b5908b1 (add aboutus page):src/app/product/[id]/product.tsx
               </Button>
             </Link>
           </Grid>

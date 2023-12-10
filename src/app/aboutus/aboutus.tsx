@@ -1,8 +1,6 @@
 'use client';
 
 import { Grid, Typography } from '@mui/material';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
@@ -67,15 +65,6 @@ export default function AboutusPage() {
 
   return (
     <Grid container className={classes.container}>
-      <Grid className={classes.breadcrumbsContainer}>
-        <Grid role="presentation" onClick={handleClick}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="home">
-              HOME
-            </Link>
-          </Breadcrumbs>
-        </Grid>
-      </Grid>
       <Grid container direction="column" className={classes.textBox}>
         <Grid>
           <h2>About Webname</h2>
