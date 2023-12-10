@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useParams } from 'next/navigation';
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -12,7 +13,6 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '100vh',
   },
   animationBox: {
     display: 'flex',
@@ -20,8 +20,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    height: '50%',
-    background: 'pink',
+    height: '50vh',
     marginBottom: '40px',
   },
   title: {
@@ -65,34 +64,37 @@ const useStyles = makeStyles({
 
 export default function HomePage() {
   const classes = useStyles();
+  const params = useParams();
 
   return (
-    <Grid container className={classes.container}>
-      <Carousel
-        className={classes.animationBox}
-        autoPlay={true} // autoplay
-        interval={3000} // 3000 milliseconds (3 second)
-        stopOnHover={true} // stop autoplay when mouse point slide
-        infiniteLoop={true} // slide loop
-        showStatus={false}
-        showIndicators={false}
-        showThumbs={false}
-      >
-        <Grid>
-          <img src="https://s1.ticketm.net/dam/a/fae/bc43b974-90f9-4c10-983d-2d38fca2cfae_RETINA_LANDSCAPE_16_9.jpg" />
-        </Grid>
-        <Grid>
-          <img
-            src="https://rare-gallery.com/uploads/posts/341131-NCT-Dream-NCT-Kpop-K-Pop-Members-Deja-Vu-Resonance-Pt.-1-Album.jpg"
-            alt="Image 2"
-          />
-        </Grid>
-        <Grid>
-          <img src="https://w.wallha.com/ws/14/Tz20COiq.png" alt="Image 3" />
-        </Grid>
-      </Carousel>
+    <Grid container className={classes.container} sx={{ mb: 8 }}>
+      <Grid item xs={12} sx={{ display: 'grid' }}>
+        <Carousel
+          className={classes.animationBox}
+          autoPlay={true} // autoplay
+          interval={3000} // 3000 milliseconds (3 second)
+          stopOnHover={true} // stop autoplay when mouse point slide
+          infiniteLoop={true} // slide loop
+          showStatus={false}
+          showIndicators={false}
+          showThumbs={false}
+        >
+          <Grid>
+            <img src="https://s1.ticketm.net/dam/a/fae/bc43b974-90f9-4c10-983d-2d38fca2cfae_RETINA_LANDSCAPE_16_9.jpg" />
+          </Grid>
+          <Grid>
+            <img
+              src="https://rare-gallery.com/uploads/posts/341131-NCT-Dream-NCT-Kpop-K-Pop-Members-Deja-Vu-Resonance-Pt.-1-Album.jpg"
+              alt="Image 2"
+            />
+          </Grid>
+          <Grid>
+            <img src="https://w.wallha.com/ws/14/Tz20COiq.png" alt="Image 3" />
+          </Grid>
+        </Carousel>
+      </Grid>
       <Grid item xs={12} className={classes.title}>
-        <h2>NEW ARRIVAL</h2>
+        <Typography>NEW ARRIVAL</Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Grid className={classes.boxProduct}>
@@ -137,20 +139,22 @@ export default function HomePage() {
         </Grid>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className={classes.allButton}
-          sx={{
-            backgroundColor: '#ff8da3',
-            '&:hover': {
-              backgroundColor: '#fd5f7d',
-            },
-          }}
-        >
-          VIEW ALL
-        </Button>
+        <Link href={`/clothing`}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.allButton}
+            sx={{
+              backgroundColor: '#ff8da3',
+              '&:hover': {
+                backgroundColor: '#fd5f7d',
+              },
+            }}
+          >
+            VIEW ALL
+          </Button>
+        </Link>
       </Grid>
     </Grid>
   );

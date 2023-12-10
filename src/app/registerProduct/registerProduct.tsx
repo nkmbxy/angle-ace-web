@@ -2,7 +2,7 @@
 
 import AlertDialog from '@components/alertDialog';
 import ToastSuccess from '@components/toast';
-import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { createProduct } from '@services/apis/product';
@@ -14,6 +14,7 @@ import { ProductCreateParams } from '../../../typings/products';
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
+
   height: 1,
   overflow: 'hidden',
   position: 'absolute',
@@ -129,7 +130,7 @@ export default function RegisterProduct() {
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
           <Grid container>
-            <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+            <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>Product Information</Typography>
 
             <Grid container className={classes.containerGray}>
               <Stack direction="column" sx={{ width: '100%' }}>
@@ -149,7 +150,7 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="รหัสสินค้า" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField {...field} placeholder="Id" variant="standard" fullWidth sx={{ mb: 3 }} />
                       )}
                     />
                     <Controller
@@ -157,7 +158,7 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="ชื่อสินค้า" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField {...field} placeholder="Name" variant="standard" fullWidth sx={{ mb: 3 }} />
                       )}
                     />
                     <Controller
@@ -165,7 +166,7 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="ผู้ผลิต" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField {...field} placeholder="Manufacturer" variant="standard" fullWidth sx={{ mb: 3 }} />
                       )}
                     />
 
@@ -174,7 +175,7 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="รายละเอียด" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField {...field} placeholder="Detail" variant="standard" fullWidth sx={{ mb: 3 }} />
                       )}
                     />
 
@@ -183,7 +184,11 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="หมวดหมู่" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField {...field} select fullWidth size="small" variant="standard" label="Type">
+                          <MenuItem value="top">top</MenuItem>
+                          <MenuItem value="skirt">skirt</MenuItem>
+                          <MenuItem value="pants">pants</MenuItem>
+                        </TextField>
                       )}
                     />
                   </Stack>
@@ -229,7 +234,7 @@ export default function RegisterProduct() {
                       },
                     }}
                   >
-                    ยืนยัน
+                    Confirm
                   </Button>
                 </Box>
               </Stack>

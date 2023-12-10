@@ -108,7 +108,7 @@ export default function SummaryComponent() {
     <Grid container className={classes.bigContainer}>
       <Card sx={{ padding: 3, width: '70%' }}>
         <Grid container>
-          <Typography sx={{ mb: 2, mt: -0.5, fontSize: '30px', fontWeight: 'bold' }}>สรุปยอดขาย / กำไร</Typography>
+          <Typography sx={{ mb: 2, mt: -0.5, fontSize: '30px', fontWeight: 'bold' }}>Summary</Typography>
         </Grid>
         <Grid container className={classes.containerGray}>
           <Grid
@@ -120,13 +120,13 @@ export default function SummaryComponent() {
           >
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="วันเริ่ม" value={startDate} onChange={setStartDate} />
+                <DatePicker label="Start" value={startDate} onChange={setStartDate} />
               </LocalizationProvider>
             </Grid>
 
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="วันสุดท้าย" value={endDate} onChange={setEndDate} />
+                <DatePicker label="End" value={endDate} onChange={setEndDate} />
               </LocalizationProvider>
             </Grid>
 
@@ -142,7 +142,7 @@ export default function SummaryComponent() {
                   },
                 }}
               >
-                ค้นหา
+                Search
               </Button>
             </Grid>
           </Grid>

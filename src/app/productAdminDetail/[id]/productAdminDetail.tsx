@@ -82,15 +82,15 @@ export default function ProductDetail() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Grid container sx={{ mb: 2, mt: 1, color: 'red', fontSize: '16px' }}>
-              <Link href="/stock">{'ย้อนกลับ'}</Link>
+              <Link href="/stock">{'Back'}</Link>
             </Grid>
 
-            <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+            <Typography sx={{ mt: 2, mb: 2, fontSize: '30px', fontWeight: 'bold' }}>Product Information</Typography>
           </Grid>
           <Grid item xs={12} container justifyContent="flex-end">
             <Link href={`/product/${params?.id}/edit`}>
               <Button sx={{ mt: -4, color: 'red', fontSize: '16px' }} color="primary" onClick={() => {}}>
-                แก้ไข
+                Edit
               </Button>
             </Link>
           </Grid>
@@ -114,7 +114,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="รหัสสินค้า"
+                    label="Id"
                     variant="standard"
                     focused
                     fullWidth
@@ -136,7 +136,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="ชื่อสินค้า"
+                    label="Name"
                     variant="standard"
                     focused
                     fullWidth
@@ -158,7 +158,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="ผู้ผลิต"
+                    label="Manufacturer"
                     variant="standard"
                     focused
                     fullWidth
@@ -180,7 +180,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="หมวดหมู่"
+                    label="Type"
                     variant="standard"
                     focused
                     fullWidth
@@ -202,7 +202,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="รายละเอียด"
+                    label="Detail"
                     variant="standard"
                     multiline
                     rows={4}
@@ -226,7 +226,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="ราคาขาย"
+                    label="Sell Price"
                     variant="standard"
                     focused
                     fullWidth
@@ -248,7 +248,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="ราคาต้นทุน"
+                    label="Cost"
                     variant="standard"
                     focused
                     fullWidth
@@ -270,7 +270,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="จำนวนสินค้า S"
+                    label="Amount S"
                     variant="standard"
                     focused
                     fullWidth
@@ -292,7 +292,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="จำนวนสินค้า M"
+                    label="Amount M"
                     variant="standard"
                     focused
                     fullWidth
@@ -329,7 +329,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="จำนวนสินค้า L"
+                    label="Amount L"
                     variant="standard"
                     focused
                     fullWidth
@@ -351,7 +351,7 @@ export default function ProductDetail() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="จำนวนสินค้า XL"
+                    label="Amount XL"
                     variant="standard"
                     focused
                     fullWidth

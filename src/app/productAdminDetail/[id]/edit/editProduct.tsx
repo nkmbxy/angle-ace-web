@@ -150,11 +150,11 @@ export default function ProductForm() {
       <Grid container className={classes.bigContainer}>
         <Card sx={{ padding: 3, width: '70%' }}>
           <Grid container sx={{ mb: 3, mt: 1, color: 'red', fontSize: '16px' }}>
-            <Link href={`/product/${params?.id}`}>{'ย้อนกลับ'}</Link>
+            <Link href={`/product/${params?.id}`}>{'Back'}</Link>
           </Grid>
 
           <Grid container>
-            <Typography sx={{ mb: 2, mt: -2, fontSize: '30px', fontWeight: 'bold' }}>ข้อมูลสินค้า</Typography>
+            <Typography sx={{ mb: 2, mt: -2, fontSize: '30px', fontWeight: 'bold' }}>Product Information</Typography>
             <Grid container className={classes.containerGray}>
               <Stack direction="row" sx={{ width: '100%' }}>
                 <Stack
@@ -173,7 +173,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="รหัสสินค้า"
+                        label="Id"
                         variant="standard"
                         focused
                         fullWidth
@@ -198,7 +198,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="ชื่อสินค้า"
+                        label="Name"
                         variant="standard"
                         focused
                         fullWidth
@@ -223,7 +223,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="ผู้ผลิต"
+                        label="Manufacturer"
                         variant="standard"
                         focused
                         fullWidth
@@ -245,7 +245,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="หมวดหมู่"
+                        label="Type"
                         variant="standard"
                         focused
                         fullWidth
@@ -267,7 +267,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="รายละเอียด"
+                        label="Detail"
                         variant="standard"
                         color="warning"
                         multiline
@@ -288,7 +288,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="ราคาขาย"
+                        label="Sell Price"
                         variant="standard"
                         color="warning"
                         focused
@@ -304,7 +304,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="ราคาต้นทุน"
+                        label="Cost"
                         variant="standard"
                         color="warning"
                         focused
@@ -320,7 +320,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="จำนวนสินค้า S"
+                        label="Amount S"
                         variant="standard"
                         focused
                         fullWidth
@@ -342,7 +342,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="จำนวนสินค้า M"
+                        label="Amount M"
                         variant="standard"
                         focused
                         fullWidth
@@ -393,7 +393,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="จำนวนสินค้า L"
+                        label="Amount L"
                         variant="standard"
                         focused
                         fullWidth
@@ -415,7 +415,7 @@ export default function ProductForm() {
                     render={({ field }) => (
                       <TextField
                         {...field}
-                        label="จำนวนสินค้า XL"
+                        label="Amount XL"
                         variant="standard"
                         focused
                         fullWidth
@@ -451,7 +451,7 @@ export default function ProductForm() {
                     },
                   }}
                 >
-                  ยืนยัน
+                  Confirm
                 </Button>
               </Box>
             </Grid>
