@@ -81,18 +81,18 @@ export default function HomePage() {
         showIndicators={false}
         showThumbs={false}
       >
-        <div>
+        <Grid>
           <img src="https://s1.ticketm.net/dam/a/fae/bc43b974-90f9-4c10-983d-2d38fca2cfae_RETINA_LANDSCAPE_16_9.jpg" />
-        </div>
-        <div>
+        </Grid>
+        <Grid>
           <img
             src="https://rare-gallery.com/uploads/posts/341131-NCT-Dream-NCT-Kpop-K-Pop-Members-Deja-Vu-Resonance-Pt.-1-Album.jpg"
             alt="Image 2"
           />
-        </div>
-        <div>
+        </Grid>
+        <Grid>
           <img src="https://w.wallha.com/ws/14/Tz20COiq.png" alt="Image 3" />
-        </div>
+        </Grid>
       </Carousel>
       <Grid item xs={12} className={classes.title}>
         <h2>NEW ARRIVAL</h2>

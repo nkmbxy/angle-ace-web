@@ -65,19 +65,15 @@ const NavbarCustomer: FC<NavbarCustomerProps> = props => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <Typography
-              variant="h6"
-              sx={{
-                mr: 2,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.1rem',
-                color: 'inherit',
-                textDecoration: 'none',
+            <img
+              src="https://drive.google.com/file/d/1WpbsZhoWv5KIVf0Y0NZVOjpzBP3uOEJ8/view?usp=sharing"
+              style={{
+                marginRight: '8px',
+                height: '40px',
+                width: 'auto',
+                cursor: 'pointer',
               }}
-            >
-              Angle Ace
-            </Typography>
+            />
           </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
