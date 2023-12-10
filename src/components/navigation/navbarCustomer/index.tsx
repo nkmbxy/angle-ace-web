@@ -66,7 +66,8 @@ const NavbarCustomer: FC<NavbarCustomerProps> = props => {
         <Toolbar disableGutters>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <img
-              src="https://drive.google.com/file/d/1WpbsZhoWv5KIVf0Y0NZVOjpzBP3uOEJ8/view?usp=sharing"
+              src="src/components/navigation/Angel.png"
+              alt="logo"
               style={{
                 marginRight: '8px',
                 height: '40px',
