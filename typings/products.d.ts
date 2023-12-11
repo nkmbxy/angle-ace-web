@@ -87,7 +87,7 @@ export interface ProductEditParams {
   cost: number;
 }
 
-export interface addStockParams {
+export interface AddStockParams {
   product_id: number;
   cost: number;
   sellPrice: number;
@@ -127,4 +127,9 @@ export interface ProductSearchParams {
   manufacturer?: string;
   startPrice?: string;
   endPrice?: string;
+}
+
+export interface BuyProductParams {
+  amount: number;
+  size: string;
 }

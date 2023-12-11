@@ -1,7 +1,8 @@
 'use client';
 
+import AlertDialog from '@components/alertDialog';
+import ToastSuccess from '@components/toast';
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -16,8 +17,7 @@ import { makeStyles } from '@mui/styles';
 import { getDetailCustomer } from '@services/apis/product';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { ProductInput, Products } from '../../../../typings/products';
+import { Products } from '../../../../typings/products';
 
 const useStyles = makeStyles({
   container: {
@@ -56,20 +56,26 @@ const useStyles = makeStyles({
 export default function ProductDetailPage() {
   const classes = useStyles();
   const [productQuantity, setProductQuantity] = useState(1);
-  const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const { control, setValue } = useForm<ProductInput>();
   const params = useParams();
   const isMounted = useRef(false);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [productDetails, setProductDetails] = useState<Products | null>(null);
+  const [selectedSize, setSelectedSize] = useState('S');
+  const sizes = ['S', 'M', 'L', 'XL'];
+  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openToast, setOpenToast] = useState<boolean>(false);
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const handleOpenConfirmDialog = () => {
+    setOpenConfirmDialog(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false);
+  };
+
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialog(false);
   };
 
   const handleIncreaseQuantity = () => {
@@ -82,51 +88,86 @@ export default function ProductDetailPage() {
     }
   };
 
-  const handleOrder = useCallback(() => {
-    handleOpenDialog();
-  }, []);
-
-  const handleConfirmOrder = () => {
-    setOrderSuccess(true);
-    setOpenDialog(false);
+  const handleCloseToast = () => {
+    setOpenToast(false);
   };
 
+  const handleConfirmOrder = useCallback(async () => {
+    try {
+      const productId = parseInt(params?.id as string);
+      const res = await getDetailCustomer(productId);
+      if (res?.status !== '200') {
+        setOpenAlertDialog(true);
+        return;
+      }
+      setOpenToast(true);
+    } catch (error) {
+      setOpenAlertDialog(true);
+      console.log(error);
+      return;
+    }
+    setOpenConfirmDialog(false);
+  }, [params?.id]);
+
   const handleResetOrderStatus = () => {
-    setValue('name', '');
-    setValue('code', '');
-    setValue('sellPrice', 0);
     setProductQuantity(1);
     setSelectedSize('');
     setOrderSuccess(false);
   };
 
-  const [selectedSize, setSelectedSize] = useState('');
-
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size);
   };
 
-  const sizes = ['S', 'M', 'L', 'XL'];
+  const renderNearlyOutOfStock = (): JSX.Element | undefined => {
+    switch (selectedSize) {
+      case 'S':
+        if (productDetails && productDetails?.amountS < 5) {
+          console.log();
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      case 'M':
+        if (productDetails && productDetails?.amountM < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      case 'L':
+        if (productDetails && productDetails?.amountL < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      case 'XL':
+        if (productDetails && productDetails?.amountXL < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      default:
+        return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+    }
+  };
 
   const handleGetDetailProducts = useCallback(async () => {
     try {
       const productId = parseInt(params?.id as string);
-      console.log(productId);
       if (!isNaN(productId)) {
         const res = await getDetailCustomer(productId);
-
-        setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
-        setValue('name', res?.data?.name || '');
-        setValue('code', res?.data?.code || '');
-        setValue('sellPrice', res?.data?.sellPrice || 0);
-        setValue('detail', res?.data?.detail || '');
+        setProductDetails(res?.data);
       } else {
         console.error('Invalid product ID');
       }
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
-  }, [params?.id, setValue]);
+  }, [params?.id]);
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -150,47 +191,25 @@ export default function ProductDetailPage() {
         sx={{ marginTop: '15px' }}
       >
         <Grid item xs={10} sm={6}>
-          <Box>
-            {imageSrc && (
-              <img
-                src={imageSrc}
-                alt="Product Image"
-                style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-              />
-            )}
-          </Box>
+          <img
+            src={productDetails?.pathImage || '/assets/images/default-image.png'}
+            alt="Product Image"
+            style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+          />
         </Grid>
 
         <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
-              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Product name: {productDetails?.name}
-              </Typography>
-            )}
-          />
+          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+            Product name: {productDetails?.name}
+          </Typography>
 
-          <Controller
-            name="code"
-            control={control}
-            render={({ field }) => (
-              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Product ID: {productDetails?.code}
-              </Typography>
-            )}
-          />
+          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+            Product ID: {productDetails?.code}
+          </Typography>
 
-          <Controller
-            name="sellPrice"
-            control={control}
-            render={({ field }) => (
-              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Price: {productDetails?.sellPrice}
-              </Typography>
-            )}
-          />
+          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+            Price: {productDetails?.sellPrice}
+          </Typography>
 
           <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
             SIZE
@@ -249,11 +268,10 @@ export default function ProductDetailPage() {
               </Button>
             </Grid>
           </Grid>
-          <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>
-
+          {renderNearlyOutOfStock()}
           <Grid>
             <Button
-              onClick={handleOrder}
+              onClick={handleConfirmOrder}
               variant="contained"
               sx={{
                 backgroundColor: '#ff8da3',
@@ -269,13 +287,13 @@ export default function ProductDetailPage() {
             </Button>
           </Grid>
 
-          <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
             <DialogTitle>Confirm Order</DialogTitle>
             <DialogContent>
               <DialogContentText>Are you sure you want to place the order?</DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseDialog} color="primary">
+              <Button onClick={handleCloseConfirmDialog} color="primary">
                 Cancel
               </Button>
               <Button onClick={handleConfirmOrder} color="primary">
@@ -283,34 +301,24 @@ export default function ProductDetailPage() {
               </Button>
             </DialogActions>
           </Dialog>
-
-          <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
-            <DialogTitle>Order Successful</DialogTitle>
-            <DialogContent>
-              <DialogContentText>Your order has been placed successfully!</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleResetOrderStatus} color="primary">
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Grid>
+
+        <ToastSuccess
+          openToast={openToast}
+          handleCloseToast={handleCloseToast}
+          text="Your order has been placed successfully!"
+          showClose={true}
+        />
+        <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
 
         <Grid
           item
           sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
         >
           <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
-          <Controller
-            name="detail"
-            control={control}
-            render={({ field }) => (
-              <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
-                DESCRIPTION {productDetails?.detail}
-              </Typography>
-            )}
-          />
+          <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
+            DESCRIPTION {productDetails?.detail}
+          </Typography>
         </Grid>
       </Grid>
     </Grid>
