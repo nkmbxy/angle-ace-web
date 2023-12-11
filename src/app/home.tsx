@@ -45,6 +45,7 @@ const useStyles = makeStyles({
   productImage: {
     background: 'pink',
     height: '65%',
+    width: '100%',
   },
   shortDetail: {
     marginTop: '8%',
@@ -60,6 +61,11 @@ const useStyles = makeStyles({
     marginTop: '20px',
     display: 'flex',
     justifyContent: 'center',
+  },
+  imageSize: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
 });
 
@@ -97,7 +103,7 @@ export default function HomePage() {
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Grid className={classes.boxProduct}>
           <Grid className={classes.productImage}>
-            <h2>Product Image</h2>
+            <img className={classes.imageSize} src="https://pbs.twimg.com/media/Flt1NmNaYAIyjLf.jpg" />
           </Grid>
           <Grid className={classes.shortDetail}>
             <Typography className={classes.textDetail}>Product name</Typography>
@@ -107,7 +113,10 @@ export default function HomePage() {
         </Grid>
         <Grid className={classes.boxProduct}>
           <Grid className={classes.productImage}>
-            <h2>Product Image</h2>
+            <img
+              className={classes.imageSize}
+              src="https://d.line-scdn.net/lcp-prod-photo/20210621_129/1624207004806HIKrC_JPEG/RJFRPCTQGZAM9736RET0JOZBJ4TA89.jpg"
+            />
           </Grid>
           <Grid className={classes.shortDetail}>
             <Typography className={classes.textDetail}>Product name</Typography>
@@ -117,7 +126,10 @@ export default function HomePage() {
         </Grid>
         <Grid className={classes.boxProduct}>
           <Grid className={classes.productImage}>
-            <h2>Product Image</h2>
+            <img
+              className={classes.imageSize}
+              src="https://th-test-11.slatic.net/p/891638cba03ab312668f43d0466e7efb.jpg"
+            />
           </Grid>
           <Grid className={classes.shortDetail}>
             <Typography className={classes.textDetail}>Product name</Typography>
@@ -127,7 +139,7 @@ export default function HomePage() {
         </Grid>
         <Grid className={classes.boxProduct}>
           <Grid className={classes.productImage}>
-            <h2>Product Image</h2>
+            <img className={classes.imageSize} src="https://pbs.twimg.com/media/FW5_BPXWQAI-L4C.jpg" />
           </Grid>
           <Grid className={classes.shortDetail}>
             <Typography className={classes.textDetail}>Product name</Typography>
