@@ -1,6 +1,6 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog/alertError';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -23,14 +23,14 @@ export default function Signup() {
   const classes = useStyles();
   const form = useForm<SignupParams>({});
   const [openToast, setOpenToast] = useState<boolean>(false);
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const setAuth = useSetRecoilState<AuthState>(authState);
   const handleSave = useCallback(
     async (search: SignupParams) => {
       try {
         const res = await signup(search);
         if (res?.status !== '200') {
-          setOpenAlertDialog(true);
+          setOpenAlertDialogError(true);
           return;
         }
         localStorage.setItem('auth', JSON.stringify(res?.data));
@@ -39,10 +39,10 @@ export default function Signup() {
           router.push('/summary');
           return;
         }
-        router.push('/home');
+        router.push('/');
         setOpenToast(true);
       } catch (error) {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
         return;
       }
     },
@@ -54,7 +54,7 @@ export default function Signup() {
   };
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   return (
@@ -156,10 +156,10 @@ export default function Signup() {
               <ToastSuccess
                 openToast={openToast}
                 handleCloseToast={handleCloseToast}
-                text="สมัครสมาชิกสำเร็จ"
+                text="Register Succuessfully"
                 showClose={true}
               />
-              <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
+              <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
             </Stack>
           </Stack>
         </Card>

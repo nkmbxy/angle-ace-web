@@ -1,6 +1,6 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog/alertError';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, Stack, TextField, Typography, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -61,17 +61,16 @@ export default function ProductForm() {
   const classes = useStyles();
   const [image, setImage] = useState<Blob | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const [productData, setProductData] = useState(null);
   const { control, handleSubmit, setValue } = useForm<ProductInput>();
   const params = useParams();
   const isMounted = useRef(false);
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState('');
   const router = useRouter();
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   const handleCloseToast = () => {
@@ -137,11 +136,11 @@ export default function ProductForm() {
           router.push(`/product/${params?.id}`);
         }, 1000);
       } else {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
       }
     } catch (error) {
       console.error(error);
-      setOpenAlertDialog(true);
+      setOpenAlertDialogError(true);
     }
   };
 
@@ -461,7 +460,7 @@ export default function ProductForm() {
             text={toastMessage}
             showClose={true}
           />
-          <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
+          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Card>
       </Grid>
     </form>
