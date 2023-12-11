@@ -118,7 +118,6 @@ export default function RegisterProduct() {
         setOpenToast(true);
       } catch (error) {
         setOpenAlertDialogError(true);
-        console.log(error);
         return;
       }
     },

@@ -93,20 +93,28 @@ export default function ProductForm() {
   }, []);
 
   const handleGetDetailProducts = useCallback(async () => {
-    const res = await getDetailProducts(parseInt(params?.id as string));
-
-    setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
-    setValue('code', res?.data?.code || '');
-    setValue('name', res?.data?.name || '');
-    setValue('manufacturer', res?.data?.manufacturer?.name || '');
-    setValue('type', res?.data?.type || '');
-    setValue('detail', res?.data?.detail || '');
-    setValue('sellPrice', res?.data?.sellPrice || 0);
-    setValue('cost', res?.data?.cost || 0);
-    setValue('amountS', res?.data?.amountS || 0);
-    setValue('amountM', res?.data?.amountM || 0);
-    setValue('amountL', res?.data?.amountL || 0);
-    setValue('amountXL', res?.data?.amountXL || 0);
+    try {
+      const res = await getDetailProducts(parseInt(params?.id as string));
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
+      setValue('code', res?.data?.code || '');
+      setValue('name', res?.data?.name || '');
+      setValue('manufacturer', res?.data?.manufacturer?.name || '');
+      setValue('type', res?.data?.type || '');
+      setValue('detail', res?.data?.detail || '');
+      setValue('sellPrice', res?.data?.sellPrice || 0);
+      setValue('cost', res?.data?.cost || 0);
+      setValue('amountS', res?.data?.amountS || 0);
+      setValue('amountM', res?.data?.amountM || 0);
+      setValue('amountL', res?.data?.amountL || 0);
+      setValue('amountXL', res?.data?.amountXL || 0);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, [params?.id, setValue]);
 
   useEffect(() => {
@@ -128,19 +136,18 @@ export default function ProductForm() {
         formData.append('file', image as Blob);
       }
       const res = await editProduct(parseInt(params?.id as string), formData);
-      if (res?.status === '200') {
-        setToastMessage('แก้ไขสินค้าสำเร็จ');
-        setOpenToast(true);
-
-        setTimeout(() => {
-          router.push(`/product/${params?.id}`);
-        }, 1000);
-      } else {
+      if (res?.status !== '200') {
         setOpenAlertDialogError(true);
+        return;
       }
+      setToastMessage('แก้ไขสินค้าสำเร็จ');
+      setOpenToast(true);
+      setTimeout(() => {
+        router.push(`/product/${params?.id}`);
+      }, 1000);
     } catch (error) {
-      console.error(error);
       setOpenAlertDialogError(true);
+      return;
     }
   };
 

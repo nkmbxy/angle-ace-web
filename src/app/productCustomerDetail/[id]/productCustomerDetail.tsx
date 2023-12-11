@@ -165,12 +165,17 @@ export default function ProductDetailPage() {
       const productId = parseInt(params?.id as string);
       if (!isNaN(productId)) {
         const res = await getDetailCustomer(productId);
+        if (res?.status !== '200') {
+          setOpenAlertDialogError(true);
+          return;
+        }
         setProductDetails(res?.data);
       } else {
         console.error('Invalid product ID');
       }
     } catch (error) {
-      console.error('Error fetching product details:', error);
+      setOpenAlertDialogError(true);
+      return;
     }
   }, [params?.id]);
 
