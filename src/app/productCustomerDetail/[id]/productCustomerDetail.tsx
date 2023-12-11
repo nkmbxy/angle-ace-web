@@ -317,8 +317,11 @@ export default function ProductDetailPage() {
         >
           <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
           <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
-            DESCRIPTION {productDetails?.detail}
+            DESCRIPTION
           </Typography>
+          <Grid item sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {productDetails?.detail}
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

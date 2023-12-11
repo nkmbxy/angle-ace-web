@@ -19,7 +19,7 @@ function MyLoader() {
         color={color}
         loading={loading}
         cssOverride={override}
-        size={150}
+        size={45}
         aria-label="Loading Spinner"
         data-testid="loader"
       />
