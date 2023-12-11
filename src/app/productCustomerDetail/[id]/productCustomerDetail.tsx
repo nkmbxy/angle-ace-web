@@ -138,29 +138,21 @@ export default function ProductDetailPage() {
       case 'S':
         if (productDetails && productDetails?.amountS < 5) {
           return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
-        } else {
-          <></>;
         }
         break;
       case 'M':
         if (productDetails && productDetails?.amountM < 5) {
           return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
-        } else {
-          <></>;
         }
         break;
       case 'L':
         if (productDetails && productDetails?.amountL < 5) {
           return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
-        } else {
-          <></>;
         }
         break;
       case 'XL':
         if (productDetails && productDetails?.amountXL < 5) {
           return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
-        } else {
-          <></>;
         }
         break;
       default:
