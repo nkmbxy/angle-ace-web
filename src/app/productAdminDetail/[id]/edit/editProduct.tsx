@@ -143,7 +143,7 @@ export default function ProductForm() {
       setToastMessage('แก้ไขสินค้าสำเร็จ');
       setOpenToast(true);
       setTimeout(() => {
-        router.push(`/product/${params?.id}`);
+        router.push(`/productAdminDetail/${params?.id}`);
       }, 1000);
     } catch (error) {
       setOpenAlertDialogError(true);
@@ -444,22 +444,20 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
-                <Link href={`/stock`}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    sx={{
-                      width: 150,
-                      mt: -5,
-                      backgroundColor: '#ff8da3',
-                      '&:hover': {
-                        backgroundColor: '#fd5f7d',
-                      },
-                    }}
-                  >
-                    Confirm
-                  </Button>
-                </Link>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    width: 150,
+                    mt: -5,
+                    backgroundColor: '#ff8da3',
+                    '&:hover': {
+                      backgroundColor: '#fd5f7d',
+                    },
+                  }}
+                >
+                  Confirm
+                </Button>
               </Box>
             </Grid>
           </Grid>

@@ -83,12 +83,7 @@ const Clothing: React.FC = () => {
   );
 
   useEffect(() => {
-    if (!isMounted.current) {
-      handleGetProducts(searchType, startPrice, endPrice);
-    }
-    return () => {
-      isMounted.current = true;
-    };
+    handleGetProducts(searchType, startPrice, endPrice);
   }, [endPrice, handleGetProducts, searchType, startPrice]);
 
   return (
@@ -110,7 +105,6 @@ const Clothing: React.FC = () => {
                         sx={{ fontWeight: searchType === item ? 700 : 0, cursor: 'pointer' }}
                         onClick={() => {
                           router.push(`/clothing?type=${item}`);
-                          handleGetProducts(item, startPrice, endPrice);
                         }}
                         component="span"
                       >

@@ -13,6 +13,8 @@ import { Products } from '../../../../typings/products';
 const useStyles = makeStyles({
   bigContainer: {
     padding: '2rem',
+    display: 'flex',
+    justifyContent: 'center',
   },
   container: {
     display: 'flex',
@@ -201,7 +203,7 @@ export default function ProductDetailPage() {
 
   return (
     <Grid container className={classes.bigContainer}>
-      <Card sx={{ padding: 3, minHeight: 700, width: '100%' }}>
+      <Card sx={{ padding: 3, minHeight: 700, width: '70%' }}>
         <Grid container spacing={1} className={classes.container} alignItems="flex-start">
           <Grid
             item

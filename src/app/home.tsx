@@ -51,6 +51,7 @@ const useStyles = makeStyles({
   },
   shortDetail: {
     marginTop: '8%',
+    color: 'black',
   },
   textDetail: {
     marginTop: '5px',
@@ -138,16 +139,18 @@ export default function HomePage() {
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {products.map(product => (
-          <Grid key={product?.id} className={classes.boxProduct}>
-            <Grid className={classes.productImage}>
-              <img className={classes.imageSize} src={product?.pathImage} />
+          <Link key={product?.id} href={`/productCustomerDetail/${product.id}`} style={{ textDecoration: 'none' }}>
+            <Grid className={classes.boxProduct}>
+              <Grid className={classes.productImage}>
+                <img className={classes.imageSize} src={product?.pathImage} />
+              </Grid>
+              <Grid className={classes.shortDetail}>
+                <Typography className={classes.textDetail}>{product?.name}</Typography>
+                <Typography className={classes.textDetail}>{product?.manufacturer?.name}</Typography>
+                <Typography className={classes.textDetail}>{product?.sellPrice}</Typography>
+              </Grid>
             </Grid>
-            <Grid className={classes.shortDetail}>
-              <Typography className={classes.textDetail}>{product?.name}</Typography>
-              <Typography className={classes.textDetail}>{product?.manufacturer?.name}</Typography>
-              <Typography className={classes.textDetail}>{product?.sellPrice}</Typography>
-            </Grid>
-          </Grid>
+          </Link>
         ))}
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
