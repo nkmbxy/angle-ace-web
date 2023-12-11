@@ -3,7 +3,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { FC, memo } from 'react';
 
-interface AlertDialogProps {
+interface AlertDialogConfirmProps {
   openAlertDialog: boolean;
   handleOnCloseDialog: () => void;
   onConfirm: () => void;
@@ -11,23 +11,24 @@ interface AlertDialogProps {
   message: string;
 }
 
-const AlertDialog: FC<AlertDialogProps> = ({ openAlertDialog, handleOnCloseDialog, onConfirm, title, message }) => {
+const AlertDialogConfirm: FC<AlertDialogConfirmProps> = props => {
+  const { openAlertDialog, handleOnCloseDialog, onConfirm, title, message } = props;
   return (
-    <Dialog open={openAlertDialog} onClose={handleOnCloseDialog} aria-labelledby="dialog-title">
+    <Dialog fullScreen={false} open={openAlertDialog} onClose={handleOnCloseDialog}>
       <DialogTitle id="dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleOnCloseDialog} color="primary">
-          ยกเลิก
+        <Button variant="contained" onClick={handleOnCloseDialog} color="error">
+          Cancel
         </Button>
-        <Button onClick={onConfirm} color="primary" autoFocus>
-          ยืนยัน
+        <Button variant="contained" onClick={onConfirm} color="primary" autoFocus>
+          Confirm
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default memo(AlertDialog);
+export default memo(AlertDialogConfirm);

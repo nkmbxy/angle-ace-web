@@ -1,20 +1,11 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog';
+import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Button, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { getDetailCustomer } from '@services/apis/product';
+import { buyProduct, getDetailCustomer } from '@services/apis/product';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Products } from '../../../../typings/products';
@@ -59,11 +50,12 @@ export default function ProductDetailPage() {
   const params = useParams();
   const isMounted = useRef(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
   const [productDetails, setProductDetails] = useState<Products | null>(null);
   const [selectedSize, setSelectedSize] = useState('S');
   const sizes = ['S', 'M', 'L', 'XL'];
   const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [titleDialogError, setTitleDialogError] = useState<string>('Error');
+  const [messageDialogError, setMessageDialogError] = useState<string>('Something Went Wrong. Please try again');
   const [openToast, setOpenToast] = useState<boolean>(false);
 
   const handleOpenConfirmDialog = () => {
@@ -92,10 +84,40 @@ export default function ProductDetailPage() {
     setOpenToast(false);
   };
 
+  const handleValidateOutOfStock = useCallback((): boolean => {
+    if (productDetails) {
+      switch (selectedSize) {
+        case 'S': {
+          return productQuantity > productDetails.amountS;
+        }
+        case 'M': {
+          return productQuantity > productDetails.amountM;
+        }
+        case 'L': {
+          return productQuantity > productDetails.amountL;
+        }
+        case 'XL': {
+          return productQuantity > productDetails.amountXL;
+        }
+        default:
+          return false;
+      }
+    }
+    return false;
+  }, [productDetails, productQuantity, selectedSize]);
+
   const handleConfirmOrder = useCallback(async () => {
     try {
+      setOpenConfirmDialog(false);
+      const isOutOfStock = handleValidateOutOfStock();
+      if (isOutOfStock) {
+        setOpenAlertDialog(true);
+        setTitleDialogError('Error');
+        setMessageDialogError('Product Out Of Stock');
+        return;
+      }
       const productId = parseInt(params?.id as string);
-      const res = await getDetailCustomer(productId);
+      const res = await buyProduct(productId, { amount: productQuantity, size: selectedSize });
       if (res?.status !== '200') {
         setOpenAlertDialog(true);
         return;
@@ -103,17 +125,10 @@ export default function ProductDetailPage() {
       setOpenToast(true);
     } catch (error) {
       setOpenAlertDialog(true);
-      console.log(error);
+
       return;
     }
-    setOpenConfirmDialog(false);
-  }, [params?.id]);
-
-  const handleResetOrderStatus = () => {
-    setProductQuantity(1);
-    setSelectedSize('');
-    setOrderSuccess(false);
-  };
+  }, [handleValidateOutOfStock, params?.id, productQuantity, selectedSize]);
 
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size);
@@ -123,7 +138,6 @@ export default function ProductDetailPage() {
     switch (selectedSize) {
       case 'S':
         if (productDetails && productDetails?.amountS < 5) {
-          console.log();
           return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
         } else {
           <></>;
@@ -271,7 +285,7 @@ export default function ProductDetailPage() {
           {renderNearlyOutOfStock()}
           <Grid>
             <Button
-              onClick={handleConfirmOrder}
+              onClick={handleOpenConfirmDialog}
               variant="contained"
               sx={{
                 backgroundColor: '#ff8da3',
@@ -286,21 +300,6 @@ export default function ProductDetailPage() {
               Order Now
             </Button>
           </Grid>
-
-          <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
-            <DialogTitle>Confirm Order</DialogTitle>
-            <DialogContent>
-              <DialogContentText>Are you sure you want to place the order?</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseConfirmDialog} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleConfirmOrder} color="primary">
-                Confirm
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Grid>
 
         <ToastSuccess
@@ -309,7 +308,21 @@ export default function ProductDetailPage() {
           text="Your order has been placed successfully!"
           showClose={true}
         />
-        <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
+
+        <AlertDialogConfirm
+          onConfirm={handleConfirmOrder}
+          openAlertDialog={openConfirmDialog}
+          handleOnCloseDialog={handleCloseConfirmDialog}
+          message="Are you sure you want to place the order?"
+          title="Confirm Order"
+        />
+
+        <AlertDialogError
+          openAlertDialog={openAlertDialog}
+          handleOnCloseDialog={handleOnCloseDialog}
+          message={messageDialogError}
+          title={titleDialogError}
+        />
 
         <Grid
           item

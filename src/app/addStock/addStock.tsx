@@ -1,23 +1,15 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog/alerConfirm';
+import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
 import ToastSuccess from '@components/toast';
 import { Button, Card, Grid } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { makeStyles } from '@mui/styles';
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import { addStockProduct, getProducts } from '@services/apis/product';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Products, addStock, addStockRow } from '../../../typings/products';
-
-const useStyles = makeStyles({
-  formControl: {
-    width: '150px',
-    margin: '10px auto',
-  },
-});
 
 export default function AddStock() {
   const [rows, setRows] = useState<addStockRow[]>([]);
@@ -324,7 +316,7 @@ export default function AddStock() {
             text={toastMessage}
             showClose={true}
           />
-          <AlertDialog
+          <AlertDialogConfirm
             openAlertDialog={openDeleteConfirmDialog}
             handleOnCloseDialog={() => setOpenDeleteConfirmDialog(false)}
             onConfirm={handleDeleteConfirmed}

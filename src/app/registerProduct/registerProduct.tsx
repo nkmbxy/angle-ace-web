@@ -1,6 +1,6 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog';
+import AlertDialog from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
