@@ -249,6 +249,7 @@ export default function ProductDetailPage() {
               </Button>
             </Grid>
           </Grid>
+          <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>
 
           <Grid>
             <Button
