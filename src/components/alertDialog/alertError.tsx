@@ -8,14 +8,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { FC, memo } from 'react';
 
-interface AlertDialogProps {
+interface AlertDialogErrorProps {
   openAlertDialog: boolean;
   handleOnCloseDialog: () => void;
   title?: string;
   message?: string;
 }
 
-const AlertDialog: FC<AlertDialogProps> = props => {
+const AlertDialogError: FC<AlertDialogErrorProps> = props => {
   const { openAlertDialog, handleOnCloseDialog, title, message } = props;
 
   return (
@@ -33,4 +33,4 @@ const AlertDialog: FC<AlertDialogProps> = props => {
   );
 };
 
-export default memo(AlertDialog);
+export default memo(AlertDialogError);

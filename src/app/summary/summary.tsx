@@ -1,5 +1,6 @@
 'use client';
 
+import AlertDialogError from '@components/alertDialog/alertError';
 import {
   Button,
   Card,
@@ -58,8 +59,13 @@ export default function SummaryComponent() {
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [summaryData, setSummaryData] = useState<SummaryProfit[]>([]);
   const isMounted = useRef(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
 
-  const fetchSummaryData = useCallback(async () => {
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
+  };
+
+  const searchSummary = useCallback(async () => {
     const formattedStartDate = startDate ? startDate.format('YYYY-MM-DD') : null;
     const formattedEndDate = endDate ? endDate.format('YYYY-MM-DD') : null;
 
@@ -69,11 +75,13 @@ export default function SummaryComponent() {
         endDate: formattedEndDate?.toString(),
       });
       if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
         return;
       }
       setSummaryData(res?.data);
     } catch (error) {
-      console.error('Error fetching summary data:', error);
+      setOpenAlertDialogError(true);
+      return;
     }
   }, [endDate, startDate]);
 
@@ -81,11 +89,13 @@ export default function SummaryComponent() {
     try {
       const res = await getProfitSummary({});
       if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
         return;
       }
       setSummaryData(res?.data);
     } catch (error) {
-      console.error('Error fetching summary data:', error);
+      setOpenAlertDialogError(true);
+      return;
     }
   }, []);
 
@@ -133,7 +143,7 @@ export default function SummaryComponent() {
             <Grid item xs={2} sm={1}>
               <Button
                 variant="contained"
-                onClick={fetchSummaryData}
+                onClick={searchSummary}
                 fullWidth
                 sx={{
                   backgroundColor: '#f7d769',
@@ -171,6 +181,7 @@ export default function SummaryComponent() {
               </Table>
             </TableContainer>
           </Grid>
+          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Grid>
       </Card>
     </Grid>

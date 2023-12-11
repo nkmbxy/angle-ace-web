@@ -1,11 +1,12 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog/alertError';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { LoginParams, login } from '@services/apis/auth';
 import { AuthState, authState, useSetRecoilState } from '@store/index';
+import { MAil_ADMIN } from 'app/constants';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -43,7 +44,7 @@ const useStyles = makeStyles({
 export default function LoginPage() {
   const router = useRouter();
   const classes = useStyles();
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const setAuth = useSetRecoilState<AuthState>(authState);
   const [openToast, setOpenToast] = useState<boolean>(false);
   const form = useForm<LoginParams>({});
@@ -52,19 +53,19 @@ export default function LoginPage() {
       try {
         const res = await login(search);
         if (res?.status !== '200') {
-          setOpenAlertDialog(true);
+          setOpenAlertDialogError(true);
           return;
         }
         localStorage.setItem('auth', JSON.stringify(res?.data));
         setAuth(res?.data);
-        if (res?.data?.email === 'admin@gmail.com') {
+        if (res?.data?.email === MAil_ADMIN) {
           router.push('/summary');
           return;
         }
         router.push('/');
         setOpenToast(true);
       } catch (error) {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
         return;
       }
     },
@@ -76,7 +77,7 @@ export default function LoginPage() {
   };
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   return (
@@ -134,7 +135,7 @@ export default function LoginPage() {
             text="สมัครสมาชิกสำเร็จ"
             showClose={true}
           />
-          <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
+          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Box>
       </Grid>
     </form>

@@ -1,5 +1,6 @@
 'use client';
 
+import AlertDialogError from '@components/alertDialog/alertError';
 import { Box, Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getDetailProducts } from '@services/apis/product';
@@ -48,23 +49,36 @@ export default function ProductDetail() {
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
   const { control, setValue } = useForm<ProductInput>();
   const params = useParams();
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const isMounted = useRef(false);
 
-  const handleGetDetailProducts = useCallback(async () => {
-    const res = await getDetailProducts(parseInt(params?.id as string));
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
+  };
 
-    setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
-    setValue('code', res?.data?.code || '');
-    setValue('name', res?.data?.name || '');
-    setValue('manufacturer', res?.data?.manufacturer?.name || '');
-    setValue('type', res?.data?.type || '');
-    setValue('detail', res?.data?.detail || '');
-    setValue('sellPrice', res?.data?.sellPrice || 0);
-    setValue('cost', res?.data?.cost || 0);
-    setValue('amountS', res?.data?.amountS || 0);
-    setValue('amountM', res?.data?.amountM || 0);
-    setValue('amountL', res?.data?.amountL || 0);
-    setValue('amountXL', res?.data?.amountXL || 0);
+  const handleGetDetailProducts = useCallback(async () => {
+    try {
+      const res = await getDetailProducts(parseInt(params?.id as string));
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
+      setValue('code', res?.data?.code || '');
+      setValue('name', res?.data?.name || '');
+      setValue('manufacturer', res?.data?.manufacturer?.name || '');
+      setValue('type', res?.data?.type || '');
+      setValue('detail', res?.data?.detail || '');
+      setValue('sellPrice', res?.data?.sellPrice || 0);
+      setValue('cost', res?.data?.cost || 0);
+      setValue('amountS', res?.data?.amountS || 0);
+      setValue('amountM', res?.data?.amountM || 0);
+      setValue('amountL', res?.data?.amountL || 0);
+      setValue('amountXL', res?.data?.amountXL || 0);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, [params?.id, setValue]);
 
   useEffect(() => {
@@ -369,6 +383,7 @@ export default function ProductDetail() {
           </Stack>
         </Grid>
       </Card>
+      <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
     </Grid>
   );
 }

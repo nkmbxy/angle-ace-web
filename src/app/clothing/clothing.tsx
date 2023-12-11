@@ -1,5 +1,6 @@
 'use client';
 
+import AlertDialogError from '@components/alertDialog/alertError';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getProducts } from '@services/apis/product';
@@ -26,6 +27,7 @@ const Clothing: React.FC = () => {
   const [products, setProducts] = useState<Products[]>([]);
   const [startPrice, setStartPrice] = useState<string>('');
   const [endPrice, setEndPrice] = useState<string>('');
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const clothingList = ['top', 'skirt', 'pants', 'all'];
 
   const responsive = {
@@ -46,9 +48,22 @@ const Clothing: React.FC = () => {
     },
   };
 
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
+  };
+
   const handleGetProducts = useCallback(async (type: string, startPrice: string, endPrice: string) => {
-    const res = await getProducts({ type: type === 'all' ? '' : type, startPrice: startPrice, endPrice: endPrice });
-    setProducts(res?.data);
+    try {
+      const res = await getProducts({ type: type === 'all' ? '' : type, startPrice: startPrice, endPrice: endPrice });
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setProducts(res?.data);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, []);
 
   const handleOnChangeStartPrice = useCallback(
@@ -228,6 +243,7 @@ const Clothing: React.FC = () => {
           </Grid>
         </Grid>
       </Card>
+      <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
     </Grid>
   );
 };

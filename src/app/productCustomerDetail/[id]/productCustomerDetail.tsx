@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
   const [productDetails, setProductDetails] = useState<Products | null>(null);
   const [selectedSize, setSelectedSize] = useState('S');
   const sizes = ['S', 'M', 'L', 'XL'];
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [titleDialogError, setTitleDialogError] = useState<string>('Error');
   const [messageDialogError, setMessageDialogError] = useState<string>('Something Went Wrong. Please try again');
   const [openToast, setOpenToast] = useState<boolean>(false);
@@ -70,7 +70,7 @@ export default function ProductDetailPage() {
   };
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   const handleIncreaseQuantity = () => {
@@ -114,7 +114,7 @@ export default function ProductDetailPage() {
       setOpenConfirmDialog(false);
       const isOutOfStock = handleValidateOutOfStock();
       if (isOutOfStock) {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
         setTitleDialogError('Error');
         setMessageDialogError('Product Out Of Stock');
         return;
@@ -122,13 +122,12 @@ export default function ProductDetailPage() {
       const productId = parseInt(params?.id as string);
       const res = await buyProduct(productId, { amount: productQuantity, size: selectedSize });
       if (res?.status !== '200') {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
         return;
       }
       setOpenToast(true);
     } catch (error) {
-      setOpenAlertDialog(true);
-
+      setOpenAlertDialogError(true);
       return;
     }
   }, [handleValidateOutOfStock, params?.id, productQuantity, selectedSize]);
@@ -177,12 +176,17 @@ export default function ProductDetailPage() {
       const productId = parseInt(params?.id as string);
       if (!isNaN(productId)) {
         const res = await getDetailCustomer(productId);
+        if (res?.status !== '200') {
+          setOpenAlertDialogError(true);
+          return;
+        }
         setProductDetails(res?.data);
       } else {
         console.error('Invalid product ID');
       }
     } catch (error) {
-      console.error('Error fetching product details:', error);
+      setOpenAlertDialogError(true);
+      return;
     }
   }, [params?.id]);
 
@@ -328,7 +332,7 @@ export default function ProductDetailPage() {
             />
 
             <AlertDialogError
-              openAlertDialog={openAlertDialog}
+              openAlertDialog={openAlertDialogError}
               handleOnCloseDialog={handleOnCloseDialog}
               message={messageDialogError}
               title={titleDialogError}

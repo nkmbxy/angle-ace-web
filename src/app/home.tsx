@@ -1,11 +1,14 @@
 'use client';
-
+import AlertDialogError from '@components/alertDialog/alertError';
 import { Button, Grid, Link, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { getProducts } from '@services/apis/product';
 import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Products } from '../../typings/products';
 
 const useStyles = makeStyles({
   container: {
@@ -71,6 +74,37 @@ const useStyles = makeStyles({
 export default function HomePage() {
   const classes = useStyles();
   const params = useParams();
+  const isMounted = useRef(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
+  const [products, setProducts] = useState<Products[]>([]);
+
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
+  };
+
+  const handleGetProducts = useCallback(async () => {
+    try {
+      const res = await getProducts({});
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      const products = res?.data.filter((product, index) => index < 4);
+      setProducts(products);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted.current) {
+      handleGetProducts();
+    }
+    return () => {
+      isMounted.current = true;
+    };
+  }, [handleGetProducts]);
 
   return (
     <Grid container className={classes.container} sx={{ mb: 8 }}>
@@ -103,52 +137,18 @@ export default function HomePage() {
         <Typography>NEW ARRIVAL</Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Grid className={classes.boxProduct}>
-          <Grid className={classes.productImage}>
-            <img className={classes.imageSize} src="https://pbs.twimg.com/media/Flt1NmNaYAIyjLf.jpg" />
+        {products.map(product => (
+          <Grid key={product?.id} className={classes.boxProduct}>
+            <Grid className={classes.productImage}>
+              <img className={classes.imageSize} src={product?.pathImage} />
+            </Grid>
+            <Grid className={classes.shortDetail}>
+              <Typography className={classes.textDetail}>{product?.name}</Typography>
+              <Typography className={classes.textDetail}>{product?.manufacturer?.name}</Typography>
+              <Typography className={classes.textDetail}>{product?.sellPrice}</Typography>
+            </Grid>
           </Grid>
-          <Grid className={classes.shortDetail}>
-            <Typography className={classes.textDetail}>Product name</Typography>
-            <Typography className={classes.textDetail}>Brand</Typography>
-            <Typography className={classes.textDetail}>Price</Typography>
-          </Grid>
-        </Grid>
-        <Grid className={classes.boxProduct}>
-          <Grid className={classes.productImage}>
-            <img
-              className={classes.imageSize}
-              src="https://d.line-scdn.net/lcp-prod-photo/20210621_129/1624207004806HIKrC_JPEG/RJFRPCTQGZAM9736RET0JOZBJ4TA89.jpg"
-            />
-          </Grid>
-          <Grid className={classes.shortDetail}>
-            <Typography className={classes.textDetail}>Product name</Typography>
-            <Typography className={classes.textDetail}>Brand</Typography>
-            <Typography className={classes.textDetail}>Price</Typography>
-          </Grid>
-        </Grid>
-        <Grid className={classes.boxProduct}>
-          <Grid className={classes.productImage}>
-            <img
-              className={classes.imageSize}
-              src="https://th-test-11.slatic.net/p/891638cba03ab312668f43d0466e7efb.jpg"
-            />
-          </Grid>
-          <Grid className={classes.shortDetail}>
-            <Typography className={classes.textDetail}>Product name</Typography>
-            <Typography className={classes.textDetail}>Brand</Typography>
-            <Typography className={classes.textDetail}>Price</Typography>
-          </Grid>
-        </Grid>
-        <Grid className={classes.boxProduct}>
-          <Grid className={classes.productImage}>
-            <img className={classes.imageSize} src="https://pbs.twimg.com/media/FW5_BPXWQAI-L4C.jpg" />
-          </Grid>
-          <Grid className={classes.shortDetail}>
-            <Typography className={classes.textDetail}>Product name</Typography>
-            <Typography className={classes.textDetail}>Brand</Typography>
-            <Typography className={classes.textDetail}>Price</Typography>
-          </Grid>
-        </Grid>
+        ))}
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Link href={`/clothing`}>
@@ -167,6 +167,7 @@ export default function HomePage() {
             VIEW ALL
           </Button>
         </Link>
+        <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
       </Grid>
     </Grid>
   );
