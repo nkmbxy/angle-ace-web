@@ -125,7 +125,6 @@ export default function ProductDetailPage() {
       setOpenToast(true);
     } catch (error) {
       setOpenAlertDialogError(true);
-
       return;
     }
   }, [handleValidateOutOfStock, params?.id, productQuantity, selectedSize]);

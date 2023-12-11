@@ -6,6 +6,7 @@ import { Button, Card, Grid, Stack, TextField, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles';
 import { SignupParams, signup } from '@services/apis/auth';
 import { AuthState, authState, useSetRecoilState } from '@store/index';
+import { MAil_ADMIN } from 'app/constants';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -35,7 +36,7 @@ export default function Signup() {
         }
         localStorage.setItem('auth', JSON.stringify(res?.data));
         setAuth(res?.data);
-        if (res?.data?.email === 'admin@gmail.com') {
+        if (res?.data?.email === MAil_ADMIN) {
           router.push('/summary');
           return;
         }
