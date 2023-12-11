@@ -3,7 +3,7 @@
 import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
 import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
-import { Button, Divider, Grid, Typography } from '@mui/material';
+import { Button, Card, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { buyProduct, getDetailCustomer } from '@services/apis/product';
 import { useParams } from 'next/navigation';
@@ -11,6 +11,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Products } from '../../../../typings/products';
 
 const useStyles = makeStyles({
+  bigContainer: {
+    padding: '2rem',
+  },
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -138,34 +141,34 @@ export default function ProductDetailPage() {
     switch (selectedSize) {
       case 'S':
         if (productDetails && productDetails?.amountS < 5) {
-          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
         } else {
           <></>;
         }
         break;
       case 'M':
         if (productDetails && productDetails?.amountM < 5) {
-          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
         } else {
           <></>;
         }
         break;
       case 'L':
         if (productDetails && productDetails?.amountL < 5) {
-          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
         } else {
           <></>;
         }
         break;
       case 'XL':
         if (productDetails && productDetails?.amountXL < 5) {
-          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
         } else {
           <></>;
         }
         break;
       default:
-        return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>;
+        return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
     }
   };
 
@@ -193,150 +196,159 @@ export default function ProductDetailPage() {
   }, [handleGetDetailProducts]);
 
   return (
-    <Grid container spacing={1} className={classes.container} alignItems="flex-start">
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        spacing={4}
-        container
-        direction="row"
-        justifyContent="center"
-        sx={{ marginTop: '15px' }}
-      >
-        <Grid item xs={10} sm={6}>
-          <img
-            src={productDetails?.pathImage || '/assets/images/default-image.png'}
-            alt="Product Image"
-            style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-          />
-        </Grid>
+    <Grid container className={classes.bigContainer}>
+      <Card sx={{ padding: 3, minHeight: 700, width: '100%' }}>
+        <Grid container spacing={1} className={classes.container} alignItems="flex-start">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            spacing={4}
+            container
+            direction="row"
+            justifyContent="center"
+            sx={{ marginTop: '15px' }}
+          >
+            <Grid item xs={10} sm={6}>
+              <img
+                src={productDetails?.pathImage || '/assets/images/default-image.png'}
+                alt="Product Image"
+                style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+              />
+            </Grid>
 
-        <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-            Product name: {productDetails?.name}
-          </Typography>
+            <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+                Product name: {productDetails?.name}
+              </Typography>
 
-          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-            Product ID: {productDetails?.code}
-          </Typography>
+              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+                Product ID: {productDetails?.code}
+              </Typography>
 
-          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-            Price: {productDetails?.sellPrice}
-          </Typography>
+              <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
+                Price: {productDetails?.sellPrice}
+              </Typography>
 
-          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
-            SIZE
-          </Typography>
+              <Typography
+                variant="subtitle1"
+                align="left"
+                gutterBottom
+                style={{ fontWeight: 'bold', marginTop: '20px' }}
+              >
+                SIZE
+              </Typography>
 
-          <Grid container spacing={1}>
-            {sizes.map(size => (
-              <Grid item key={size}>
+              <Grid container spacing={1}>
+                {sizes.map(size => (
+                  <Grid item key={size}>
+                    <Button
+                      variant="contained"
+                      color={selectedSize === size ? 'primary' : 'inherit'}
+                      onClick={() => handleSizeSelect(size)}
+                      style={{
+                        border: `1px solid ${selectedSize === size ? '#dadada' : 'lightpink'}`,
+                        borderRadius: '50%',
+                        minWidth: '30px',
+                        width: '30px',
+                        height: '30px',
+                        textTransform: 'none',
+                        fontWeight: 600,
+                        color: selectedSize === size ? 'white' : 'black',
+                        backgroundColor: selectedSize === size ? 'lightpink' : 'transparent',
+                        boxShadow: 'none',
+                      }}
+                    >
+                      {size}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+
+              <Typography variant="subtitle1" align="left" style={{ fontWeight: 'bold', marginTop: '20px' }}>
+                QUANTITY
+              </Typography>
+              <Grid container justifyContent="left" spacing={1} className={classes.quantityControls}>
+                <Grid item>
+                  <Button
+                    onClick={handleDecreaseQuantity}
+                    variant="outlined"
+                    style={{ borderColor: '#dadada', color: 'black' }}
+                  >
+                    -
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">{productQuantity}</Typography>
+                </Grid>
+
+                <Grid item>
+                  <Button
+                    onClick={handleIncreaseQuantity}
+                    variant="outlined"
+                    style={{ borderColor: '#dadada', color: 'black' }}
+                  >
+                    +
+                  </Button>
+                </Grid>
+              </Grid>
+              {renderNearlyOutOfStock()}
+              <Grid>
                 <Button
+                  onClick={handleOpenConfirmDialog}
                   variant="contained"
-                  color={selectedSize === size ? 'primary' : 'inherit'}
-                  onClick={() => handleSizeSelect(size)}
-                  style={{
-                    border: `1px solid ${selectedSize === size ? '#dadada' : 'lightpink'}`,
-                    borderRadius: '50%',
-                    minWidth: '30px',
-                    width: '30px',
-                    height: '30px',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    color: selectedSize === size ? 'white' : 'black',
-                    backgroundColor: selectedSize === size ? 'lightpink' : 'transparent',
-                    boxShadow: 'none',
+                  sx={{
+                    backgroundColor: '#ff8da3',
+                    '&:hover': {
+                      backgroundColor: '#fd5f7d',
+                    },
+                    color: 'white',
+                    borderRadius: '20px',
+                    marginTop: '20px',
                   }}
                 >
-                  {size}
+                  Order Now
                 </Button>
               </Grid>
-            ))}
-          </Grid>
-
-          <Typography variant="subtitle1" align="left" style={{ fontWeight: 'bold', marginTop: '20px' }}>
-            QUANTITY
-          </Typography>
-          <Grid container justifyContent="left" spacing={1} className={classes.quantityControls}>
-            <Grid item>
-              <Button
-                onClick={handleDecreaseQuantity}
-                variant="outlined"
-                style={{ borderColor: '#dadada', color: 'black' }}
-              >
-                -
-              </Button>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1">{productQuantity}</Typography>
             </Grid>
 
-            <Grid item>
-              <Button
-                onClick={handleIncreaseQuantity}
-                variant="outlined"
-                style={{ borderColor: '#dadada', color: 'black' }}
-              >
-                +
-              </Button>
-            </Grid>
-          </Grid>
-          {renderNearlyOutOfStock()}
-          <Grid>
-            <Button
-              onClick={handleOpenConfirmDialog}
-              variant="contained"
-              sx={{
-                backgroundColor: '#ff8da3',
-                '&:hover': {
-                  backgroundColor: '#fd5f7d',
-                },
-                color: 'white',
-                borderRadius: '20px',
-                marginTop: '20px',
-              }}
+            <ToastSuccess
+              openToast={openToast}
+              handleCloseToast={handleCloseToast}
+              text="Your order has been placed successfully!"
+              showClose={true}
+            />
+
+            <AlertDialogConfirm
+              onConfirm={handleConfirmOrder}
+              openAlertDialog={openConfirmDialog}
+              handleOnCloseDialog={handleCloseConfirmDialog}
+              message="Are you sure you want to place the order?"
+              title="Confirm Order"
+            />
+
+            <AlertDialogError
+              openAlertDialog={openAlertDialog}
+              handleOnCloseDialog={handleOnCloseDialog}
+              message={messageDialogError}
+              title={titleDialogError}
+            />
+
+            <Grid
+              item
+              sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
             >
-              Order Now
-            </Button>
+              <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
+              <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
+                DESCRIPTION
+              </Typography>
+              <Grid item sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {productDetails?.detail}
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
-
-        <ToastSuccess
-          openToast={openToast}
-          handleCloseToast={handleCloseToast}
-          text="Your order has been placed successfully!"
-          showClose={true}
-        />
-
-        <AlertDialogConfirm
-          onConfirm={handleConfirmOrder}
-          openAlertDialog={openConfirmDialog}
-          handleOnCloseDialog={handleCloseConfirmDialog}
-          message="Are you sure you want to place the order?"
-          title="Confirm Order"
-        />
-
-        <AlertDialogError
-          openAlertDialog={openAlertDialog}
-          handleOnCloseDialog={handleOnCloseDialog}
-          message={messageDialogError}
-          title={titleDialogError}
-        />
-
-        <Grid
-          item
-          sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
-          <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
-            DESCRIPTION
-          </Typography>
-          <Grid item sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {productDetails?.detail}
-          </Grid>
-        </Grid>
-      </Grid>
+      </Card>
     </Grid>
   );
 }

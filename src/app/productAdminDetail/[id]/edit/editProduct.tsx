@@ -438,20 +438,22 @@ export default function ProductForm() {
                   justifyContent: 'center',
                 }}
               >
-                <Button
-                  variant="contained"
-                  type="submit"
-                  sx={{
-                    width: 150,
-                    mt: -5,
-                    backgroundColor: '#ff8da3',
-                    '&:hover': {
-                      backgroundColor: '#fd5f7d',
-                    },
-                  }}
-                >
-                  Confirm
-                </Button>
+                <Link href={`/stock`}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      width: 150,
+                      mt: -5,
+                      backgroundColor: '#ff8da3',
+                      '&:hover': {
+                        backgroundColor: '#fd5f7d',
+                      },
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                </Link>
               </Box>
             </Grid>
           </Grid>
