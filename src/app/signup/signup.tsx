@@ -74,6 +74,23 @@ export default function Signup() {
             </Typography>
             <Stack sx={{ width: '50%' }}>
               <Controller
+                name="firstname"
+                defaultValue=""
+                control={form?.control}
+                render={({ field }) => (
+                  <TextField {...field} placeholder="First Name" variant="outlined" fullWidth sx={{ mb: 3 }} />
+                )}
+              />
+              <Controller
+                name="lastname"
+                defaultValue=""
+                control={form?.control}
+                render={({ field }) => (
+                  <TextField {...field} placeholder="Last Name" variant="outlined" fullWidth sx={{ mb: 3 }} />
+                )}
+              />
+
+              <Controller
                 name="email"
                 defaultValue=""
                 control={form?.control}
@@ -105,35 +122,20 @@ export default function Signup() {
                     {...field}
                     rows={4}
                     multiline
-                    placeholder="ที่อยู่"
+                    placeholder="Address"
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 3 }}
                   />
                 )}
               />
-              <Controller
-                name="firstname"
-                defaultValue=""
-                control={form?.control}
-                render={({ field }) => (
-                  <TextField {...field} placeholder="ชื่อ" variant="outlined" fullWidth sx={{ mb: 3 }} />
-                )}
-              />
-              <Controller
-                name="lastname"
-                defaultValue=""
-                control={form?.control}
-                render={({ field }) => (
-                  <TextField {...field} placeholder="นามสกุล" variant="outlined" fullWidth sx={{ mb: 3 }} />
-                )}
-              />
+
               <Controller
                 name="phone"
                 defaultValue=""
                 control={form?.control}
                 render={({ field }) => (
-                  <TextField {...field} placeholder="เบอร์โทร" variant="outlined" fullWidth sx={{ mb: 3 }} />
+                  <TextField {...field} placeholder="Phone Number" variant="outlined" fullWidth sx={{ mb: 3 }} />
                 )}
               />
               <Button
@@ -149,7 +151,7 @@ export default function Signup() {
                   },
                 }}
               >
-                ยืนยัน
+                Confirm
               </Button>
               <ToastSuccess
                 openToast={openToast}

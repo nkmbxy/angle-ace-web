@@ -32,7 +32,7 @@ export default function AddStock() {
   const columns: GridColDef[] = [
     {
       field: 'product_id',
-      headerName: 'รหัสสินค้า',
+      headerName: 'Id',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -41,7 +41,7 @@ export default function AddStock() {
     },
     {
       field: 'name',
-      headerName: 'รายการสินค้า',
+      headerName: 'Name',
       headerAlign: 'center',
       align: 'center',
       cellClassName: 'center',
@@ -49,7 +49,7 @@ export default function AddStock() {
     },
     {
       field: 'cost',
-      headerName: 'ราคาต่อหน่วย',
+      headerName: 'Cost',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -58,7 +58,7 @@ export default function AddStock() {
     },
     {
       field: 'sellPrice',
-      headerName: 'ราคาขาย',
+      headerName: 'SellPrice',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -67,7 +67,7 @@ export default function AddStock() {
     },
     {
       field: 'amountS',
-      headerName: 'จำนวนไซต์ S',
+      headerName: 'amount S',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -76,7 +76,7 @@ export default function AddStock() {
     },
     {
       field: 'amountM',
-      headerName: 'จำนวนไซต์ M',
+      headerName: 'amount M',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -85,7 +85,7 @@ export default function AddStock() {
     },
     {
       field: 'amountL',
-      headerName: 'จำนวนไซต์ L',
+      headerName: 'amount L',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -94,7 +94,7 @@ export default function AddStock() {
     },
     {
       field: 'amountXL',
-      headerName: 'จำนวนไซต์ XL',
+      headerName: 'amount XL',
       headerAlign: 'center',
       type: 'number',
       align: 'center',
@@ -204,7 +204,7 @@ export default function AddStock() {
                     onChange={(event, item) => {
                       onChange(item?.id);
                     }}
-                    renderInput={params => <TextField {...params} label="สินค้า" />}
+                    renderInput={params => <TextField {...params} label="Product" />}
                   />
                 )}
               />
@@ -214,7 +214,7 @@ export default function AddStock() {
               <Controller
                 name="cost"
                 control={form?.control}
-                render={({ field }) => <TextField {...field} label="ราคาต่อหน่วย" variant="outlined" fullWidth />}
+                render={({ field }) => <TextField {...field} label="Cost" variant="outlined" fullWidth />}
               />
             </Grid>
 
@@ -222,7 +222,7 @@ export default function AddStock() {
               <Controller
                 name="sellPrice"
                 control={form?.control}
-                render={({ field }) => <TextField {...field} label="ราคาขาย" variant="outlined" fullWidth />}
+                render={({ field }) => <TextField {...field} label="Sell Price" variant="outlined" fullWidth />}
               />
             </Grid>
           </Grid>
@@ -238,28 +238,28 @@ export default function AddStock() {
               <Controller
                 name="amountS"
                 control={form?.control}
-                render={({ field }) => <TextField {...field} label="จำนวนไซต์ S" variant="outlined" fullWidth />}
+                render={({ field }) => <TextField {...field} label="Amount S" variant="outlined" fullWidth />}
               />
             </Grid>
             <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountM"
                 control={form?.control}
-                render={({ field }) => <TextField {...field} label="จำนวนไซต์ M" variant="outlined" fullWidth />}
+                render={({ field }) => <TextField {...field} label="Amount M" variant="outlined" fullWidth />}
               />
             </Grid>
             <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountL"
                 control={form?.control}
-                render={({ field }) => <TextField {...field} label="จำนวนไซต์ L" variant="outlined" fullWidth />}
+                render={({ field }) => <TextField {...field} label="Amount L" variant="outlined" fullWidth />}
               />
             </Grid>
             <Grid item xs={2} sm={2} md={2}>
               <Controller
                 name="amountXL"
                 control={form?.control}
-                render={({ field }) => <TextField {...field} label="จำนวนไซต์ XL" variant="outlined" fullWidth />}
+                render={({ field }) => <TextField {...field} label="Amount XL" variant="outlined" fullWidth />}
               />
             </Grid>
             <Grid item xs={2} sm={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -268,13 +268,13 @@ export default function AddStock() {
                 type="submit"
                 fullWidth
                 sx={{
-                  backgroundColor: '#f7d769',
+                  backgroundColor: '#F5DC5A',
                   '&:hover': {
-                    backgroundColor: '#ffe55a',
+                    backgroundColor: '#ffea80',
                   },
                 }}
               >
-                เพิ่ม
+                Add
               </Button>
             </Grid>
           </Grid>
@@ -296,7 +296,7 @@ export default function AddStock() {
           <Grid container spacing={2} sx={{ mt: 0.5 }}>
             <Grid item xs={6}>
               <Button variant="text" onClick={handleOpenDeleteConfirmDialog} sx={{ padding: '8px 30px', color: 'red' }}>
-                ลบสินค้า
+                Delete
               </Button>
             </Grid>
             <Grid container spacing={2} sx={{ mt: 1, display: 'flex', justifyContent: 'center' }}>
@@ -313,7 +313,7 @@ export default function AddStock() {
                     },
                   }}
                 >
-                  ยืนยัน
+                  Confirm
                 </Button>
               </Grid>
             </Grid>

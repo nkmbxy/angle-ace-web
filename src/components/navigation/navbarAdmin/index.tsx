@@ -17,10 +17,10 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 
 const menuNav = [
-  { name: 'สรุปยอดขาย', path: '/summary' },
-  { name: 'คลังสินค้า', path: '/stock' },
-  { name: 'สั่งของเพิ่ม', path: '/addStock' },
-  { name: 'ลงทะเบียนสินค้าใหม่', path: '/registerProduct' },
+  { name: 'Summary', path: '/summary' },
+  { name: 'Stock', path: '/stock' },
+  { name: 'Add Stock', path: '/addStock' },
+  { name: 'Register', path: '/registerProduct' },
 ];
 
 interface NavbarAdminProps {

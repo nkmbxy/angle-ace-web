@@ -148,11 +148,9 @@ const Clothing: React.FC = () => {
             </Typography>
             {products && products.length > 3 ? (
               <Carousel
-                additionalTransfrom={0}
                 arrows
                 centerMode={false}
-                draggable
-                autoPlaySpeed={1000}
+                draggable={false}
                 focusOnSelect={false}
                 infinite={false}
                 keyBoardControl
@@ -167,8 +165,6 @@ const Clothing: React.FC = () => {
                 rtl={false}
                 showDots={false}
                 slidesToSlide={1}
-                partialVisible={true}
-                swipeable
                 itemClass="carousel-item-padding-40-px"
               >
                 {products.map((product, index) => {

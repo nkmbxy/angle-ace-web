@@ -60,7 +60,7 @@ export default function StockComponent() {
           }}
         >
           <Grid>
-            <Typography sx={{ mb: 1, mt: 1, fontSize: '30px', fontWeight: 'bold' }}>สินค้าคงเหลือ</Typography>
+            <Typography sx={{ mb: 1, mt: 1, fontSize: '30px', fontWeight: 'bold' }}>Inventory</Typography>
             <Grid
               item
               container
@@ -74,7 +74,7 @@ export default function StockComponent() {
                   defaultValue=""
                   control={form?.control}
                   render={({ field }) => (
-                    <TextField {...field} placeholder="หมวดหมู่" variant="standard" fullWidth sx={{ mb: 3 }} />
+                    <TextField {...field} placeholder="Type" variant="standard" fullWidth sx={{ mb: 3 }} />
                   )}
                 />
               </Grid>
@@ -85,7 +85,7 @@ export default function StockComponent() {
                   defaultValue=""
                   control={form?.control}
                   render={({ field }) => (
-                    <TextField {...field} placeholder="ผู้ผลิต" variant="standard" fullWidth sx={{ mb: 3 }} />
+                    <TextField {...field} placeholder="Manufacturer" variant="standard" fullWidth sx={{ mb: 3 }} />
                   )}
                 />
               </Grid>
@@ -96,7 +96,7 @@ export default function StockComponent() {
                   defaultValue=""
                   control={form?.control}
                   render={({ field }) => (
-                    <TextField {...field} placeholder="สินค้า" variant="standard" fullWidth sx={{ mb: 3 }} />
+                    <TextField {...field} placeholder="Name" variant="standard" fullWidth sx={{ mb: 3 }} />
                   )}
                 />
               </Grid>
@@ -112,7 +112,7 @@ export default function StockComponent() {
                     },
                   }}
                 >
-                  ค้นหา
+                  Search
                 </Button>
               </Grid>
             </Grid>
@@ -123,16 +123,16 @@ export default function StockComponent() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell align="center">รหัสสินค้า</TableCell>
-                        <TableCell align="center">รายการสินค้า</TableCell>
-                        <TableCell align="center">ผู้ผลิต</TableCell>
-                        <TableCell align="center">หมวดหมู่</TableCell>
-                        <TableCell align="center">ราคาต้นทุน</TableCell>
-                        <TableCell align="center">ราคาขาย</TableCell>
-                        <TableCell align="center">จำนวนไซส์ S</TableCell>
-                        <TableCell align="center">จำนวนไซส์ M</TableCell>
-                        <TableCell align="center">จำนวนไซส์ L</TableCell>
-                        <TableCell align="center">จำนวนไซส์ XL</TableCell>
+                        <TableCell align="center">Id</TableCell>
+                        <TableCell align="center">Name</TableCell>
+                        <TableCell align="center">Manufacturer</TableCell>
+                        <TableCell align="center">Type</TableCell>
+                        <TableCell align="center">SellPrice</TableCell>
+                        <TableCell align="center">Cost</TableCell>
+                        <TableCell align="center">Amount S</TableCell>
+                        <TableCell align="center">Amount M</TableCell>
+                        <TableCell align="center">Amount L</TableCell>
+                        <TableCell align="center">Amount XL</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

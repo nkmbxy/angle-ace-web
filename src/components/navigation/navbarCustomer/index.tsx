@@ -16,7 +16,7 @@ import { FC, useState } from 'react';
 const menuNav = [
   { name: 'HOME', path: '/' },
   { name: 'clothing', path: '/clothing', dropdown: true },
-  { name: 'about us', path: '/aboutUs' },
+  { name: 'about us', path: '/aboutus' },
 ];
 
 const clothingOptions = [

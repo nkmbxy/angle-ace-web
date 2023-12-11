@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     width: '500px',
     borderRadius: '15px',
-    background: 'pink',
+    background: '#ffd4db',
     padding: 50,
   },
 
@@ -61,7 +61,7 @@ export default function LoginPage() {
           router.push('/summary');
           return;
         }
-        router.push('/home');
+        router.push('/');
         setOpenToast(true);
       } catch (error) {
         setOpenAlertDialog(true);
@@ -83,7 +83,7 @@ export default function LoginPage() {
     <form onSubmit={form.handleSubmit(handleSave)}>
       <Grid container className={classes.container}>
         <Box className={classes.pinkBox}>
-          <Typography sx={{ fontSize: '40px', fontWeight: 'bold', textAlign: 'center', mb: 3 }}>Angel ACS</Typography>
+          <Typography sx={{ fontSize: '40px', textAlign: 'center', mb: 3 }}>Angel ACS</Typography>
           <Controller
             name="email"
             defaultValue=""
@@ -109,7 +109,19 @@ export default function LoginPage() {
             )}
           />
 
-          <Button type="submit" variant="contained" color="primary" className={classes.loginButton}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.loginButton}
+            sx={{
+              backgroundColor: '#ff8da3',
+              '&:hover': {
+                backgroundColor: '#fd5f7d',
+              },
+              marginBottom: '15px',
+            }}
+          >
             Login
           </Button>
           <Link href="signup" color="black" underline="hover">
