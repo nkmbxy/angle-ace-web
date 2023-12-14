@@ -1,6 +1,7 @@
 'use client';
 
 import { AuthState, authState, useRecoilState } from '@store/index';
+import { MAil_ADMIN } from 'app/constants';
 import { useEffect, useRef } from 'react';
 import NavbarAdmin from './navbarAdmin';
 import NavbarCustomer from './navbarCustomer';
@@ -22,11 +23,7 @@ const Navigation = () => {
     }
   }, [setAuth]);
 
-  return auth?.email === 'admin@gmail.com' ? (
-    <NavbarAdmin token={auth?.token} />
-  ) : (
-    <NavbarCustomer token={auth?.token} />
-  );
+  return auth?.email === MAil_ADMIN ? <NavbarAdmin token={auth?.token} /> : <NavbarCustomer token={auth?.token} />;
 };
 
 export default Navigation;

@@ -8,21 +8,21 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { FC, memo } from 'react';
 
-interface AlertDialogProps {
+interface AlertDialogErrorProps {
   openAlertDialog: boolean;
   handleOnCloseDialog: () => void;
   title?: string;
   message?: string;
 }
 
-const AlertDialog: FC<AlertDialogProps> = props => {
+const AlertDialogError: FC<AlertDialogErrorProps> = props => {
   const { openAlertDialog, handleOnCloseDialog, title, message } = props;
 
   return (
-    <Dialog fullScreen={false} open={openAlertDialog} onClose={handleOnCloseDialog} aria-labelledby="dialog-title">
-      <DialogTitle id="dialog-title">{title || 'เกิดข้อผิดพลาด'}</DialogTitle>
+    <Dialog fullScreen={false} open={openAlertDialog} onClose={handleOnCloseDialog}>
+      <DialogTitle id="dialog-title">{title || 'Error'}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง'}</DialogContentText>
+        <DialogContentText>{message || 'Something Went Wrong. Please try again'}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={handleOnCloseDialog} autoFocus>
@@ -33,4 +33,4 @@ const AlertDialog: FC<AlertDialogProps> = props => {
   );
 };
 
-export default memo(AlertDialog);
+export default memo(AlertDialogError);

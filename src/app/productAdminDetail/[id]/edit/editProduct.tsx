@@ -1,6 +1,6 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, Stack, TextField, Typography, styled } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -61,17 +61,16 @@ export default function ProductForm() {
   const classes = useStyles();
   const [image, setImage] = useState<Blob | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const [productData, setProductData] = useState(null);
   const { control, handleSubmit, setValue } = useForm<ProductInput>();
   const params = useParams();
   const isMounted = useRef(false);
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState('');
   const router = useRouter();
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   const handleCloseToast = () => {
@@ -94,20 +93,28 @@ export default function ProductForm() {
   }, []);
 
   const handleGetDetailProducts = useCallback(async () => {
-    const res = await getDetailProducts(parseInt(params?.id as string));
-
-    setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
-    setValue('code', res?.data?.code || '');
-    setValue('name', res?.data?.name || '');
-    setValue('manufacturer', res?.data?.manufacturer?.name || '');
-    setValue('type', res?.data?.type || '');
-    setValue('detail', res?.data?.detail || '');
-    setValue('sellPrice', res?.data?.sellPrice || 0);
-    setValue('cost', res?.data?.cost || 0);
-    setValue('amountS', res?.data?.amountS || 0);
-    setValue('amountM', res?.data?.amountM || 0);
-    setValue('amountL', res?.data?.amountL || 0);
-    setValue('amountXL', res?.data?.amountXL || 0);
+    try {
+      const res = await getDetailProducts(parseInt(params?.id as string));
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
+      setValue('code', res?.data?.code || '');
+      setValue('name', res?.data?.name || '');
+      setValue('manufacturer', res?.data?.manufacturer?.name || '');
+      setValue('type', res?.data?.type || '');
+      setValue('detail', res?.data?.detail || '');
+      setValue('sellPrice', res?.data?.sellPrice || 0);
+      setValue('cost', res?.data?.cost || 0);
+      setValue('amountS', res?.data?.amountS || 0);
+      setValue('amountM', res?.data?.amountM || 0);
+      setValue('amountL', res?.data?.amountL || 0);
+      setValue('amountXL', res?.data?.amountXL || 0);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, [params?.id, setValue]);
 
   useEffect(() => {
@@ -129,19 +136,18 @@ export default function ProductForm() {
         formData.append('file', image as Blob);
       }
       const res = await editProduct(parseInt(params?.id as string), formData);
-      if (res?.status === '200') {
-        setToastMessage('แก้ไขสินค้าสำเร็จ');
-        setOpenToast(true);
-
-        setTimeout(() => {
-          router.push(`/product/${params?.id}`);
-        }, 1000);
-      } else {
-        setOpenAlertDialog(true);
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
       }
+      setToastMessage('Edit product successfully');
+      setOpenToast(true);
+      setTimeout(() => {
+        router.push(`/productAdminDetail/${params?.id}`);
+      }, 1000);
     } catch (error) {
-      console.error(error);
-      setOpenAlertDialog(true);
+      setOpenAlertDialogError(true);
+      return;
     }
   };
 
@@ -461,7 +467,7 @@ export default function ProductForm() {
             text={toastMessage}
             showClose={true}
           />
-          <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
+          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Card>
       </Grid>
     </form>

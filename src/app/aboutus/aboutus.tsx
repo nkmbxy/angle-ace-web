@@ -1,6 +1,6 @@
 'use client';
 
-import { Grid, Typography } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 
@@ -22,6 +22,9 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 }
 
 const useStyles = makeStyles({
+  bigContainer: {
+    padding: '2rem',
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -41,7 +44,7 @@ const useStyles = makeStyles({
     alignItems: 'left',
     justifyContent: 'left',
     marginLeft: '50px',
-    marginTop: '50px',
+    marginTop: '20px',
     marginRight: '50px',
     width: '95%',
   },
@@ -64,33 +67,35 @@ export default function AboutusPage() {
   }
 
   return (
-    <Grid container className={classes.container}>
-      <Grid container direction="column" className={classes.textBox}>
-        <Grid>
-          <h2>About Webname</h2>
-          <Grid className={classes.smallBox}>
-            <h3 className={classes.shortTitle}>Description</h3>
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur. Pulvinar fermentum rhoncus nulla morbi neque eget libero sed. In
-              molestie mi porta odio eu neque diam nibh. Pellentesque mi nisi at tempor quis proin. Mi condimentum
-              cursus amet nisl arcu sit purus mattis sed. Vitae ante faucibus nulla nulla eget pretium. Tristique at
-              tellus sem feugiat in aenean tellus sem et.{' '}
-            </Typography>
-          </Grid>
-          <Grid className={classes.smallBox}>
-            <h3 className={classes.shortTitle}>Company</h3>
-            <Typography>Add text</Typography>
-          </Grid>
-          <Grid className={classes.smallBox}>
-            <h3 className={classes.shortTitle}>Phone</h3>
-            <Typography>00-00000000</Typography>
-          </Grid>
-          <Grid className={classes.smallBox}>
-            <h3 className={classes.shortTitle}>Address</h3>
-            <Typography>Add text</Typography>
+    <Grid container className={classes.bigContainer}>
+      <Card sx={{ padding: 3, minHeight: 800, width: '100%' }}>
+        <Grid container className={classes.container}>
+          <Grid container direction="column" className={classes.textBox}>
+            <Grid>
+              <h2>About Webname</h2>
+              <Grid className={classes.smallBox}>
+                <h3 className={classes.shortTitle}>Description</h3>
+                <Typography>
+                  ANGLE ACS FLAGSHIP STORE 126 PRACHA UTHIT RD BANGKOK THAILAND OPEN DAILY 11.30 AM - 20.30 PM E-MAIL :
+                  ANGLE.ACS@GMAIL.COM LINE ID : @ANGLEACS{' '}
+                </Typography>
+              </Grid>
+              <Grid className={classes.smallBox}>
+                <h3 className={classes.shortTitle}>Company</h3>
+                <Typography>Angle acs co.,itd</Typography>
+              </Grid>
+              <Grid className={classes.smallBox}>
+                <h3 className={classes.shortTitle}>Phone</h3>
+                <Typography>091-212312</Typography>
+              </Grid>
+              <Grid className={classes.smallBox}>
+                <h3 className={classes.shortTitle}>Address</h3>
+                <Typography>126 PRACHA UTHIT RD BANGKOK THAILAND 10140</Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Card>
     </Grid>
   );
 }

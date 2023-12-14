@@ -1,6 +1,6 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Card, Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -60,13 +60,13 @@ export default function RegisterProduct() {
   const classes = useStyles();
   const [image, setImage] = useState<Blob | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
 
   const form = useForm<ProductCreateParams>({});
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   const handleCloseToast = () => {
@@ -112,13 +112,12 @@ export default function RegisterProduct() {
 
         const res = await createProduct(body);
         if (res?.status !== '200') {
-          setOpenAlertDialog(true);
+          setOpenAlertDialogError(true);
           return;
         }
         setOpenToast(true);
       } catch (error) {
-        setOpenAlertDialog(true);
-        console.log(error);
+        setOpenAlertDialogError(true);
         return;
       }
     },
@@ -175,7 +174,15 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="Detail" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField
+                          {...field}
+                          placeholder="Detail"
+                          variant="standard"
+                          rows={4}
+                          multiline
+                          fullWidth
+                          sx={{ mb: 3 }}
+                        />
                       )}
                     />
 
@@ -241,10 +248,10 @@ export default function RegisterProduct() {
               <ToastSuccess
                 openToast={openToast}
                 handleCloseToast={handleCloseToast}
-                text="ลงทะเบียนสินค้าใหม่สำเร็จ"
+                text="New product registration complete"
                 showClose={true}
               />
-              <AlertDialog openAlertDialog={openAlertDialog} handleOnCloseDialog={handleOnCloseDialog} />
+              <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
             </Grid>
           </Grid>
         </Card>

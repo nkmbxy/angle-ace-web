@@ -1,5 +1,12 @@
 import { Response, get, post } from '@utils/axios';
-import { ProductSearchParams, Products, SummaryParams, SummaryProfit, addStockParams } from '../../../typings/products';
+import {
+  AddStockParams,
+  BuyProductParams,
+  ProductSearchParams,
+  Products,
+  SummaryParams,
+  SummaryProfit,
+} from '../../../typings/products';
 
 export function getProducts(params: ProductSearchParams): Promise<Response<Products[]>> {
   return get<Products[]>('/products', { params });
@@ -25,6 +32,10 @@ export function createProduct(params: FormData): Promise<Response<string>> {
   return post<string>('/product', params);
 }
 
-export function addStockProduct(params: addStockParams[]): Promise<Response<string>> {
+export function addStockProduct(params: AddStockParams[]): Promise<Response<string>> {
   return post<string>('/product-order', params);
+}
+
+export function buyProduct(id: number, params: BuyProductParams): Promise<Response<string>> {
+  return post<string>(`/customer-order/${id}`, params);
 }

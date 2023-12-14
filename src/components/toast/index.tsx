@@ -13,11 +13,10 @@ interface ToastSuccessProps {
 
 const useStyles = makeStyles({
   snackbarStyleSuccess: {
-    backgroundColor: '#E0F8D1',
-    width: 450,
+    width: 500,
   },
   textToast: {
-    color: '#303030',
+    color: 'rgb(15, 92, 46)',
     fontWeight: 500,
     fontSize: 16,
   },
@@ -34,14 +33,15 @@ const ToastSuccess: FC<ToastSuccessProps> = props => {
         horizontal: 'center',
       }}
       open={openToast}
-      autoHideDuration={4000}
       onClose={handleCloseToast}
       ContentProps={{
         'aria-describedby': 'message-id',
         className: `${classes.snackbarStyleSuccess}`,
       }}
       sx={{
-        backgroundColor: '#E0F8D1',
+        '& .MuiSnackbarContent-root': {
+          backgroundColor: '#E0F8D1',
+        },
       }}
       message={
         <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center">

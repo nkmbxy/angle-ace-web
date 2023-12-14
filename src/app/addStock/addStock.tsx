@@ -1,23 +1,16 @@
 'use client';
 
-import AlertDialog from '@components/alertDialog/alerConfirm';
+import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Button, Card, Grid } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { makeStyles } from '@mui/styles';
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import { addStockProduct, getProducts } from '@services/apis/product';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Products, addStock, addStockRow } from '../../../typings/products';
-
-const useStyles = makeStyles({
-  formControl: {
-    width: '150px',
-    margin: '10px auto',
-  },
-});
 
 export default function AddStock() {
   const [rows, setRows] = useState<addStockRow[]>([]);
@@ -25,7 +18,7 @@ export default function AddStock() {
   const [products, setProducts] = useState<Products[]>([]);
   const form = useForm<addStock>({});
   const isMounted = useRef(false);
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState('');
   const [openDeleteConfirmDialog, setOpenDeleteConfirmDialog] = useState<boolean>(false);
@@ -120,7 +113,7 @@ export default function AddStock() {
     setRows(newRow);
     setOpenDeleteConfirmDialog(false);
     setOpenToast(true);
-    setToastMessage('ลบสินค้าสำเร็จ');
+    setToastMessage('Delete Row Successfully');
   };
 
   const handleAddRow = useCallback(
@@ -133,14 +126,18 @@ export default function AddStock() {
     [products]
   );
 
-  const handleDelete = useCallback(() => {
-    const newRow = rows.filter(row => !rowSelectionModel.includes(row.product_id));
-    setRows(newRow);
-  }, [rowSelectionModel, rows]);
-
   const handleGetProducts = useCallback(async () => {
-    const res = await getProducts({});
-    setProducts(res?.data);
+    try {
+      const res = await getProducts({});
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setProducts(res?.data);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, []);
 
   useEffect(() => {
@@ -156,14 +153,13 @@ export default function AddStock() {
     try {
       const res = await addStockProduct(rows);
       if (res?.status !== '200') {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
         return;
       }
       setOpenToast(true);
-      setToastMessage('เพิ่มสินค้าสำเร็จ');
+      setToastMessage('Add Stock Product Successfully');
     } catch (error) {
-      console.error('Error:', error);
-      setOpenAlertDialog(true);
+      setOpenAlertDialogError(true);
       return;
     } finally {
       setRows([]);
@@ -324,13 +320,14 @@ export default function AddStock() {
             text={toastMessage}
             showClose={true}
           />
-          <AlertDialog
+          <AlertDialogConfirm
             openAlertDialog={openDeleteConfirmDialog}
             handleOnCloseDialog={() => setOpenDeleteConfirmDialog(false)}
             onConfirm={handleDeleteConfirmed}
-            title="ยืนยันการลบ"
-            message="คุณต้องการลบสินค้าที่เลือกใช่หรือไม่?"
+            title="Comfirm Delete"
+            message="Do you want to delete the selected products?"
           />
+          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Card>
       </Grid>
     </form>

@@ -1,25 +1,21 @@
 'use client';
 
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  Grid,
-  Typography,
-} from '@mui/material';
+import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
+import AlertDialogError from '@components/alertDialog/alertError';
+import ToastSuccess from '@components/toast';
+import { Button, Card, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { getDetailCustomer } from '@services/apis/product';
+import { buyProduct, getDetailCustomer } from '@services/apis/product';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { ProductInput, Products } from '../../../../typings/products';
+import { Products } from '../../../../typings/products';
 
 const useStyles = makeStyles({
+  bigContainer: {
+    padding: '2rem',
+    display: 'flex',
+    justifyContent: 'center',
+  },
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -56,20 +52,27 @@ const useStyles = makeStyles({
 export default function ProductDetailPage() {
   const classes = useStyles();
   const [productQuantity, setProductQuantity] = useState(1);
-  const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
-  const { control, setValue } = useForm<ProductInput>();
   const params = useParams();
   const isMounted = useRef(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [productDetails, setProductDetails] = useState<Products | null>(null);
+  const [selectedSize, setSelectedSize] = useState('S');
+  const sizes = ['S', 'M', 'L', 'XL'];
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
+  const [titleDialogError, setTitleDialogError] = useState<string>('Error');
+  const [messageDialogError, setMessageDialogError] = useState<string>('Something Went Wrong. Please try again');
+  const [openToast, setOpenToast] = useState<boolean>(false);
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const handleOpenConfirmDialog = () => {
+    setOpenConfirmDialog(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false);
+  };
+
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
   };
 
   const handleIncreaseQuantity = () => {
@@ -82,51 +85,112 @@ export default function ProductDetailPage() {
     }
   };
 
-  const handleOrder = useCallback(() => {
-    handleOpenDialog();
-  }, []);
-
-  const handleConfirmOrder = () => {
-    setOrderSuccess(true);
-    setOpenDialog(false);
+  const handleCloseToast = () => {
+    setOpenToast(false);
   };
 
-  const handleResetOrderStatus = () => {
-    setValue('name', '');
-    setValue('code', '');
-    setValue('sellPrice', 0);
-    setProductQuantity(1);
-    setSelectedSize('');
-    setOrderSuccess(false);
-  };
+  const handleValidateOutOfStock = useCallback((): boolean => {
+    if (productDetails) {
+      switch (selectedSize) {
+        case 'S': {
+          return productQuantity > productDetails.amountS;
+        }
+        case 'M': {
+          return productQuantity > productDetails.amountM;
+        }
+        case 'L': {
+          return productQuantity > productDetails.amountL;
+        }
+        case 'XL': {
+          return productQuantity > productDetails.amountXL;
+        }
+        default:
+          return false;
+      }
+    }
+    return false;
+  }, [productDetails, productQuantity, selectedSize]);
 
-  const [selectedSize, setSelectedSize] = useState('');
+  const handleConfirmOrder = useCallback(async () => {
+    try {
+      setOpenConfirmDialog(false);
+      const isOutOfStock = handleValidateOutOfStock();
+      if (isOutOfStock) {
+        setOpenAlertDialogError(true);
+        setTitleDialogError('Error');
+        setMessageDialogError('Product Out Of Stock');
+        return;
+      }
+      const productId = parseInt(params?.id as string);
+      const res = await buyProduct(productId, { amount: productQuantity, size: selectedSize });
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setOpenToast(true);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
+  }, [handleValidateOutOfStock, params?.id, productQuantity, selectedSize]);
 
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size);
   };
 
-  const sizes = ['S', 'M', 'L', 'XL'];
+  const renderNearlyOutOfStock = (): JSX.Element | undefined => {
+    switch (selectedSize) {
+      case 'S':
+        if (productDetails && productDetails?.amountS < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      case 'M':
+        if (productDetails && productDetails?.amountM < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      case 'L':
+        if (productDetails && productDetails?.amountL < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      case 'XL':
+        if (productDetails && productDetails?.amountXL < 5) {
+          return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
+        } else {
+          <></>;
+        }
+        break;
+      default:
+        return <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>*nearly out of stock</Typography>;
+    }
+  };
 
   const handleGetDetailProducts = useCallback(async () => {
     try {
       const productId = parseInt(params?.id as string);
-      console.log(productId);
       if (!isNaN(productId)) {
         const res = await getDetailCustomer(productId);
-
-        setImageSrc(res?.data?.pathImage || '/assets/images/default-image.png');
-        setValue('name', res?.data?.name || '');
-        setValue('code', res?.data?.code || '');
-        setValue('sellPrice', res?.data?.sellPrice || 0);
-        setValue('detail', res?.data?.detail || '');
+        if (res?.status !== '200') {
+          setOpenAlertDialogError(true);
+          return;
+        }
+        setProductDetails(res?.data);
       } else {
         console.error('Invalid product ID');
       }
     } catch (error) {
-      console.error('Error fetching product details:', error);
+      setOpenAlertDialogError(true);
+      return;
     }
-  }, [params?.id, setValue]);
+  }, [params?.id]);
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -138,181 +202,169 @@ export default function ProductDetailPage() {
   }, [handleGetDetailProducts]);
 
   return (
-    <Grid container spacing={1} className={classes.container} alignItems="flex-start">
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        spacing={4}
-        container
-        direction="row"
-        justifyContent="center"
-        sx={{ marginTop: '15px' }}
-      >
-        <Grid item xs={10} sm={6}>
-          <Box>
-            {imageSrc && (
+    <Grid container className={classes.bigContainer}>
+      <Card sx={{ padding: 3, minHeight: 700, width: '70%' }}>
+        <Grid container spacing={1} className={classes.container} alignItems="flex-start">
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            spacing={4}
+            container
+            direction="row"
+            justifyContent="center"
+            sx={{ marginTop: '15px' }}
+          >
+            <Grid item xs={10} sm={6}>
               <img
-                src={imageSrc}
+                src={productDetails?.pathImage || '/assets/images/default-image.png'}
                 alt="Product Image"
                 style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
               />
-            )}
-          </Box>
-        </Grid>
+            </Grid>
 
-        <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
+            <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Product name: {productDetails?.name}
+                Product name:
+                <span style={{ fontWeight: 'lighter' }}>{productDetails?.name}</span>
               </Typography>
-            )}
-          />
 
-          <Controller
-            name="code"
-            control={control}
-            render={({ field }) => (
               <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Product ID: {productDetails?.code}
+                Product ID:
+                <span style={{ fontWeight: 'lighter' }}>{productDetails?.code}</span>
               </Typography>
-            )}
-          />
 
-          <Controller
-            name="sellPrice"
-            control={control}
-            render={({ field }) => (
               <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Price: {productDetails?.sellPrice}
+                Price:
+                <span style={{ fontWeight: 'lighter' }}>{productDetails?.sellPrice}</span>
               </Typography>
-            )}
-          />
 
-          <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold', marginTop: '20px' }}>
-            SIZE
-          </Typography>
+              <Typography
+                variant="subtitle1"
+                align="left"
+                gutterBottom
+                style={{ fontWeight: 'bold', marginTop: '20px' }}
+              >
+                SIZE
+              </Typography>
 
-          <Grid container spacing={1}>
-            {sizes.map(size => (
-              <Grid item key={size}>
+              <Grid container spacing={1}>
+                {sizes.map(size => (
+                  <Grid item key={size}>
+                    <Button
+                      variant="contained"
+                      color={selectedSize === size ? 'primary' : 'inherit'}
+                      onClick={() => handleSizeSelect(size)}
+                      style={{
+                        border: `1px solid ${selectedSize === size ? '#dadada' : 'lightpink'}`,
+                        borderRadius: '50%',
+                        minWidth: '30px',
+                        width: '30px',
+                        height: '30px',
+                        textTransform: 'none',
+                        fontWeight: 600,
+                        color: selectedSize === size ? 'white' : 'black',
+                        backgroundColor: selectedSize === size ? 'lightpink' : 'transparent',
+                        boxShadow: 'none',
+                      }}
+                    >
+                      {size}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+
+              <Typography variant="subtitle1" align="left" style={{ fontWeight: 'bold', marginTop: '20px' }}>
+                QUANTITY
+              </Typography>
+              <Grid container justifyContent="left" spacing={1} className={classes.quantityControls}>
+                <Grid item>
+                  <Button
+                    onClick={handleDecreaseQuantity}
+                    variant="outlined"
+                    style={{ borderColor: '#dadada', color: 'black' }}
+                  >
+                    -
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">{productQuantity}</Typography>
+                </Grid>
+
+                <Grid item>
+                  <Button
+                    onClick={handleIncreaseQuantity}
+                    variant="outlined"
+                    style={{ borderColor: '#dadada', color: 'black' }}
+                  >
+                    +
+                  </Button>
+                </Grid>
+              </Grid>
+              {renderNearlyOutOfStock()}
+              <Grid>
                 <Button
+                  onClick={handleOpenConfirmDialog}
                   variant="contained"
-                  color={selectedSize === size ? 'primary' : 'inherit'}
-                  onClick={() => handleSizeSelect(size)}
-                  style={{
-                    border: `1px solid ${selectedSize === size ? '#dadada' : 'lightpink'}`,
-                    borderRadius: '50%',
-                    minWidth: '30px',
-                    width: '30px',
-                    height: '30px',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    color: selectedSize === size ? 'white' : 'black',
-                    backgroundColor: selectedSize === size ? 'lightpink' : 'transparent',
-                    boxShadow: 'none',
+                  sx={{
+                    backgroundColor: '#ff8da3',
+                    '&:hover': {
+                      backgroundColor: '#fd5f7d',
+                    },
+                    color: 'white',
+                    borderRadius: '20px',
+                    marginTop: '20px',
                   }}
                 >
-                  {size}
+                  Order Now
                 </Button>
               </Grid>
-            ))}
-          </Grid>
-
-          <Typography variant="subtitle1" align="left" style={{ fontWeight: 'bold', marginTop: '20px' }}>
-            QUANTITY
-          </Typography>
-          <Grid container justifyContent="left" spacing={1} className={classes.quantityControls}>
-            <Grid item>
-              <Button
-                onClick={handleDecreaseQuantity}
-                variant="outlined"
-                style={{ borderColor: '#dadada', color: 'black' }}
-              >
-                -
-              </Button>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1">{productQuantity}</Typography>
             </Grid>
 
-            <Grid item>
-              <Button
-                onClick={handleIncreaseQuantity}
-                variant="outlined"
-                style={{ borderColor: '#dadada', color: 'black' }}
-              >
-                +
-              </Button>
-            </Grid>
-          </Grid>
-          <Typography sx={{ mt: 1, fontSize: '13px', color: 'red' }}>nearly out of stock</Typography>
+            <ToastSuccess
+              openToast={openToast}
+              handleCloseToast={handleCloseToast}
+              text="Your order has been placed successfully!"
+              showClose={true}
+            />
 
-          <Grid>
-            <Button
-              onClick={handleOrder}
-              variant="contained"
-              sx={{
-                backgroundColor: '#ff8da3',
-                '&:hover': {
-                  backgroundColor: '#fd5f7d',
-                },
-                color: 'white',
-                borderRadius: '20px',
-                marginTop: '20px',
-              }}
+            <AlertDialogConfirm
+              onConfirm={handleConfirmOrder}
+              openAlertDialog={openConfirmDialog}
+              handleOnCloseDialog={handleCloseConfirmDialog}
+              message="Are you sure you want to place the order?"
+              title="Confirm Order"
+            />
+
+            <AlertDialogError
+              openAlertDialog={openAlertDialogError}
+              handleOnCloseDialog={handleOnCloseDialog}
+              message={messageDialogError}
+              title={titleDialogError}
+            />
+
+            <Grid
+              item
+              sx={{ width: '80%', padding: '0 5px', marginTop: '20px', justifyContent: 'center', alignItems: 'center' }}
             >
-              Order Now
-            </Button>
-          </Grid>
-
-          <Dialog open={openDialog} onClose={handleCloseDialog}>
-            <DialogTitle>Confirm Order</DialogTitle>
-            <DialogContent>
-              <DialogContentText>Are you sure you want to place the order?</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDialog} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleConfirmOrder} color="primary">
-                Confirm
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-          <Dialog open={orderSuccess} onClose={handleResetOrderStatus}>
-            <DialogTitle>Order Successful</DialogTitle>
-            <DialogContent>
-              <DialogContentText>Your order has been placed successfully!</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleResetOrderStatus} color="primary">
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Grid>
-
-        <Grid
-          item
-          sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
-          <Controller
-            name="detail"
-            control={control}
-            render={({ field }) => (
-              <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
-                DESCRIPTION {productDetails?.detail}
+              <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada', width: '90%' }}></Divider>
+              <Typography variant="subtitle1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
+                DESCRIPTION
               </Typography>
-            )}
-          />
+              <Grid item sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Typography
+                  variant="subtitle1"
+                  align="center"
+                  gutterBottom
+                  sx={{ fontWeight: 'bold', whiteSpace: 'pre-line' }}
+                >
+                  {productDetails?.detail}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
+      </Card>
     </Grid>
   );
 }

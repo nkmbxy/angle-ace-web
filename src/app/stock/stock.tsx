@@ -1,5 +1,6 @@
 'use client';
 
+import AlertDialogError from '@components/alertDialog/alertError';
 import {
   Button,
   Card,
@@ -23,16 +24,39 @@ import { ProductSearchParams, Products } from '../../../typings/products';
 export default function StockComponent() {
   const [products, setProducts] = useState<Products[]>([]);
   const form = useForm<ProductSearchParams>({});
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const isMounted = useRef(false);
 
+  const handleOnCloseDialog = () => {
+    setOpenAlertDialogError(false);
+  };
+
   const handleSearchProducts = useCallback(async (search: ProductSearchParams) => {
-    const res = await getProducts(search);
-    setProducts(res?.data);
+    try {
+      const res = await getProducts(search);
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setProducts(res?.data);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, []);
 
   const handleGetProducts = useCallback(async () => {
-    const res = await getProducts({});
-    setProducts(res?.data);
+    try {
+      const res = await getProducts({});
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setProducts(res?.data);
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
   }, []);
 
   useEffect(() => {
@@ -169,6 +193,7 @@ export default function StockComponent() {
             </Grid>
           </Grid>
         </Card>
+        <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
       </Grid>
     </form>
   );
