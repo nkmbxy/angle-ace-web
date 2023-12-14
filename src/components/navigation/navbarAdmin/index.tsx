@@ -57,7 +57,7 @@ const NavbarAdmin: FC<NavbarAdminProps> = props => {
               src="/assets/images/angel_acs.png"
               style={{
                 marginRight: '8px',
-                height: '40px',
+                height: '60px',
                 width: 'auto',
                 cursor: 'pointer',
               }}
