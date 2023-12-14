@@ -6,6 +6,7 @@ import { Box, Button, Card, Grid, MenuItem, Stack, TextField, Typography } from 
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { createProduct } from '@services/apis/product';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -62,6 +63,7 @@ export default function RegisterProduct() {
   const [imageSrc, setImageSrc] = useState<string>('/assets/images/default-image.png');
   const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
+  const router = useRouter();
 
   const form = useForm<ProductCreateParams>({});
 
@@ -115,13 +117,17 @@ export default function RegisterProduct() {
           setOpenAlertDialogError(true);
           return;
         }
+
         setOpenToast(true);
+        setTimeout(() => {
+          router.push(`/stock`);
+        }, 1000);
       } catch (error) {
         setOpenAlertDialogError(true);
         return;
       }
     },
-    [image]
+    [image, router]
   );
 
   return (
