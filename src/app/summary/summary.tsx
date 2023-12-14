@@ -1,6 +1,7 @@
 'use client';
 
 import AlertDialogError from '@components/alertDialog/alertError';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Button,
   Card,
@@ -146,13 +147,17 @@ export default function SummaryComponent() {
                 onClick={searchSummary}
                 fullWidth
                 sx={{
+                  borderRadius: 200,
+                  padding: '6px 6px',
+                  minWidth: 0,
                   backgroundColor: '#f7d769',
                   '&:hover': {
                     backgroundColor: '#ffe55a',
                   },
+                  width: 'auto',
                 }}
               >
-                Search
+                <SearchIcon />
               </Button>
             </Grid>
           </Grid>

@@ -1,6 +1,7 @@
 'use client';
 
 import AlertDialogError from '@components/alertDialog/alertError';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Button,
   Card,
@@ -20,7 +21,6 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductSearchParams, Products } from '../../../typings/products';
-
 export default function StockComponent() {
   const [products, setProducts] = useState<Products[]>([]);
   const form = useForm<ProductSearchParams>({});
@@ -130,13 +130,16 @@ export default function StockComponent() {
                   variant="contained"
                   type="submit"
                   sx={{
+                    borderRadius: 200,
+                    padding: '6px 6px',
+                    minWidth: 0,
                     backgroundColor: '#f7d769',
                     '&:hover': {
                       backgroundColor: '#ffe55a',
                     },
                   }}
                 >
-                  Search
+                  <SearchIcon />
                 </Button>
               </Grid>
             </Grid>
