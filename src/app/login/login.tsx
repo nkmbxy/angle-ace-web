@@ -4,11 +4,23 @@ import AlertDialog from '@components/alertDialog';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/system';
 import { LoginParams, login } from '@services/apis/auth';
 import { AuthState, authState, useSetRecoilState } from '@store/index';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+
+const CustomTextField = styled(TextField)({
+  borderRadius: '20px', // กำหนดค่าความโค้งของ TextField
+  padding: '10px 15px', // ปรับขนาดของ TextField
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '20px', // กำหนดค่าความโค้งของ Input field
+    '& fieldset': {
+      border: 'none', // ลบ border
+    },
+  },
+});
 
 const useStyles = makeStyles({
   container: {
@@ -38,6 +50,16 @@ const useStyles = makeStyles({
     height: '30px',
     marginTop: '5px',
   },
+  /*form: {
+    borderRadius: '15px', // โค้งมน
+    backgroundColor: 'white', // พื้นหลังสีขาว
+    '& input': {
+      borderRadius: '15px', // โค้งมนสำหรับ input
+      backgroundColor: 'white', // พื้นหลังสีขาวสำหรับ input
+      padding: '10px',
+      border: 'none',
+    },
+  },*/
 });
 
 export default function LoginPage() {
@@ -83,13 +105,20 @@ export default function LoginPage() {
     <form onSubmit={form.handleSubmit(handleSave)}>
       <Grid container className={classes.container}>
         <Box className={classes.pinkBox}>
-          <Typography sx={{ fontSize: '40px', textAlign: 'center', mb: 3 }}>Angel ACS</Typography>
+          <Typography sx={{ fontSize: '40px', textAlign: 'center', mb: 3 }}>Angle ACS</Typography>
           <Controller
             name="email"
             defaultValue=""
             control={form?.control}
             render={({ field }) => (
-              <TextField {...field} placeholder="Email" variant="outlined" fullWidth sx={{ mb: 3 }} />
+              <TextField
+                {...field}
+                placeholder="Email"
+                variant="outlined"
+                fullWidth
+                //className={classes.form}
+                sx={{ mb: 3 }}
+              />
             )}
           />
 

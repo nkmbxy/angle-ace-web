@@ -20,8 +20,9 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    height: '50vh',
+    height: '60vh',
     marginBottom: '40px',
+    transition: 'transform 0.3s ease-in-out',
   },
   title: {
     marginBottom: '30px',
@@ -78,7 +79,7 @@ export default function HomePage() {
         <Carousel
           className={classes.animationBox}
           autoPlay={true} // autoplay
-          interval={3000} // 3000 milliseconds (3 second)
+          interval={7000} // 7000 milliseconds (7 second)
           stopOnHover={true} // stop autoplay when mouse point slide
           infiniteLoop={true} // slide loop
           showStatus={false}
@@ -86,21 +87,18 @@ export default function HomePage() {
           showThumbs={false}
         >
           <Grid>
-            <img src="https://s1.ticketm.net/dam/a/fae/bc43b974-90f9-4c10-983d-2d38fca2cfae_RETINA_LANDSCAPE_16_9.jpg" />
+            <img src="https://www.incart.co/daddyandthemuscleacademy/static/media/uploads/media/web_com_1699950352560.png" />
           </Grid>
           <Grid>
-            <img
-              src="https://rare-gallery.com/uploads/posts/341131-NCT-Dream-NCT-Kpop-K-Pop-Members-Deja-Vu-Resonance-Pt.-1-Album.jpg"
-              alt="Image 2"
-            />
+            <img src="https://www.incart.co/daddyandthemuscleacademy/static/media/uploads/media/web_com_1693499032706.png" />
           </Grid>
           <Grid>
-            <img src="https://w.wallha.com/ws/14/Tz20COiq.png" alt="Image 3" />
+            <img src="https://www.incart.co/daddyandthemuscleacademy/static/media/uploads/media/web_com2_1680687927401.png" />
           </Grid>
         </Carousel>
       </Grid>
       <Grid item xs={12} className={classes.title}>
-        <Typography>NEW ARRIVAL</Typography>
+        <Typography style={{ fontWeight: 'bold', fontSize: '30px' }}>NEW ARRIVAL</Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Grid className={classes.boxProduct}>
