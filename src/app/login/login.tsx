@@ -1,27 +1,13 @@
 'use client';
 
-import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { styled } from '@mui/system';
 import { LoginParams, login } from '@services/apis/auth';
 import { AuthState, authState, useSetRecoilState } from '@store/index';
-import { MAil_ADMIN } from 'app/constants';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-
-const CustomTextField = styled(TextField)({
-  borderRadius: '20px', // กำหนดค่าความโค้งของ TextField
-  padding: '10px 15px', // ปรับขนาดของ TextField
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '20px', // กำหนดค่าความโค้งของ Input field
-    '& fieldset': {
-      border: 'none', // ลบ border
-    },
-  },
-});
 
 const useStyles = makeStyles({
   container: {
@@ -51,22 +37,12 @@ const useStyles = makeStyles({
     height: '30px',
     marginTop: '5px',
   },
-  /*form: {
-    borderRadius: '15px', // โค้งมน
-    backgroundColor: 'white', // พื้นหลังสีขาว
-    '& input': {
-      borderRadius: '15px', // โค้งมนสำหรับ input
-      backgroundColor: 'white', // พื้นหลังสีขาวสำหรับ input
-      padding: '10px',
-      border: 'none',
-    },
-  },*/
 });
 
 export default function LoginPage() {
   const router = useRouter();
   const classes = useStyles();
-  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
+  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const setAuth = useSetRecoilState<AuthState>(authState);
   const [openToast, setOpenToast] = useState<boolean>(false);
   const form = useForm<LoginParams>({});
@@ -75,19 +51,19 @@ export default function LoginPage() {
       try {
         const res = await login(search);
         if (res?.status !== '200') {
-          setOpenAlertDialogError(true);
+          setOpenAlertDialog(true);
           return;
         }
         localStorage.setItem('auth', JSON.stringify(res?.data));
         setAuth(res?.data);
-        if (res?.data?.email === MAil_ADMIN) {
+        if (res?.data?.email === 'admin@gmail.com') {
           router.push('/summary');
           return;
         }
         router.push('/');
         setOpenToast(true);
       } catch (error) {
-        setOpenAlertDialogError(true);
+        setOpenAlertDialog(true);
         return;
       }
     },
@@ -99,14 +75,14 @@ export default function LoginPage() {
   };
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialogError(false);
+    setOpenAlertDialog(false);
   };
 
   return (
     <form onSubmit={form.handleSubmit(handleSave)}>
       <Grid container className={classes.container}>
         <Box className={classes.pinkBox}>
-          <Typography sx={{ fontSize: '40px', textAlign: 'center', mb: 3 }}>Angle ACS</Typography>
+          <Typography sx={{ fontSize: '40px', textAlign: 'center', mb: 3, fontWeight: 'bold' }}>Angel ACS</Typography>
           <Controller
             name="email"
             defaultValue=""
@@ -117,8 +93,13 @@ export default function LoginPage() {
                 placeholder="Email"
                 variant="outlined"
                 fullWidth
-                //className={classes.form}
-                sx={{ mb: 3 }}
+                sx={{
+                  mb: 3,
+                  backgroundColor: 'white',
+                  '& fieldset': {
+                    borderColor: 'white',
+                  },
+                }}
               />
             )}
           />
@@ -134,7 +115,13 @@ export default function LoginPage() {
                 placeholder="Password"
                 variant="outlined"
                 fullWidth
-                sx={{ mb: 3 }}
+                sx={{
+                  mb: 3,
+                  backgroundColor: 'white',
+                  '& fieldset': {
+                    borderColor: 'white',
+                  },
+                }}
               />
             )}
           />
@@ -164,7 +151,6 @@ export default function LoginPage() {
             text="สมัครสมาชิกสำเร็จ"
             showClose={true}
           />
-          <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
         </Box>
       </Grid>
     </form>

@@ -347,8 +347,13 @@ export default function ProductDetailPage() {
               item
               sx={{ width: '80%', padding: '0 5px', marginTop: '20px', justifyContent: 'center', alignItems: 'center' }}
             >
-              <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada', width: '90%' }}></Divider>
-              <Typography variant="subtitle1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
+              <Divider style={{ marginTop: '1px', height: '1px', backgroundColor: '#dadada', width: '90%' }}></Divider>
+              <Typography
+                variant="subtitle1"
+                align="center"
+                gutterBottom
+                sx={{ fontWeight: 'bold', marginTop: '40px' }}
+              >
                 DESCRIPTION
               </Typography>
               <Grid item sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

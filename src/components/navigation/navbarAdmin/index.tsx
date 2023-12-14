@@ -54,7 +54,7 @@ const NavbarAdmin: FC<NavbarAdminProps> = props => {
         <Toolbar disableGutters>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <img
-              src="/assets/images/Angel.png"
+              src="/assets/images/angel_acs.png"
               style={{
                 marginRight: '8px',
                 height: '40px',

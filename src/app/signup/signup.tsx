@@ -70,8 +70,8 @@ export default function Signup() {
               alignItems: 'center',
             }}
           >
-            <Typography variant="h4" sx={{ mb: 5 }}>
-              Signup
+            <Typography variant="h4" sx={{ mb: 5, fontWeight: 'bold' }}>
+              Sign up
             </Typography>
             <Stack sx={{ width: '50%' }}>
               <Controller

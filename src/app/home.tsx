@@ -113,17 +113,10 @@ export default function HomePage() {
       <Grid item xs={12} sx={{ display: 'grid' }}>
         <Carousel
           className={classes.animationBox}
-<<<<<<< HEAD
           autoPlay={true} // autoplay
           interval={7000} // 7000 milliseconds (7 second)
           stopOnHover={true} // stop autoplay when mouse point slide
           infiniteLoop={true} // slide loop
-=======
-          autoPlay={true}
-          interval={3000}
-          stopOnHover={true}
-          infiniteLoop={true}
->>>>>>> c95bc521466809e59f10a9dd1079383ecc514135
           showStatus={false}
           showIndicators={false}
           showThumbs={false}
