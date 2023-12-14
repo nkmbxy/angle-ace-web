@@ -23,7 +23,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    height: '60vh',
     marginBottom: '40px',
     transition: 'transform 0.3s ease-in-out',
   },
@@ -113,10 +112,10 @@ export default function HomePage() {
       <Grid item xs={12} sx={{ display: 'grid' }}>
         <Carousel
           className={classes.animationBox}
-          autoPlay={true} // autoplay
-          interval={7000} // 7000 milliseconds (7 second)
-          stopOnHover={true} // stop autoplay when mouse point slide
-          infiniteLoop={true} // slide loop
+          autoPlay={true}
+          interval={7000}
+          stopOnHover={true}
+          infiniteLoop={true}
           showStatus={false}
           showIndicators={false}
           showThumbs={false}
@@ -145,7 +144,7 @@ export default function HomePage() {
               <Grid className={classes.shortDetail}>
                 <Typography className={classes.textDetail}>{product?.name}</Typography>
                 <Typography className={classes.textDetail}>{product?.manufacturer?.name}</Typography>
-                <Typography className={classes.textDetail}>{product?.sellPrice}</Typography>
+                <Typography className={classes.textDetail}>Price : {product?.sellPrice} THB</Typography>
               </Grid>
             </Grid>
           </Link>

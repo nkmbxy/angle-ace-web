@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-yarn prettier
-yarn lint:fix
-yarn lint
-
-echo '🎉 No error found: committing this now.... ✨🚀🏄‍♂️🍻'
