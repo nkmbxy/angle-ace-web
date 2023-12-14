@@ -131,7 +131,7 @@ export default function HomePage() {
           </Grid>
         </Carousel>
       </Grid>
-      <Grid item xs={12} className={classes.title}>
+      <Grid item xs={12} className={classes.title} sx={{ marginBottom: '20px' }}>
         <Typography style={{ fontWeight: 'bold', fontSize: '30px' }}>NEW ARRIVAL</Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

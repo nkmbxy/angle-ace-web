@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
     borderStyle: 'solid',
     borderWidth: '0.3rem',
     borderColor: '#9C9C9C',
-    padding: '20px',
+    padding: '30px',
     borderRadius: '0.5rem',
   },
   centerEverything: {
@@ -133,13 +133,13 @@ export default function RegisterProduct() {
   return (
     <form onSubmit={form.handleSubmit(handleSave)}>
       <Grid container className={classes.bigContainer}>
-        <Card sx={{ padding: 3, width: '70%' }}>
+        <Card sx={{ padding: 4, width: '70%' }}>
           <Grid container>
             <Typography sx={{ mb: 2, fontSize: '30px', fontWeight: 'bold' }}>Product Information</Typography>
 
             <Grid container className={classes.containerGray}>
               <Stack direction="column" sx={{ width: '100%' }}>
-                <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+                <Stack direction="row" spacing={6} sx={{ width: '100%' }}>
                   <Stack
                     direction="column"
                     sx={{

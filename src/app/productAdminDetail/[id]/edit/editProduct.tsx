@@ -274,7 +274,6 @@ export default function ProductForm() {
                         {...field}
                         label="Detail"
                         variant="standard"
-                        color="warning"
                         multiline
                         rows={4}
                         focused
@@ -295,7 +294,6 @@ export default function ProductForm() {
                         {...field}
                         label="Sell Price"
                         variant="standard"
-                        color="warning"
                         focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}
@@ -311,7 +309,6 @@ export default function ProductForm() {
                         {...field}
                         label="Cost"
                         variant="standard"
-                        color="warning"
                         focused
                         fullWidth
                         sx={{ mb: 3, width: '70%' }}

@@ -36,7 +36,6 @@ const useStyles = makeStyles({
   },
   quantityContainer: {
     display: 'flex',
-    alignItems: 'center',
   },
   form: {
     display: 'flex',
@@ -203,12 +202,12 @@ export default function ProductDetailPage() {
 
   return (
     <Grid container className={classes.bigContainer}>
-      <Card sx={{ padding: 3, minHeight: 700, width: '70%' }}>
+      <Card sx={{ padding: 0, minHeight: 700, width: '70%' }}>
         <Grid container spacing={1} className={classes.container} alignItems="flex-start">
           <Grid
             item
             xs={12}
-            sm={6}
+            sm={8}
             spacing={4}
             container
             direction="row"
@@ -219,7 +218,13 @@ export default function ProductDetailPage() {
               <img
                 src={productDetails?.pathImage || '/assets/images/default-image.png'}
                 alt="Product Image"
-                style={{ maxWidth: '100%', height: 'auto', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
               />
             </Grid>
 

@@ -68,7 +68,7 @@ export default function AboutusPage() {
 
   return (
     <Grid container className={classes.bigContainer}>
-      <Card sx={{ padding: 3, minHeight: 800, width: '100%' }}>
+      <Card sx={{ padding: 3, minHeight: 700, width: '100%' }}>
         <Grid container className={classes.container}>
           <Grid container direction="column" className={classes.textBox}>
             <Grid>
@@ -76,9 +76,11 @@ export default function AboutusPage() {
               <Grid className={classes.smallBox}>
                 <h3 className={classes.shortTitle}>Description</h3>
                 <Typography>
-                  ANGLE ACS FLAGSHIP STORE 126 PRACHA UTHIT RD BANGKOK THAILAND OPEN DAILY 11.30 AM - 20.30 PM E-MAIL :
-                  ANGLE.ACS@GMAIL.COM LINE ID : @ANGLEACS{' '}
+                  ANGLE ACS FLAGSHIP STORE 126 PRACHA UTHIT RD BANGKOK THAILAND OPEN DAILY 11.30 AM - 20.30 PM
                 </Typography>
+                <Typography>E-MAIL: ANGLE.ACS@GMAIL.COM </Typography>
+
+                <Typography>LINE ID: @ANGLEACS</Typography>
               </Grid>
               <Grid className={classes.smallBox}>
                 <h3 className={classes.shortTitle}>Company</h3>
