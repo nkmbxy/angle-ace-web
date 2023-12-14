@@ -225,15 +225,18 @@ export default function ProductDetailPage() {
 
             <Grid item xs={12} sm={6} style={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Product name: {productDetails?.name}
+                Product name:
+                <span style={{ fontWeight: 'lighter' }}>{productDetails?.name}</span>
               </Typography>
 
               <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Product ID: {productDetails?.code}
+                Product ID:
+                <span style={{ fontWeight: 'lighter' }}>{productDetails?.code}</span>
               </Typography>
 
               <Typography variant="subtitle1" align="left" gutterBottom style={{ fontWeight: 'bold' }}>
-                Price: {productDetails?.sellPrice}
+                Price:
+                <span style={{ fontWeight: 'lighter' }}>{productDetails?.sellPrice}</span>
               </Typography>
 
               <Typography
@@ -342,14 +345,21 @@ export default function ProductDetailPage() {
 
             <Grid
               item
-              sx={{ width: '80%', padding: '0 5px', marginTop: '60px', justifyContent: 'center', alignItems: 'center' }}
+              sx={{ width: '80%', padding: '0 5px', marginTop: '20px', justifyContent: 'center', alignItems: 'center' }}
             >
-              <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada' }}></Divider>
-              <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 'bold' }}>
+              <Divider style={{ marginTop: '2px', height: '1px', backgroundColor: '#dadada', width: '90%' }}></Divider>
+              <Typography variant="subtitle1" align="center" gutterBottom sx={{ fontWeight: 'bold' }}>
                 DESCRIPTION
               </Typography>
               <Grid item sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {productDetails?.detail}
+                <Typography
+                  variant="subtitle1"
+                  align="center"
+                  gutterBottom
+                  sx={{ fontWeight: 'bold', whiteSpace: 'pre-line' }}
+                >
+                  {productDetails?.detail}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>

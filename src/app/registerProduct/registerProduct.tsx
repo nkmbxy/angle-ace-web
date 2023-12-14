@@ -174,7 +174,15 @@ export default function RegisterProduct() {
                       defaultValue=""
                       control={form?.control}
                       render={({ field }) => (
-                        <TextField {...field} placeholder="Detail" variant="standard" fullWidth sx={{ mb: 3 }} />
+                        <TextField
+                          {...field}
+                          placeholder="Detail"
+                          variant="standard"
+                          rows={4}
+                          multiline
+                          fullWidth
+                          sx={{ mb: 3 }}
+                        />
                       )}
                     />
 
@@ -240,7 +248,7 @@ export default function RegisterProduct() {
               <ToastSuccess
                 openToast={openToast}
                 handleCloseToast={handleCloseToast}
-                text="ลงทะเบียนสินค้าใหม่สำเร็จ"
+                text="New product registration complete"
                 showClose={true}
               />
               <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />

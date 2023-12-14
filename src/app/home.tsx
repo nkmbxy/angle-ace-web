@@ -38,9 +38,9 @@ const useStyles = makeStyles({
     height: '300px',
     margin: '50px',
     borderRadius: '20px',
-    transition: 'transform 0.3s ease-in-out', // Add transition for hover effect
+    transition: 'transform 0.3s ease-in-out',
     '&:hover': {
-      transform: 'scale(1.05)', // Enlarge on hover
+      transform: 'scale(1.05)',
     },
     marginTop: '20px',
   },
@@ -112,10 +112,10 @@ export default function HomePage() {
       <Grid item xs={12} sx={{ display: 'grid' }}>
         <Carousel
           className={classes.animationBox}
-          autoPlay={true} // autoplay
-          interval={3000} // 3000 milliseconds (3 second)
-          stopOnHover={true} // stop autoplay when mouse point slide
-          infiniteLoop={true} // slide loop
+          autoPlay={true}
+          interval={3000}
+          stopOnHover={true}
+          infiniteLoop={true}
           showStatus={false}
           showIndicators={false}
           showThumbs={false}

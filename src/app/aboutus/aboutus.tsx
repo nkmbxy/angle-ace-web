@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     alignItems: 'left',
     justifyContent: 'left',
     marginLeft: '50px',
-    marginTop: '50px',
+    marginTop: '20px',
     marginRight: '50px',
     width: '95%',
   },
@@ -76,23 +76,21 @@ export default function AboutusPage() {
               <Grid className={classes.smallBox}>
                 <h3 className={classes.shortTitle}>Description</h3>
                 <Typography>
-                  Lorem ipsum dolor sit amet consectetur. Pulvinar fermentum rhoncus nulla morbi neque eget libero sed.
-                  In molestie mi porta odio eu neque diam nibh. Pellentesque mi nisi at tempor quis proin. Mi
-                  condimentum cursus amet nisl arcu sit purus mattis sed. Vitae ante faucibus nulla nulla eget pretium.
-                  Tristique at tellus sem feugiat in aenean tellus sem et.{' '}
+                  ANGLE ACS FLAGSHIP STORE 126 PRACHA UTHIT RD BANGKOK THAILAND OPEN DAILY 11.30 AM - 20.30 PM E-MAIL :
+                  ANGLE.ACS@GMAIL.COM LINE ID : @ANGLEACS{' '}
                 </Typography>
               </Grid>
               <Grid className={classes.smallBox}>
                 <h3 className={classes.shortTitle}>Company</h3>
-                <Typography>Add text</Typography>
+                <Typography>Angle acs co.,itd</Typography>
               </Grid>
               <Grid className={classes.smallBox}>
                 <h3 className={classes.shortTitle}>Phone</h3>
-                <Typography>00-00000000</Typography>
+                <Typography>091-212312</Typography>
               </Grid>
               <Grid className={classes.smallBox}>
                 <h3 className={classes.shortTitle}>Address</h3>
-                <Typography>Add text</Typography>
+                <Typography>126 PRACHA UTHIT RD BANGKOK THAILAND 10140</Typography>
               </Grid>
             </Grid>
           </Grid>

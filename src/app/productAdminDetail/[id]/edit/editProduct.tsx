@@ -140,7 +140,7 @@ export default function ProductForm() {
         setOpenAlertDialogError(true);
         return;
       }
-      setToastMessage('แก้ไขสินค้าสำเร็จ');
+      setToastMessage('Edit product successfully');
       setOpenToast(true);
       setTimeout(() => {
         router.push(`/productAdminDetail/${params?.id}`);
