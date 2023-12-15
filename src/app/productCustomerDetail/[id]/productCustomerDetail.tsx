@@ -127,9 +127,10 @@ export default function ProductDetailPage() {
         return;
       }
       setOpenToast(true);
+      setSelectedSize('S');
+      setProductQuantity(1);
     } catch (error) {
       setOpenAlertDialogError(true);
-      return;
     }
   }, [handleValidateOutOfStock, params?.id, productQuantity, selectedSize]);
 
