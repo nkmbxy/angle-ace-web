@@ -1,10 +1,11 @@
 'use client';
 
+import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { LoginParams, login } from '@services/apis/auth';
-import { AuthState, authState, useSetRecoilState } from '@store/index';
+import { AuthState, activeLinkState, authState, useSetRecoilState } from '@store/index';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -42,32 +43,36 @@ const useStyles = makeStyles({
 export default function LoginPage() {
   const router = useRouter();
   const classes = useStyles();
-  const [openAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const setAuth = useSetRecoilState<AuthState>(authState);
+  const setActiveLink = useSetRecoilState<string>(activeLinkState);
   const [openToast, setOpenToast] = useState<boolean>(false);
+
   const form = useForm<LoginParams>({});
   const handleSave = useCallback(
     async (search: LoginParams) => {
       try {
         const res = await login(search);
         if (res?.status !== '200') {
-          setOpenAlertDialog(true);
+          setOpenAlertDialogError(true);
           return;
         }
         localStorage.setItem('auth', JSON.stringify(res?.data));
         setAuth(res?.data);
         if (res?.data?.email === 'admin@gmail.com') {
           router.push('/summary');
+          setActiveLink('Summary');
           return;
         }
         router.push('/');
+        setActiveLink('Home');
         setOpenToast(true);
       } catch (error) {
-        setOpenAlertDialog(true);
+        setOpenAlertDialogError(true);
         return;
       }
     },
-    [router, setAuth]
+    [router, setActiveLink, setAuth]
   );
 
   const handleCloseToast = () => {
@@ -75,7 +80,7 @@ export default function LoginPage() {
   };
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialog(false);
+    setOpenAlertDialogError(false);
   };
 
   return (
@@ -152,6 +157,7 @@ export default function LoginPage() {
             showClose={true}
           />
         </Box>
+        <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
       </Grid>
     </form>
   );

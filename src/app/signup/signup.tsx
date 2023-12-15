@@ -5,7 +5,7 @@ import ToastSuccess from '@components/toast';
 import { Button, Card, Grid, Stack, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { SignupParams, signup } from '@services/apis/auth';
-import { AuthState, authState, useSetRecoilState } from '@store/index';
+import { AuthState, activeLinkState, authState, useSetRecoilState } from '@store/index';
 import { MAil_ADMIN } from 'app/constants';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -26,6 +26,7 @@ export default function Signup() {
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const setAuth = useSetRecoilState<AuthState>(authState);
+  const setActiveLink = useSetRecoilState<string>(activeLinkState);
   const handleSave = useCallback(
     async (search: SignupParams) => {
       try {
@@ -38,16 +39,18 @@ export default function Signup() {
         setAuth(res?.data);
         if (res?.data?.email === MAil_ADMIN) {
           router.push('/summary');
+          setActiveLink('Summary');
           return;
         }
         router.push('/');
+        setActiveLink('Home');
         setOpenToast(true);
       } catch (error) {
         setOpenAlertDialogError(true);
         return;
       }
     },
-    [router, setAuth]
+    [router, setActiveLink, setAuth]
   );
 
   const handleCloseToast = () => {

@@ -10,7 +10,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { AuthState, authState, useSetRecoilState } from '@store/index';
+import { AuthState, activeLinkState, authState, useRecoilState, useSetRecoilState } from '@store/index';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -31,7 +31,7 @@ const NavbarAdmin: FC<NavbarAdminProps> = props => {
   const { token } = props;
   const router = useRouter();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [activeLink, setActiveLink] = useState<string>('');
+  const [activeLink, setActiveLink] = useRecoilState<string>(activeLinkState);
   const setAuth = useSetRecoilState<AuthState>(authState);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -46,6 +46,7 @@ const NavbarAdmin: FC<NavbarAdminProps> = props => {
     localStorage.removeItem('auth');
     setAuth({ email: '', token: '' });
     router.push('/login');
+    setActiveLink('');
   };
 
   return (
@@ -187,7 +188,9 @@ const NavbarAdmin: FC<NavbarAdminProps> = props => {
                 color: '#FFFFFF',
               }}
             >
-              <Link href="/login">Login</Link>
+              <Link href="/login" onClick={() => setActiveLink('')}>
+                Login
+              </Link>
             </Button>
           )}
         </Toolbar>
