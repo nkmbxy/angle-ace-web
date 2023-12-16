@@ -15,12 +15,14 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import { getProducts } from '@services/apis/product';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductSearchParams, Products } from '../../../typings/products';
+
 export default function StockComponent() {
   const [products, setProducts] = useState<Products[]>([]);
   const form = useForm<ProductSearchParams>({});
@@ -150,6 +152,7 @@ export default function StockComponent() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
+                        <TableCell align="center">Select</TableCell>
                         <TableCell align="center">Id</TableCell>
                         <TableCell align="center">Name</TableCell>
                         <TableCell align="center">Manufacturer</TableCell>
@@ -166,6 +169,9 @@ export default function StockComponent() {
                       {products.length > 0 ? (
                         products.map((row, index) => (
                           <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell padding="checkbox">
+                              <Checkbox />
+                            </TableCell>
                             <Link href={`/productAdminDetail/${row.id}`}>
                               <TableCell align="center" sx={{ color: 'red' }}>
                                 {row.code}
