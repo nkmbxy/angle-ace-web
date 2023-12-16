@@ -53,7 +53,7 @@ const NavbarAdmin: FC<NavbarAdminProps> = props => {
     <AppBar position="static" sx={{ bgcolor: '#7DD5F4' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link href="/" style={{ textDecoration: 'none' }}>
+          <Link href="/summary" style={{ textDecoration: 'none' }}>
             <img
               src="/assets/images/angel_acs.png"
               style={{

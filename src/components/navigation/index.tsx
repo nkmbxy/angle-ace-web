@@ -2,6 +2,7 @@
 
 import { AuthState, authState, useRecoilState } from '@store/index';
 import { MAil_ADMIN } from 'app/constants';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import NavbarAdmin from './navbarAdmin';
 import NavbarCustomer from './navbarCustomer';
@@ -9,19 +10,28 @@ import NavbarCustomer from './navbarCustomer';
 const Navigation = () => {
   const isMounted = useRef(false);
   const [auth, setAuth] = useRecoilState<AuthState>(authState);
+  const router = useRouter();
   useEffect(() => {
     if (!isMounted.current) {
       const authStorage = localStorage.getItem('auth');
       if (authStorage) {
-        setAuth(JSON.parse(authStorage));
+        console.log(authStorage);
+        const authParseJson = JSON.parse(authStorage);
+        setAuth(authParseJson);
+        if (authParseJson.email === MAil_ADMIN) {
+          router.push(`/summary`);
+          return;
+        }
+        router.push(`/`);
       } else {
         setAuth({ email: '', token: '' });
+        return;
       }
       return () => {
         isMounted.current = true;
       };
     }
-  }, [setAuth]);
+  }, [router, setAuth]);
 
   return auth?.email === MAil_ADMIN ? <NavbarAdmin token={auth?.token} /> : <NavbarCustomer token={auth?.token} />;
 };
