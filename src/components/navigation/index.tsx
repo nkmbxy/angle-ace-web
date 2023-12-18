@@ -15,14 +15,13 @@ const Navigation = () => {
     if (!isMounted.current) {
       const authStorage = localStorage.getItem('auth');
       if (authStorage) {
-        console.log(authStorage);
         const authParseJson = JSON.parse(authStorage);
         setAuth(authParseJson);
-        if (authParseJson.email === MAil_ADMIN) {
-          router.push(`/summary`);
-          return;
-        }
-        router.push(`/`);
+        // if (authParseJson.email === MAil_ADMIN) {
+        //   router.push(`/summary`);
+        //   return;
+        // }
+        // router.push(`/`);
       } else {
         setAuth({ email: '', token: '' });
         return;
