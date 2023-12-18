@@ -18,16 +18,21 @@ export default function StockComponent() {
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'Id', type: 'number' },
-    { field: 'name', headerName: 'Name' },
-    { field: 'manufacturer', headerName: 'Manufacturer' },
-    { field: 'type', headerName: 'Type' },
-    { field: 'sellPrice', headerName: 'SellPrice', type: 'number' },
-    { field: 'cost', headerName: 'Cost', type: 'number' },
-    { field: 'amountS', headerName: 'Amount S', type: 'number' },
-    { field: 'amountM', headerName: 'Amount M', type: 'number' },
-    { field: 'amountL', headerName: 'Amount L', type: 'number' },
-    { field: 'amountXL', headerName: 'Amount XL', type: 'number' },
+    { field: 'id', headerName: 'Id', type: 'number', width: 90 },
+    { field: 'name', headerName: 'Name', width: 220 },
+    {
+      field: 'manufacturer',
+      headerName: 'Manufacturer',
+      width: 110,
+      valueGetter: params => params.row.manufacturer.name,
+    },
+    { field: 'type', headerName: 'Type', width: 120 },
+    { field: 'sellPrice', headerName: 'SellPrice', type: 'number', width: 120 },
+    { field: 'cost', headerName: 'Cost', type: 'number', width: 90 },
+    { field: 'amountS', headerName: 'Amount S', type: 'number', width: 110 },
+    { field: 'amountM', headerName: 'Amount M', type: 'number', width: 110 },
+    { field: 'amountL', headerName: 'Amount L', type: 'number', width: 110 },
+    { field: 'amountXL', headerName: 'Amount XL', type: 'number', width: 110 },
   ];
 
   const handleOnCloseDialog = () => {
@@ -81,7 +86,7 @@ export default function StockComponent() {
           sx={{
             padding: 3,
             width: '100%',
-            maxWidth: '80%',
+            maxWidth: '90%',
             flexGrow: 1,
             display: 'flex',
             flexDirection: 'column',
@@ -150,7 +155,7 @@ export default function StockComponent() {
               </Grid>
             </Grid>
 
-            <Grid style={{ width: '100%' }} sx={{ mt: '20px' }}>
+            <Grid sx={{ mt: '20px', width: '100%' }}>
               <DataGrid
                 rows={products.map(product => ({ ...product, id: product.id }))}
                 columns={columns}
