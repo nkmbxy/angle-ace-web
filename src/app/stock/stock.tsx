@@ -2,50 +2,54 @@
 
 import AlertDialogError from '@components/alertDialog/alertError';
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  Button,
-  Card,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
+import { Button, Card, Grid, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import { getProducts } from '@services/apis/product';
-import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductSearchParams, Products } from '../../../typings/products';
 
 export default function StockComponent() {
-  const [products, setProducts] = useState<Products[]>([]);
   const form = useForm<ProductSearchParams>({});
   const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const isMounted = useRef(false);
+  const [products, setProducts] = useState<Products[]>([]);
+  const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
+
+  const columns: GridColDef[] = [
+    { field: 'id', headerName: 'Id', type: 'number' },
+    { field: 'name', headerName: 'Name' },
+    { field: 'manufacturer', headerName: 'Manufacturer' },
+    { field: 'type', headerName: 'Type' },
+    { field: 'sellPrice', headerName: 'SellPrice', type: 'number' },
+    { field: 'cost', headerName: 'Cost', type: 'number' },
+    { field: 'amountS', headerName: 'Amount S', type: 'number' },
+    { field: 'amountM', headerName: 'Amount M', type: 'number' },
+    { field: 'amountL', headerName: 'Amount L', type: 'number' },
+    { field: 'amountXL', headerName: 'Amount XL', type: 'number' },
+  ];
 
   const handleOnCloseDialog = () => {
     setOpenAlertDialogError(false);
   };
 
-  const handleSearchProducts = useCallback(async (search: ProductSearchParams) => {
-    try {
-      const res = await getProducts(search);
-      if (res?.status !== '200') {
+  const handleSearchProducts = useCallback(
+    async (search: ProductSearchParams) => {
+      try {
+        const res = await getProducts(search);
+        if (res?.status !== '200') {
+          setOpenAlertDialogError(true);
+          return;
+        }
+        setProducts(res?.data);
+      } catch (error) {
         setOpenAlertDialogError(true);
         return;
       }
-      setProducts(res?.data);
-    } catch (error) {
-      setOpenAlertDialogError(true);
-      return;
-    }
-  }, []);
+    },
+    [setProducts]
+  );
 
   const handleGetProducts = useCallback(async () => {
     try {
@@ -59,7 +63,7 @@ export default function StockComponent() {
       setOpenAlertDialogError(true);
       return;
     }
-  }, []);
+  }, [setProducts]);
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -147,59 +151,20 @@ export default function StockComponent() {
             </Grid>
 
             <Grid style={{ width: '100%' }} sx={{ mt: '20px' }}>
-              <Grid style={{ overflowX: 'auto' }}>
-                <TableContainer component={Paper} sx={{ mt: '10px', height: 450 }}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="center">Select</TableCell>
-                        <TableCell align="center">Id</TableCell>
-                        <TableCell align="center">Name</TableCell>
-                        <TableCell align="center">Manufacturer</TableCell>
-                        <TableCell align="center">Type</TableCell>
-                        <TableCell align="center">SellPrice</TableCell>
-                        <TableCell align="center">Cost</TableCell>
-                        <TableCell align="center">Amount S</TableCell>
-                        <TableCell align="center">Amount M</TableCell>
-                        <TableCell align="center">Amount L</TableCell>
-                        <TableCell align="center">Amount XL</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {products.length > 0 ? (
-                        products.map((row, index) => (
-                          <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell padding="checkbox">
-                              <Checkbox />
-                            </TableCell>
-                            <Link href={`/productAdminDetail/${row.id}`}>
-                              <TableCell align="center" sx={{ color: 'red' }}>
-                                {row.code}
-                              </TableCell>
-                            </Link>
-                            <TableCell align="center">{row.name}</TableCell>
-                            <TableCell align="center">{row.manufacturer.name}</TableCell>
-                            <TableCell align="center">{row.type}</TableCell>
-                            <TableCell align="center">{row.cost}</TableCell>
-                            <TableCell align="center">{row.sellPrice}</TableCell>
-                            <TableCell align="center">{row.amountS}</TableCell>
-                            <TableCell align="center">{row.amountM}</TableCell>
-                            <TableCell align="center">{row.amountL}</TableCell>
-                            <TableCell align="center">{row.amountXL}</TableCell>
-                          </TableRow>
-                        ))
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={5} align="center">
-                            No rows
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
+              <DataGrid
+                rows={products.map(product => ({ ...product, id: product.id }))}
+                columns={columns}
+                checkboxSelection
+                onRowSelectionModelChange={newRowSelectionModel => {
+                  setRowSelectionModel(newRowSelectionModel);
+                }}
+                rowSelectionModel={rowSelectionModel}
+                autoHeight
+              />
             </Grid>
+          </Grid>
+          <Grid container style={{ width: '100%' }} sx={{ mt: '20px', justifyContent: 'flex-start' }}>
+            <Button sx={{ padding: '8px 30px', color: 'red' }}>Delete</Button>
           </Grid>
         </Card>
         <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
