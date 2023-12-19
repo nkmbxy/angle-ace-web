@@ -3,7 +3,7 @@
 import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
 import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
-import { Button, Card, Divider, Grid, Typography } from '@mui/material';
+import { Button, Card, Divider, Grid, Link, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { buyProduct, getDetailCustomer } from '@services/apis/product';
 import { useParams } from 'next/navigation';
@@ -204,6 +204,11 @@ export default function ProductDetailPage() {
   return (
     <Grid container className={classes.bigContainer}>
       <Card sx={{ padding: 0, minHeight: 700, width: '70%' }}>
+        <Grid container sx={{ mb: 3, mt: 2, fontSize: '16px', marginLeft: '20px' }}>
+          <Link href={`/clothing`} sx={{ color: 'red', textDecoration: 'underline', textDecorationColor: 'red' }}>
+            {'Back'}
+          </Link>
+        </Grid>
         <Grid container spacing={1} className={classes.container} alignItems="flex-start">
           <Grid
             item
