@@ -133,3 +133,7 @@ export interface BuyProductParams {
   amount: number;
   size: string;
 }
+
+export interface RemoveProductParams {
+  productsID: GridRowSelectionModel;
+}

@@ -4,6 +4,7 @@ import {
   BuyProductParams,
   ProductSearchParams,
   Products,
+  RemoveProductParams,
   SummaryParams,
   SummaryProfit,
 } from '../../../typings/products';
@@ -38,4 +39,8 @@ export function addStockProduct(params: AddStockParams[]): Promise<Response<stri
 
 export function buyProduct(id: number, params: BuyProductParams): Promise<Response<string>> {
   return post<string>(`/customer-order/${id}`, params);
+}
+
+export function removeProducts(params: RemoveProductParams): Promise<Response<string>> {
+  return post<string>(`/product-remove`, params);
 }

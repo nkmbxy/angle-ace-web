@@ -1,11 +1,12 @@
 'use client';
 
 import AlertDialogError from '@components/alertDialog/alertError';
+import ToastSuccess from '@components/toast';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, Card, Grid, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
-import { getProducts } from '@services/apis/product';
+import { getProducts, removeProducts } from '@services/apis/product';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ProductSearchParams, Products } from '../../../typings/products';
@@ -16,6 +17,7 @@ export default function StockComponent() {
   const isMounted = useRef(false);
   const [products, setProducts] = useState<Products[]>([]);
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
+  const [openToast, setOpenToast] = useState<boolean>(false);
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Id', type: 'number', width: 90 },
@@ -37,6 +39,10 @@ export default function StockComponent() {
 
   const handleOnCloseDialog = () => {
     setOpenAlertDialogError(false);
+  };
+
+  const handleCloseToast = () => {
+    setOpenToast(false);
   };
 
   const handleSearchProducts = useCallback(
@@ -69,6 +75,21 @@ export default function StockComponent() {
       return;
     }
   }, [setProducts]);
+
+  const handleRemoveProducts = useCallback(async () => {
+    try {
+      const res = await removeProducts({ productsID: rowSelectionModel });
+      if (res?.status !== '200') {
+        setOpenAlertDialogError(true);
+        return;
+      }
+      setOpenToast(true);
+      handleGetProducts();
+    } catch (error) {
+      setOpenAlertDialogError(true);
+      return;
+    }
+  }, [handleGetProducts, rowSelectionModel]);
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -169,9 +190,17 @@ export default function StockComponent() {
             </Grid>
           </Grid>
           <Grid container style={{ width: '100%' }} sx={{ mt: '20px', justifyContent: 'flex-start' }}>
-            <Button sx={{ padding: '8px 30px', color: 'red' }}>Delete</Button>
+            <Button onClick={() => handleRemoveProducts()} sx={{ padding: '8px 30px', color: 'red' }}>
+              Delete
+            </Button>
           </Grid>
         </Card>
+        <ToastSuccess
+          openToast={openToast}
+          handleCloseToast={handleCloseToast}
+          text="Remove product complete"
+          showClose={true}
+        />
         <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
       </Grid>
     </form>
