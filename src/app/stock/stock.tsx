@@ -1,9 +1,10 @@
 'use client';
 
+import AlertDialogConfirm from '@components/alertDialog/alertConfirm';
 import AlertDialogError from '@components/alertDialog/alertError';
 import ToastSuccess from '@components/toast';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, Card, Grid, Typography } from '@mui/material';
+import { Button, Card, Grid, Link, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import { getProducts, removeProducts } from '@services/apis/product';
@@ -13,14 +14,27 @@ import { ProductSearchParams, Products } from '../../../typings/products';
 
 export default function StockComponent() {
   const form = useForm<ProductSearchParams>({});
-  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const isMounted = useRef(false);
   const [products, setProducts] = useState<Products[]>([]);
   const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
+  const [openAlertDialogError, setOpenAlertDialogError] = useState<boolean>(false);
   const [openToast, setOpenToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [openDeleteConfirmDialog, setOpenDeleteConfirmDialog] = useState<boolean>(false);
+  const [rows, setRows] = useState<Products[]>([]);
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'Id', type: 'number', width: 90 },
+    {
+      field: 'id',
+      headerName: 'Id',
+      type: 'number',
+      width: 90,
+      renderCell: params => (
+        <Link href={`/productAdminDetail/${params.value}`} style={{ color: 'red', textDecoration: 'none' }}>
+          {params.value}
+        </Link>
+      ),
+    },
     { field: 'name', headerName: 'Name', width: 220 },
     {
       field: 'manufacturer',
@@ -38,11 +52,15 @@ export default function StockComponent() {
   ];
 
   const handleOnCloseDialog = () => {
-    setOpenAlertDialogError(false);
+    setOpenDeleteConfirmDialog(false);
   };
 
   const handleCloseToast = () => {
     setOpenToast(false);
+  };
+
+  const handleOpenDeleteConfirmDialog = () => {
+    setOpenDeleteConfirmDialog(true);
   };
 
   const handleSearchProducts = useCallback(
@@ -84,7 +102,9 @@ export default function StockComponent() {
         return;
       }
       setOpenToast(true);
+      setToastMessage('Delete Row Successfully');
       handleGetProducts();
+      setOpenDeleteConfirmDialog(false);
     } catch (error) {
       setOpenAlertDialogError(true);
       return;
@@ -190,16 +210,18 @@ export default function StockComponent() {
             </Grid>
           </Grid>
           <Grid container style={{ width: '100%' }} sx={{ mt: '20px', justifyContent: 'flex-start' }}>
-            <Button onClick={() => handleRemoveProducts()} sx={{ padding: '8px 30px', color: 'red' }}>
+            <Button onClick={handleOpenDeleteConfirmDialog} sx={{ padding: '8px 30px', color: 'red' }}>
               Delete
             </Button>
           </Grid>
         </Card>
-        <ToastSuccess
-          openToast={openToast}
-          handleCloseToast={handleCloseToast}
-          text="Remove product complete"
-          showClose={true}
+        <ToastSuccess openToast={openToast} handleCloseToast={handleCloseToast} text={toastMessage} showClose={true} />
+        <AlertDialogConfirm
+          openAlertDialog={openDeleteConfirmDialog}
+          handleOnCloseDialog={() => setOpenDeleteConfirmDialog(false)}
+          onConfirm={handleRemoveProducts}
+          title="Confirm Delete"
+          message="Do you want to delete the selected products?"
         />
         <AlertDialogError openAlertDialog={openAlertDialogError} handleOnCloseDialog={handleOnCloseDialog} />
       </Grid>
