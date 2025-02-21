@@ -22,7 +22,7 @@ const AlertDialogError: FC<AlertDialogErrorProps> = props => {
     <Dialog fullScreen={false} open={openAlertDialog} onClose={handleOnCloseDialog}>
       <DialogTitle id="dialog-title">{title || 'Error'}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{message || 'Something Went Wrong. Please try again'}</DialogContentText>
+        <DialogContentText>{message || 'Something Went Wrong. Please try again2'}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={handleOnCloseDialog} autoFocus>
